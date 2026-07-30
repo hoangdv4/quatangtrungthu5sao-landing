@@ -5,8 +5,9 @@ dist/
 # dependencies
 node_modules/
 
-# config thật + secrets (KHÔNG commit — xem site.config.example.ts / .env.example)
-src/config/site.ts
+# secrets thật (KHÔNG commit — xem .env.example)
+# Lưu ý: src/config/site.ts KHÔNG gitignore — chỉ chứa brand/SĐT/Zalo công khai
+# (đã hiển thị trên mọi trang), cần có mặt lúc build static site trên CI/CD.
 .env
 .env.production
 .env.local
