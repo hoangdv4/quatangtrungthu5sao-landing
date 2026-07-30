@@ -19,7 +19,9 @@ export const SITE = {
   domain: "https://quatangtrungthu5sao.com",
 
   phone: "0396679426",          // hotline, dùng cho tel: và hiển thị
-  zalo: "https://zalo.me/2293658709074226764", // hoặc link OA: https://zalo.me/<OA_ID>
+  // TẠM DÙNG Zalo cá nhân trong lúc Zalo OA (ID 2293658709074226764) đang chờ duyệt.
+  // Khi OA được duyệt, đổi lại thành: "https://zalo.me/2293658709074226764"
+  zalo: "https://zalo.me/84396679426",
   email: "hoangdv4@gmail.com",                 // để trống nếu không dùng email trên site
   messenger: "https://m.me/quatangks",
 
