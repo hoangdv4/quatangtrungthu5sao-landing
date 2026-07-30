@@ -62,8 +62,8 @@ function doPost(e) {
     var now = Utilities.formatDate(new Date(), 'GMT+7', 'dd/MM/yyyy HH:mm');
     var nguon = (d.utm_source || 'landing') +
                 (d.utm_campaign ? '/' + d.utm_campaign : '');
-    sh.appendRow([now, nguon, d.ten || '', d.congty || '', "'" + (d.sdt || ''),
-                  d.ngansach || '', d.soluong || '', 'Mới', '', '', '', '']);
+    sh.appendRow([now, nguon, d.ten || '', d.cong_ty || '', "'" + (d.sdt || ''),
+                  d.ngan_sach || '', d.so_luong || '', 'Mới', '', '', '', '']);
     notify_(d, nguon, now);
     return json_({ ok: true });
   } catch (err) {
@@ -73,9 +73,9 @@ function doPost(e) {
 
 function notify_(d, nguon, now) {
   var msg = '🔔 LEAD B2B MỚI (' + now + ')\n' +
-    'Tên: ' + (d.ten || '?') + '\nCty: ' + (d.congty || '?') +
-    '\nSĐT: ' + (d.sdt || '?') + '\nNgân sách/suất: ' + (d.ngansach || '?') +
-    '\nSL: ' + (d.soluong || '?') + '\nNguồn: ' + nguon +
+    'Tên: ' + (d.ten || '?') + '\nCty: ' + (d.cong_ty || '?') +
+    '\nSĐT: ' + (d.sdt || '?') + '\nNgân sách/suất: ' + (d.ngan_sach || '?') +
+    '\nSL: ' + (d.so_luong || '?') + '\nNguồn: ' + nguon +
     '\n⏱ SLA: gọi + add Zalo trong 15 phút!';
   var props = PropertiesService.getScriptProperties();
   var email = props.getProperty('NOTIFY_EMAIL');
@@ -98,7 +98,7 @@ function json_(obj) {
 /** Test nhanh sau khi deploy: chạy hàm này rồi xem dòng mới trong LEAD-B2B. */
 function testPost() {
   doPost({ postData: { type: 'application/json', contents: JSON.stringify({
-    ten: 'Test', congty: 'Cty Test', sdt: '0900000000',
-    ngansach: '1,2–2,6tr', soluong: '30–50', utm_source: 'test'
+    ten: 'Test', cong_ty: 'Cty Test', sdt: '0900000000',
+    ngan_sach: '1,2–2,6tr', so_luong: '30–50', utm_source: 'test'
   }) } });
 }
