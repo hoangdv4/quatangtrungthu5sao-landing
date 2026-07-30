@@ -1,0 +1,94 @@
+---
+// /hop-vip — ads KHÔNG BAO GIỜ trỏ vào trang này. Ưu tiên sitemap thấp (xem astro.config.mjs).
+// ⚠️ C0: được ghi "kèm rượu vang/quà tặng cao cấp", vẫn KHÔNG nêu tên hãng rượu ở bất kỳ đâu.
+import Base from '../layouts/Base.astro';
+import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
+import { KHACH_SAN, dinhDangGia, coQuaTang, duongDan } from '../lib/pricing';
+
+const dateModified = '2026-07-31';
+const title = `Hộp VIP — Quà Tặng Thượng Hạng Cho Lãnh Đạo & Đối Tác | ${SITE.brand}`;
+const description = `Hộp bánh trung thu VIP kèm quà tặng cao cấp từ 7 khách sạn 5 sao Hà Nội, giá đã VAT. Tư vấn cấu hình riêng theo ngân sách qua Zalo ${PHONE_DISPLAY}.`;
+
+// Nhóm hộp có quà tặng kèm theo khách sạn — chỉ hiển thị ten_hien_thi (đã sanitize), không tên hãng.
+const nhomVip = KHACH_SAN.map((ks) => ({
+  ks,
+  sanPham: ks.san_pham.filter(coQuaTang),
+})).filter((n) => n.sanPham.length > 0);
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}/hop-vip#webpage`,
+    url: `${SITE.domain}/hop-vip`,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#business` },
+  },
+];
+---
+
+<Base {title} {description} {dateModified} {schema} noindex={false}>
+  <article class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+      Hộp VIP — Quà tặng thượng hạng cho lãnh đạo & đối tác quan trọng
+    </h1>
+
+    <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+      Hộp VIP tùy biến — có thể chọn cấu hình quà tặng theo gu và ngân sách, không bó vào cấu hình
+      mặc định. Tư vấn riêng qua Zalo {PHONE_DISPLAY}.
+    </p>
+
+    <div class="mt-6">
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo-hero"
+        class="inline-block rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700"
+      >
+        Chat Zalo tư vấn hộp VIP
+      </a>
+    </div>
+
+    <div class="mt-10 space-y-10">
+      {
+        nhomVip.map(({ ks, sanPham }) => (
+          <section>
+            <h2 class="text-2xl font-bold text-slate-900">
+              <a href={duongDan(ks.id)} class="hover:text-son-700 hover:underline">
+                {ks.ten}
+              </a>
+            </h2>
+            <ul class="mt-4 divide-y divide-son-100 rounded-xl ring-1 ring-son-100">
+              {sanPham.map((sp) => (
+                <li class="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
+                  <div>
+                    <p class="font-medium text-slate-900">{sp.ten_hien_thi}</p>
+                    <p class="text-sm text-slate-600">{sp.quy_cach}</p>
+                  </div>
+                  <p class="font-semibold text-son-700">{dinhDangGia(sp.gia_da_vat)}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 rounded-xl bg-son-50 p-5 text-sm text-slate-700">
+      <p>Cập nhật ngày 31/07/2026.</p>
+      <p class="mt-1">
+        Liên hệ {SITE.brand}:
+        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-footer" class="font-semibold text-son-700 underline"
+          >{PHONE_DISPLAY}</a
+        >
+        ·
+        <a href={SITE.zalo} target="_blank" rel="noopener" data-contact="zalo-footer" class="font-semibold text-son-700 underline"
+          >Zalo</a
+        >
+      </p>
+    </div>
+  </article>
+</Base>

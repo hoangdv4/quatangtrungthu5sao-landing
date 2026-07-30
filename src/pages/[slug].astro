@@ -1,0 +1,137 @@
+---
+// 7 trang con khách sạn — khuôn theo data/site-content.md mục 2.
+// ⚠️ C0: trang đích ads — không chữ "rượu" trong meta/OG, ten_hien_thi đã sanitize.
+export const prerender = true;
+
+import Base from '../layouts/Base.astro';
+import BangGia from '../components/BangGia.astro';
+import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
+import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
+import { FAQ_CHUAN, faqSchema, type FaqItem } from '../lib/faq';
+import { HOTEL_CONTENT } from '../lib/hotel-content';
+
+export function getStaticPaths() {
+  return KHACH_SAN.map((ks) => ({
+    params: { slug: duongDan(ks.id).replace(/^\//, '') },
+    props: { ks },
+  }));
+}
+
+interface Props {
+  ks: KhachSan;
+}
+
+const { ks } = Astro.props;
+const content = HOTEL_CONTENT[ks.id];
+const dateModified = '2026-07-31';
+
+const min = dinhDangGia(ks.gia_tu);
+const max = dinhDangGia(ks.gia_den);
+const soMau = ks.san_pham.length;
+
+const title = `Bánh Trung Thu ${ks.ten} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
+const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT, tư vấn chọn hộp theo ngân sách. Giao nhanh 24–48h Hà Nội. Zalo ${PHONE_DISPLAY}.`;
+
+const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, giá từ ${min} đến ${max} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại Hà Nội, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
+
+// FAQ trang = 6 câu chuẩn + câu riêng của khách sạn.
+const faqTrang: FaqItem[] = [...FAQ_CHUAN, ...content.faqRieng];
+
+const canonicalPath = duongDan(ks.id);
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}${canonicalPath}#webpage`,
+    url: `${SITE.domain}${canonicalPath}`,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#business` },
+  },
+  {
+    '@type': 'Product',
+    name: `Bánh trung thu ${ks.ten} 2026`,
+    description: doanMo,
+    brand: { '@type': 'Brand', name: SITE.brand },
+    offers: ks.san_pham.map((sp) => ({
+      '@type': 'Offer',
+      name: sp.ten_hien_thi,
+      priceCurrency: 'VND',
+      price: sp.gia_da_vat,
+      availability: 'https://schema.org/InStock',
+      url: `${SITE.domain}${canonicalPath}`,
+      seller: { '@id': `${SITE.domain}/#business` },
+    })),
+  },
+  faqSchema(faqTrang),
+];
+---
+
+<Base {title} {description} {dateModified} {schema}>
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+      Bánh trung thu {ks.ten} 2026: Bảng giá, các hộp, mua ở đâu
+    </h1>
+
+    <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+      {doanMo}
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo-hero"
+        class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700"
+      >
+        Chat Zalo {PHONE_DISPLAY}
+      </a>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        data-contact="hotline-hero"
+        class="rounded-lg border-2 border-son-600 px-6 py-3 text-base font-semibold text-son-700 hover:bg-son-50"
+      >
+        Gọi ngay
+      </a>
+    </div>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">
+      Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
+    </h2>
+    <div class="mt-4">
+      <BangGia sanPham={ks.san_pham} />
+    </div>
+    <p class="mt-3 text-sm text-slate-600">
+      Hạn sử dụng {ks.hsd_ngay} ngày kể từ ngày sản xuất.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Nên chọn hộp nào?</h2>
+    <p class="mt-3 leading-relaxed text-slate-700">{content.tuVan}</p>
+
+    <h2 class="mt-10 text-2xl font-bold text-slate-900">Câu hỏi thường gặp</h2>
+    <div class="mt-4 space-y-3">
+      {
+        faqTrang.map((item, i) => (
+          <details class="rounded-lg bg-son-50 p-4" open={i === 0}>
+            <summary class="cursor-pointer font-semibold text-slate-900">{item.q}</summary>
+            <p class="mt-2 text-slate-700">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 rounded-xl bg-son-50 p-5 text-sm text-slate-700">
+      <p>Cập nhật ngày 31/07/2026.</p>
+      <p class="mt-1">
+        Liên hệ {SITE.brand}:
+        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-footer" class="font-semibold text-son-700 underline"
+          >{PHONE_DISPLAY}</a
+        >
+        · <a href={SITE.zalo} target="_blank" rel="noopener" data-contact="zalo-footer" class="font-semibold text-son-700 underline">Zalo</a>
+      </p>
+    </div>
+  </article>
+</Base>

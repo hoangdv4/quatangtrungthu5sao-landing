@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Font hệ thống — không tải webfont, giữ LCP/CLS tốt cho Lighthouse mobile. */
+@theme {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+
+  /* Bảng màu: đỏ son + vàng kim — tông Trung thu, tương phản đạt AA. */
+  --color-son-50: #fdf3f3;
+  --color-son-100: #fbe5e5;
+  --color-son-600: #b8232a;
+  --color-son-700: #99191f;
+  --color-son-800: #7f171c;
+  --color-kim-50: #fdf8ec;
+  --color-kim-400: #d9a441;
+  /* kim-600 dùng làm chữ trên nền trắng → phải đạt tương phản AA (≥4.5:1). */
+  --color-kim-600: #855e12;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Chừa chỗ cho thanh CTA floating trên mobile, tránh che nội dung cuối trang. */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 4.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

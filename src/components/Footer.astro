@@ -1,0 +1,53 @@
+---
+// Khối 7 — Footer. Nội dung phải nhất quán 100% với fanpage/Zalo OA/GBP (GEO).
+import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
+import { KHACH_SAN, duongDan } from '../lib/pricing';
+---
+
+<footer class="mt-16 border-t border-son-100 bg-son-50">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-8 sm:grid-cols-2">
+      <div>
+        <p class="text-lg font-bold text-son-700">{SITE.brand}</p>
+        <p class="mt-2 text-sm text-slate-700">
+          Đại lý phân phối bánh trung thu khách sạn 5 sao
+        </p>
+        <p class="mt-3 text-sm text-slate-700">
+          Hotline/Zalo:
+          <a
+            href={`tel:${PHONE_TEL}`}
+            data-contact="hotline"
+            class="font-semibold text-son-700 underline">{PHONE_DISPLAY}</a
+          >
+        </p>
+        <p class="mt-1 text-sm text-slate-700">{SITE.area}</p>
+        {
+          SITE.email && (
+            <p class="mt-1 text-sm text-slate-700">
+              Email: <a href={`mailto:${SITE.email}`} class="underline">{SITE.email}</a>
+            </p>
+          )
+        }
+      </div>
+
+      <nav aria-label="Bảng giá theo khách sạn">
+        <p class="text-sm font-semibold text-slate-900">Bảng giá theo khách sạn</p>
+        <ul class="mt-2 grid gap-1 text-sm text-slate-700 sm:grid-cols-2">
+          {
+            KHACH_SAN.map((ks) => (
+              <li>
+                <a href={duongDan(ks.id)} class="hover:text-son-700 hover:underline">
+                  {ks.ten}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <p class="mt-8 border-t border-son-100 pt-6 text-xs text-slate-600">
+      © 2026 {SITE.brand}. Giá niêm yết đã gồm VAT.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,304 @@
+---
+// Trang chủ — khung 7 khối theo data/site-content.md.
+// ⚠️ C0: đây là TRANG ĐÍCH CỦA ADS — không chữ "rượu" trong meta/OG,
+// không liệt kê hộp VIP kèm giá, không tên hãng rượu ở bất kỳ đâu.
+import Base from '../layouts/Base.astro';
+import FormB2B from '../components/FormB2B.astro';
+import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
+import {
+  KHACH_SAN,
+  duongDan,
+  khoangGia,
+  dinhDangGia,
+  GIA_MIN,
+  GIA_MAX,
+  TONG_SO_MAU,
+} from '../lib/pricing';
+import { FAQ_CHUAN, faqSchema } from '../lib/faq';
+
+const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 — Giá Gốc Đã VAT | ${SITE.brand}`;
+const description = `Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Sofitel, Hilton, Nikko, Renaissance 2026. Chính hãng, đã VAT, giao 24–48h Hà Nội. Zalo ${PHONE_DISPLAY}.`;
+const dateModified = '2026-07-31';
+
+// Khối 4 — chọn theo ngân sách. Danh sách theo site-content.md, giá lấy từ pricing.json.
+const nhomNganSach = [
+  {
+    nhan: 'Dưới 1,1 triệu',
+    mo_ta: 'Biếu số lượng cho nhân viên, đối tác phổ thông',
+    items: [
+      { ks: 'sheraton', stt: 1 },
+      { ks: 'sheraton', stt: 2 },
+      { ks: 'intercontinental-lm72', stt: 1 },
+      { ks: 'melia', stt: 1 },
+      { ks: 'melia', stt: 2 },
+    ],
+  },
+  {
+    nhan: '1,2 – 2,6 triệu',
+    mo_ta: 'Biếu sếp, khách hàng thân thiết, gia đình',
+    items: [
+      { ks: 'sofitel', stt: 1 },
+      { ks: 'nikko', stt: 2 },
+      { ks: 'sheraton', stt: 3 },
+      { ks: 'renaissance', stt: 1 },
+      { ks: 'sofitel', stt: 2 },
+      { ks: 'hilton', stt: 1 },
+      { ks: 'melia', stt: 3 },
+      { ks: 'intercontinental-lm72', stt: 3 },
+      { ks: 'sofitel', stt: 3 },
+    ],
+  },
+];
+
+// Ghép tên + giá từ pricing.json (không hardcode giá).
+const nhomDaDo = nhomNganSach.map((nhom) => ({
+  ...nhom,
+  san_pham: nhom.items.flatMap(({ ks, stt }) => {
+    const hotel = KHACH_SAN.find((h) => h.id === ks);
+    const sp = hotel?.san_pham.find((p) => p.stt === stt);
+    return sp && hotel ? [{ hotel, sp }] : [];
+  }),
+}));
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}/#webpage`,
+    url: SITE.domain,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#business` },
+  },
+  {
+    '@type': 'ItemList',
+    name: 'Bánh trung thu 7 khách sạn 5 sao Hà Nội 2026',
+    numberOfItems: KHACH_SAN.length,
+    itemListElement: KHACH_SAN.map((ks, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `Bánh trung thu ${ks.ten} 2026`,
+      url: `${SITE.domain}${duongDan(ks.id)}`,
+    })),
+  },
+  {
+    '@type': 'Product',
+    name: 'Bánh trung thu khách sạn 5 sao Hà Nội 2026',
+    description:
+      'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội, giá niêm yết đã gồm VAT.',
+    brand: { '@type': 'Brand', name: SITE.brand },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'VND',
+      lowPrice: GIA_MIN,
+      highPrice: GIA_MAX,
+      offerCount: TONG_SO_MAU,
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': `${SITE.domain}/#business` },
+    },
+  },
+  faqSchema(FAQ_CHUAN),
+];
+
+const niemTin = [
+  'Chính hãng khách sạn',
+  'Giá đã gồm VAT',
+  'Freeship Hà Nội',
+  'Công nợ DN 50%',
+  'Hộp in logo riêng theo yêu cầu',
+];
+---
+
+<Base {title} {description} {dateModified} {schema}>
+  {/* ── Khối 1 — Hero ─────────────────────────────────────────── */}
+  <section class="bg-gradient-to-b from-son-50 to-white">
+    <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-2 md:items-center md:py-16">
+      <div>
+        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl md:text-[2.6rem]">
+          Bánh Trung Thu 7 Khách Sạn 5 Sao — Giá Gốc, Đã VAT, Giao Nhanh 24–48h Tại Hà Nội
+        </h1>
+        <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+          Sheraton · InterContinental Landmark72 · Meliá · Renaissance · Sofitel · Hilton · Nikko —
+          nhận hàng trực tiếp từ khách sạn, nguyên tem nguyên hộp, kiểm tra trước khi thanh toán.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="#bao-gia-b2b"
+            class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700"
+          >
+            Nhận bảng giá B2B
+          </a>
+          <a
+            href={SITE.zalo}
+            target="_blank"
+            rel="noopener"
+            data-contact="zalo-hero"
+            class="rounded-lg border-2 border-son-600 px-6 py-3 text-base font-semibold text-son-700 hover:bg-son-50"
+          >
+            Chat Zalo {PHONE_DISPLAY}
+          </a>
+        </div>
+      </div>
+
+      {/* Placeholder tới 06/08 — thay bằng ảnh đẹp nhất từ SALE KIT. */}
+      <div
+        class="flex aspect-4/3 items-center justify-center rounded-2xl bg-son-100 text-center text-sm text-son-700 ring-1 ring-son-600/20"
+        role="img"
+        aria-label="Hộp bánh trung thu khách sạn 5 sao Hà Nội 2026"
+      >
+        <span class="px-6">Ảnh hộp bánh trung thu khách sạn 5 sao<br />(cập nhật 06/08/2026)</span>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Khối 2 — Thanh niềm tin ───────────────────────────────── */}
+  <section class="border-y border-son-100 bg-white">
+    <ul
+      class="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-6 gap-y-2 px-4 py-4 text-sm font-medium text-slate-800"
+    >
+      {
+        niemTin.map((item) => (
+          <li class="flex items-center gap-1.5">
+            <span aria-hidden="true" class="font-bold text-son-600">
+              ✓
+            </span>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* ── Khối 3 — Catalogue 7 khách sạn ────────────────────────── */}
+  <section id="catalogue" class="mx-auto max-w-6xl px-4 py-12">
+    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">
+      Bảng giá bánh trung thu 7 khách sạn 5 sao 2026 (đã gồm VAT)
+    </h2>
+    <p class="mt-2 text-slate-700">
+      {TONG_SO_MAU} mẫu hộp, giá từ {dinhDangGia(GIA_MIN)} đến {dinhDangGia(GIA_MAX)} — đã gồm VAT.
+    </p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        KHACH_SAN.map((ks) => (
+          <article class="flex flex-col rounded-xl border border-son-100 p-5 transition hover:border-son-600 hover:shadow-sm">
+            <h3 class="text-lg font-bold text-slate-900">{ks.ten}</h3>
+            <p class="mt-2 text-son-700">
+              <span class="text-xl font-bold">{khoangGia(ks)}</span>
+              <span class="block text-xs text-slate-600">đã gồm VAT</span>
+            </p>
+            <p class="mt-2 text-sm text-slate-700">
+              {ks.san_pham.length} mẫu hộp · HSD {ks.hsd_ngay} ngày
+            </p>
+            <a
+              href={duongDan(ks.id)}
+              class="mt-4 inline-block rounded-lg border border-son-600 px-4 py-2 text-center text-sm font-semibold text-son-700 hover:bg-son-50"
+            >
+              Xem bảng giá
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ── Khối 4 — Chọn theo ngân sách ──────────────────────────── */}
+  <section class="bg-son-50 py-12">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Chọn theo ngân sách</h2>
+
+      <div class="mt-6 grid gap-5 md:grid-cols-3">
+        {
+          nhomDaDo.map((nhom) => (
+            <div class="rounded-xl bg-white p-5 ring-1 ring-son-100">
+              <h3 class="text-lg font-bold text-son-700">{nhom.nhan}</h3>
+              <p class="mt-1 text-sm text-slate-600">{nhom.mo_ta}</p>
+              <ul class="mt-3 space-y-2 text-sm text-slate-800">
+                {nhom.san_pham.map(({ hotel, sp }) => (
+                  <li class="flex justify-between gap-3 border-b border-slate-100 pb-2 last:border-0">
+                    <a href={duongDan(hotel.id)} class="hover:text-son-700 hover:underline">
+                      {sp.ten_hien_thi}
+                    </a>
+                    <span class="shrink-0 font-semibold text-son-700">
+                      {dinhDangGia(sp.gia_da_vat)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+
+        {/* Cột VIP: KHÔNG liệt kê tên hộp/giá cụ thể ở trang đích ads. */}
+        <div class="rounded-xl bg-white p-5 ring-1 ring-kim-400/40">
+          <h3 class="text-lg font-bold text-kim-600">VIP thượng hạng</h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-800">
+            Dòng hộp VIP kèm quà tặng cao cấp cho lãnh đạo & đối tác quan trọng — cấu hình tùy biến
+            theo gu và ngân sách.
+          </p>
+          <a
+            href="/hop-vip"
+            class="mt-4 inline-block rounded-lg border border-kim-600 px-4 py-2 text-sm font-semibold text-kim-600 hover:bg-kim-50"
+          >
+            Xem hộp VIP
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Khối 5 — B2B ──────────────────────────────────────────── */}
+  <section id="bao-gia-b2b" class="mx-auto max-w-6xl scroll-mt-16 px-4 py-12">
+    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">
+      Doanh nghiệp đặt số lượng — báo giá riêng trong 30 phút
+    </h2>
+
+    <div class="mt-6 grid gap-8 lg:grid-cols-2">
+      <ul class="space-y-3 text-slate-800">
+        <li class="flex gap-2">
+          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
+          Chiết khấu theo số lượng, báo giá theo 3 mức ngân sách/suất
+        </li>
+        <li class="flex gap-2">
+          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
+          Hộp thiết kế riêng in logo công ty (chốt trước 10/09)
+        </li>
+        <li class="flex gap-2">
+          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
+          Hóa đơn VAT đầy đủ, giá niêm yết đã gồm VAT
+        </li>
+        <li class="flex gap-2">
+          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
+          Công nợ: cọc 50%, thanh toán nốt trong 10 ngày sau giao
+        </li>
+      </ul>
+
+      <FormB2B />
+    </div>
+  </section>
+
+  {/* ── Khối 6 — FAQ ──────────────────────────────────────────── */}
+  <section class="bg-son-50 py-12">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Câu hỏi thường gặp</h2>
+      <div class="mt-6 space-y-3">
+        {
+          FAQ_CHUAN.map((item, i) => (
+            <details class="rounded-lg bg-white p-4 ring-1 ring-son-100" open={i === 0}>
+              <summary class="cursor-pointer font-semibold text-slate-900">{item.q}</summary>
+              <p class="mt-2 text-slate-700">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+
+      <p class="mt-8 text-sm text-slate-600">
+        Cập nhật ngày 31/07/2026 · Liên hệ {SITE.brand}:
+        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-faq" class="font-semibold text-son-700 underline"
+          >{PHONE_DISPLAY}</a
+        >
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,128 @@
+# Nội dung 8 trang — bản copy sẵn cho Claude Code đổ vào template
+
+> Thay `{BRAND}`, `{PHONE}`, `{ZALO}` bằng giá trị từ `src/config/site.ts`. Giá lấy từ `pricing.json` (`gia_da_vat`, tên = `ten_hien_thi`).
+
+## 1. Trang chủ `/` — khung 7 khối
+
+### Khối 1 — Hero
+- H1: **Bánh Trung Thu 7 Khách Sạn 5 Sao — Giá Gốc, Đã VAT, Giao Nhanh 24–48h Tại Hà Nội**
+- Sub: Sheraton · InterContinental Landmark72 · Meliá · Renaissance · Sofitel · Hilton · Nikko — nhận hàng trực tiếp từ khách sạn, nguyên tem nguyên hộp, kiểm tra trước khi thanh toán.
+- CTA: `[Nhận bảng giá B2B]` (scroll tới form) · `[Chat Zalo]` ({ZALO})
+- Ảnh hero: placeholder tới 06/08, sau đó ảnh đẹp nhất từ SALE KIT.
+
+### Khối 2 — Thanh niềm tin
+✓ Chính hãng khách sạn ✓ Giá đã gồm VAT ✓ Freeship Hà Nội ✓ Công nợ DN 50% ✓ Hộp in logo riêng theo yêu cầu
+
+### Khối 3 — Catalogue 7 khách sạn (data từ pricing.json)
+Mỗi card: tên KS + khoảng giá + số mẫu + nút "Xem bảng giá":
+
+| Khách sạn | Khoảng giá (đã VAT) | Số mẫu | Link |
+|---|---|---|---|
+| Sheraton Hà Nội | 889.000đ – 2.599.000đ | 7 | /banh-trung-thu-sheraton-ha-noi |
+| InterContinental Landmark72 | 1.026.000đ – 7.689.000đ | 7 | /banh-trung-thu-intercontinental-landmark72 |
+| Meliá Hà Nội | 1.067.040đ – 5.816.800đ | 10 | /banh-trung-thu-melia-ha-noi |
+| Renaissance Hà Nội | 1.388.000đ – 1.988.000đ | 2 | /banh-trung-thu-renaissance-ha-noi |
+| Sofitel | 1.236.000đ – 2.256.000đ | 3 | /banh-trung-thu-sofitel |
+| Hilton Hà Nội | 1.688.000đ – 2.180.000đ | 2 | /banh-trung-thu-hilton-ha-noi |
+| Hotel Nikko Hà Nội | 1.288.000đ – 1.888.000đ | 3 | /banh-trung-thu-nikko-ha-noi |
+
+### Khối 4 — Chọn theo ngân sách (3 cột)
+- **Dưới 1,1 triệu:** Sheraton Thanh 1 (889k) · Sheraton Thanh 2 (999k) · Inter Classic Box 4 (1.026k) · Meliá Thanh Hoa Nguyệt Ảnh / Chu Tước Phúc Viên (1.067k)
+- **1,2 – 2,6 triệu:** Sofitel Standard (1.236k) · Nikko Tinh Gọn (1.288k) · Sheraton An 1 (1.348k) · Renaissance An Nhã (1.388k) · Sofitel Deluxe (1.645k) · Hilton Tea (1.688k) · Meliá Nguyệt Viên Hà Thành (1.706k) · Inter Luxury Box 8 (1.717k) · Sofitel Premium (2.256k)
+- **VIP thượng hạng:** "Dòng hộp VIP kèm quà tặng cao cấp cho lãnh đạo & đối tác quan trọng — [Xem hộp VIP](/hop-vip)" *(không liệt kê tên rượu, không giá cụ thể ở trang chủ)*
+
+### Khối 5 — B2B
+Heading: **Doanh nghiệp đặt số lượng — báo giá riêng trong 30 phút**
+- Chiết khấu theo số lượng, báo giá theo 3 mức ngân sách/suất
+- Hộp thiết kế riêng in logo công ty (chốt trước 10/09)
+- Hóa đơn VAT đầy đủ, giá niêm yết đã gồm VAT
+- Công nợ: cọc 50%, thanh toán nốt trong 10 ngày sau giao
+
+Form (POST `PUBLIC_FORM_ENDPOINT`): Tên* · SĐT* · Công ty* · Ngân sách/suất (radio: Dưới 1,1tr / 1,2–2,6tr / 2,6–4tr / Trên 4tr) · Số lượng (radio: 30–50 / 50–150 / 150+) + hidden utm_source, utm_campaign.
+
+### Khối 6 — FAQ (6 câu, kèm schema FAQPage)
+Dùng nguyên văn mục "FAQ chuẩn" bên dưới.
+
+### Khối 7 — Footer
+{BRAND} — Đại lý phân phối bánh trung thu khách sạn 5 sao · Hotline/Zalo: {PHONE} · Giao nhanh 24–48h nội thành Hà Nội, ship toàn quốc · © 2026
+
+---
+
+## 2. Khuôn 7 trang con (đổ data theo hotel id)
+
+```
+H1: Bánh trung thu {Tên KS} 2026: Bảng giá, các hộp, mua ở đâu
+
+Đoạn mở 40–60 từ (trả lời thẳng — AI trích đoạn này):
+"Bánh trung thu {Tên KS} 2026 có {n} loại hộp, giá từ {min} đến {max}
+(đã gồm VAT). Đặt qua đại lý phân phối {BRAND}, giao nhanh 24–48h tại
+Hà Nội, ship toàn quốc. Liên hệ Zalo {PHONE}."
+
+H2: Bảng giá bánh trung thu {Tên KS} 2026 (đã gồm VAT)
+→ BẢNG HTML: STT | Tên hộp (ten_hien_thi) | Quy cách | Giá đã VAT
+→ Dưới bảng: "Hạn sử dụng {hsd} ngày kể từ ngày sản xuất."
+
+H2: Nên chọn hộp nào?
+→ 3–4 câu tư vấn theo ngân sách (viết riêng từng KS, xem gợi ý dưới)
+
+H2: Câu hỏi thường gặp
+→ 5–8 cặp Q&A: lấy 6 câu FAQ chuẩn + 1–2 câu riêng của KS
+   (VD Sheraton: "HSD bánh Sheraton bao lâu?" → "25 ngày — ngắn hơn các
+   khách sạn khác (45 ngày), nên đặt sát ngày biếu.")
+
+Cuối trang: "Cập nhật ngày {dateModified}" + khối liên hệ {BRAND}/{PHONE}
+```
+
+Gợi ý câu tư vấn "Nên chọn hộp nào?" từng KS:
+- **Sheraton:** Thanh 1 (889k) là hộp entry bán chạy nhất — hợp biếu số lượng cho nhân viên/đối tác phổ thông. An 2 kèm trà (1.548k) hợp biếu sếp tầm trung. Lưu ý HSD 25 ngày, đặt sát ngày biếu.
+- **Inter LM72:** Classic Box 4 (1.026k) hợp ngân sách phổ thông; Luxury Box 8 (1.717k) nhiều bánh nhất phân khúc dưới 2tr — hợp biếu gia đình. Dòng Luxury kèm quà tặng cao cấp xem trang Hộp VIP.
+- **Meliá:** thiết kế đậm chất Á Đông, tên hộp ý nghĩa — hợp biếu đối tác lớn tuổi. Hai hộp entry 1.067k giá tốt nhất nhóm 4 bánh 120gr.
+- **Renaissance:** chỉ 2 mẫu, An Nhã (1.388k) kèm trà Kim Tuyên — lựa chọn gọn cho ngân sách 1,2–1,5tr.
+- **Sofitel:** Deluxe (1.645k) kèm trà là mẫu cân bằng nhất; Premium 6 bánh (2.256k) sang trọng cho sếp.
+- **Hilton:** Tea Version (1.688k) an toàn cho mọi đối tượng; Wine Version (2.180k) kèm rượu vang cho đối tác thân.
+- **Nikko:** Tinh Gọn (1.288k) entry chuẩn Nhật; Gấu Hồng bản giới hạn (1.588k) độc lạ — hợp biếu khách hàng nữ/gia đình có trẻ nhỏ.
+
+---
+
+## 3. Trang `/hop-vip` (ads KHÔNG trỏ vào)
+
+- H1: Hộp VIP — quà tặng thượng hạng cho lãnh đạo & đối tác quan trọng
+- Liệt kê các hộp `ruou != null` từ pricing.json (ten_hien_thi, giá đã VAT), nhóm theo KS.
+- Copy chủ đạo: "Hộp VIP tùy biến — có thể chọn cấu hình quà tặng theo gu và ngân sách, không bó vào cấu hình mặc định. Tư vấn riêng qua Zalo {PHONE}."
+- KHÔNG nêu tên hãng rượu. CTA duy nhất: chat Zalo.
+
+---
+
+## 4. FAQ chuẩn (E3 — dùng cho landing + 7 trang GEO, schema FAQPage)
+
+1. **Bánh có phải chính hãng khách sạn không?** — Nhận trực tiếp từ khách sạn, nguyên tem/hộp, khách kiểm tra trước khi thanh toán.
+2. **Giá đã gồm VAT chưa, có hóa đơn không?** — Giá niêm yết đã gồm VAT 8–10%, doanh nghiệp có hóa đơn đầy đủ.
+3. **Giao trong bao lâu?** — Nội thành Hà Nội 24–48h, freeship; tỉnh 2–4 ngày (15.000–25.000đ/hộp).
+4. **Có in logo công ty được không?** — Có — hộp thiết kế riêng cho đơn số lượng lớn, chốt trước 10/09.
+5. **Đặt số lượng lớn chiết khấu thế nào?** — Báo giá riêng theo số lượng: cọc 50%, còn lại thanh toán trong 10 ngày sau giao.
+6. **Hạn sử dụng bao lâu?** — Sheraton 25 ngày, các khách sạn khác 45 ngày kể từ ngày sản xuất.
+
+---
+
+## 5. `llms.txt` (draft — đặt tại root)
+
+```
+# {BRAND}
+> Đại lý phân phối bánh trung thu chính hãng 7 khách sạn 5 sao tại Hà Nội,
+> mùa Trung thu 2026 (rằm: 25/09/2026).
+
+- Khách sạn: Sheraton Hà Nội, InterContinental Landmark72, Meliá Hà Nội,
+  Renaissance Hà Nội, Sofitel, Hilton Hà Nội, Hotel Nikko Hà Nội.
+- Khoảng giá: 889.000đ – 7.689.000đ (đã gồm VAT), 34 mẫu hộp.
+- B2B: chiết khấu số lượng, hộp in logo riêng, hóa đơn VAT, công nợ 50%.
+- Giao nhanh 24–48h nội thành Hà Nội, freeship; toàn quốc 2–4 ngày.
+- Bảng giá chi tiết: https://quatangtrungthu5sao.com/ (+ 7 trang con theo khách sạn)
+- Liên hệ: {PHONE} (Zalo/hotline)
+```
+
+---
+
+## 6. Meta title/description mẫu (không chứa chữ "rượu")
+
+- `/`: "Bánh Trung Thu Khách Sạn 5 Sao 2026 — Giá Gốc Đã VAT | {BRAND}" / "Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Sofitel, Hilton, Nikko, Renaissance 2026. Chính hãng, đã VAT, giao 24–48h Hà Nội. Zalo {PHONE}."
+- Trang con: "Bánh Trung Thu {KS} 2026: Bảng Giá Từ {min} | {BRAND}" / "Bảng giá {n} hộp bánh trung thu {KS} 2026 đã VAT, tư vấn chọn hộp theo ngân sách. Giao nhanh 24–48h Hà Nội. Zalo {PHONE}."

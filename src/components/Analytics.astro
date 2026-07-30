@@ -1,0 +1,74 @@
+---
+// Meta Pixel + Google tag. ID đọc từ env PUBLIC_*.
+// Env trống → KHÔNG render script (dev không bắn event rác, build vẫn pass).
+const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID?.trim();
+const gtagId = import.meta.env.PUBLIC_GTAG_ID?.trim();
+---
+
+{
+  pixelId && (
+    <>
+      <script is:inline define:vars={{ pixelId }}>
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = '2.0';
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', pixelId);
+        fbq('track', 'PageView');
+      </script>
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style="display:none"
+          alt=""
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+        />
+      </noscript>
+    </>
+  )
+}
+
+{
+  gtagId && (
+    <>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`} />
+      <script is:inline define:vars={{ gtagId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', gtagId);
+      </script>
+    </>
+  )
+}
+
+<script is:inline>
+  // Helper dùng chung: bắn event tới cả Pixel lẫn Google tag nếu chúng tồn tại.
+  // Luôn định nghĩa (kể cả khi env trống) để nút Zalo/Gọi không lỗi JS.
+  window.track = function (name, params) {
+    if (typeof window.fbq === 'function') window.fbq('track', name, params || {});
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+
+  // Click nút Zalo/Gọi ở bất kỳ đâu → event Contact.
+  document.addEventListener('click', function (e) {
+    var el = e.target instanceof Element ? e.target.closest('[data-contact]') : null;
+    if (el) window.track('Contact', { method: el.getAttribute('data-contact') });
+  });
+</script>

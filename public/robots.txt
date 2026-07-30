@@ -1,0 +1,23 @@
+# quatangtrungthu5sao.com — cho phép mọi bot, ưu tiên rõ các AI crawler (GEO).
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://quatangtrungthu5sao.com/sitemap-index.xml

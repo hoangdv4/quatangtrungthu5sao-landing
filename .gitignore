@@ -1,0 +1,26 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# config thật + secrets (KHÔNG commit — xem site.config.example.ts / .env.example)
+src/config/site.ts
+.env
+.env.production
+.env.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/

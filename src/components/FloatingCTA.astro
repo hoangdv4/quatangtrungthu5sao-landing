@@ -1,0 +1,45 @@
+---
+// Thanh CTA cố định dưới màn hình — CHỈ hiện trên mobile (80%+ traffic từ ads).
+import { SITE, PHONE_TEL } from '../config/site';
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-px border-t border-son-700 bg-son-700 md:hidden"
+>
+  <a
+    href={`tel:${PHONE_TEL}`}
+    data-contact="hotline-floating"
+    class="flex items-center justify-center gap-2 bg-son-600 py-4 text-base font-semibold text-white"
+  >
+    <svg
+      class="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"
+      ></path>
+    </svg>
+    Gọi ngay
+  </a>
+  <a
+    href={SITE.zalo}
+    target="_blank"
+    rel="noopener"
+    data-contact="zalo-floating"
+    class="flex items-center justify-center gap-2 bg-kim-600 py-4 text-base font-semibold text-white"
+  >
+    <svg
+      class="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 3C6.5 3 2 6.8 2 11.5c0 2.7 1.5 5.1 3.8 6.6-.1.9-.6 2.3-.7 2.6-.1.4.2.4.4.3.2-.1 2.4-1.6 3.4-2.2 1 .2 2 .4 3.1.4 5.5 0 10-3.8 10-8.5S17.5 3 12 3Z"
+      ></path>
+    </svg>
+    Chat Zalo
+  </a>
+</div>

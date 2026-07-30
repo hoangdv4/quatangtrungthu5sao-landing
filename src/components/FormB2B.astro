@@ -1,0 +1,155 @@
+---
+// Khối 5 — form B2B. POST JSON tới PUBLIC_FORM_ENDPOINT (Google Apps Script).
+// Apps Script không trả CORS header → dùng mode:'no-cors', hiển thị success
+// phía client sau khi gửi, KHÔNG redirect.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() ?? '';
+
+const nganSach = ['Dưới 1,1tr', '1,2–2,6tr', '2,6–4tr', 'Trên 4tr'];
+const soLuong = ['30–50', '50–150', '150+'];
+---
+
+<form
+  id="form-b2b"
+  data-endpoint={endpoint}
+  class="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-son-100 sm:p-6"
+  novalidate
+>
+  <div class="grid gap-4 sm:grid-cols-3">
+    <label class="block">
+      <span class="text-sm font-medium text-slate-800">Tên <span class="text-son-600">*</span></span>
+      <input
+        type="text"
+        name="ten"
+        required
+        autocomplete="name"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+      />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-slate-800">SĐT <span class="text-son-600">*</span></span>
+      <input
+        type="tel"
+        name="sdt"
+        required
+        inputmode="tel"
+        autocomplete="tel"
+        pattern="[0-9+\s().-]{9,15}"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+      />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-slate-800"
+        >Công ty <span class="text-son-600">*</span></span
+      >
+      <input
+        type="text"
+        name="cong_ty"
+        required
+        autocomplete="organization"
+        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+      />
+    </label>
+  </div>
+
+  <fieldset>
+    <legend class="text-sm font-medium text-slate-800">Ngân sách/suất</legend>
+    <div class="mt-2 flex flex-wrap gap-2">
+      {
+        nganSach.map((v, i) => (
+          <label class="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm has-checked:border-son-600 has-checked:bg-son-50 has-checked:font-semibold has-checked:text-son-700">
+            <input type="radio" name="ngan_sach" value={v} checked={i === 0} class="sr-only" />
+            {v}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend class="text-sm font-medium text-slate-800">Số lượng (hộp)</legend>
+    <div class="mt-2 flex flex-wrap gap-2">
+      {
+        soLuong.map((v, i) => (
+          <label class="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm has-checked:border-son-600 has-checked:bg-son-50 has-checked:font-semibold has-checked:text-son-700">
+            <input type="radio" name="so_luong" value={v} checked={i === 0} class="sr-only" />
+            {v}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <input type="hidden" name="utm_source" value="" />
+  <input type="hidden" name="utm_campaign" value="" />
+  <input type="hidden" name="trang" value="" />
+
+  <button
+    type="submit"
+    class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700 disabled:opacity-60"
+  >
+    Nhận báo giá trong 30 phút
+  </button>
+
+  <p
+    id="form-msg"
+    role="status"
+    aria-live="polite"
+    class="hidden rounded-lg px-4 py-3 text-sm"
+  >
+  </p>
+</form>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('form-b2b');
+    if (!form) return;
+    var msg = document.getElementById('form-msg');
+    var btn = form.querySelector('button[type="submit"]');
+
+    // UTM đọc từ URL, đổ vào hidden field.
+    var qs = new URLSearchParams(location.search);
+    form.utm_source.value = qs.get('utm_source') || '';
+    form.utm_campaign.value = qs.get('utm_campaign') || '';
+    form.trang.value = location.pathname;
+
+    function show(text, ok) {
+      msg.textContent = text;
+      msg.className =
+        'rounded-lg px-4 py-3 text-sm ' +
+        (ok ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800');
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        show('Vui lòng điền đầy đủ Tên, SĐT và Công ty.', false);
+        return;
+      }
+      var endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        show('Form chưa được cấu hình. Vui lòng liên hệ qua Zalo hoặc hotline.', false);
+        return;
+      }
+
+      btn.disabled = true;
+      var data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        // Apps Script không trả CORS header → no-cors, không đọc response.
+        await fetch(endpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data),
+        });
+        show('Đã nhận yêu cầu. Chúng tôi sẽ gọi lại trong 30 phút.', true);
+        form.reset();
+        if (window.track) window.track('Lead', { content_category: 'b2b' });
+      } catch (err) {
+        show('Gửi không thành công. Vui lòng liên hệ qua Zalo hoặc hotline.', false);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  })();
+</script>

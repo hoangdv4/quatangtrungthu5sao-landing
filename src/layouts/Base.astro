@@ -1,0 +1,83 @@
+---
+// Layout chung cho cả 8 trang. Nhận meta + mảng node JSON-LD từ từng trang.
+//
+// ⚠️ C0: title/description/OG của trang đích ads KHÔNG được chứa chữ "rượu".
+import { SITE } from '../config/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCTA from '../components/FloatingCTA.astro';
+import Analytics from '../components/Analytics.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Ngày cập nhật nội dung (ISO) — đổ vào article:modified_time + dateModified. */
+  dateModified?: string;
+  /** Các node schema.org đưa vào @graph. LocalBusiness luôn được thêm sẵn. */
+  schema?: Record<string, unknown>[];
+  /** true → noindex (dùng cho trang không muốn index). */
+  noindex?: boolean;
+}
+
+const { title, description, dateModified, schema = [], noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.domain).href.replace(/\/$/, '') || SITE.domain;
+const modified = dateModified ?? new Date().toISOString().slice(0, 10);
+
+const localBusiness = {
+  '@type': 'LocalBusiness',
+  '@id': `${SITE.domain}/#business`,
+  name: SITE.brand,
+  description: 'Đại lý phân phối bánh trung thu chính hãng 7 khách sạn 5 sao tại Hà Nội.',
+  url: SITE.domain,
+  telephone: SITE.phone,
+  areaServed: SITE.addressLocality,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.addressLocality,
+    addressCountry: SITE.addressCountry,
+  },
+  ...(SITE.email ? { email: SITE.email } : {}),
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [localBusiness, ...schema],
+};
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.brand} />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="article:modified_time" content={modified} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <Analytics />
+  </head>
+  <body class="bg-white text-slate-900 antialiased">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <FloatingCTA />
+  </body>
+</html>
