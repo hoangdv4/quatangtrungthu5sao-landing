@@ -51,9 +51,17 @@ function setup() {
 /** Endpoint nhận form B2B từ landing page. */
 function doPost(e) {
   try {
+    // Không tin cậy vào e.postData.type: Google có thể chuẩn hóa lại content-type
+    // qua redirect nội bộ. Thử parse JSON trước (form gửi JSON.stringify), fallback
+    // e.parameter nếu body không phải JSON hợp lệ.
     var d = {};
-    if (e.postData && e.postData.type === 'application/json') {
-      d = JSON.parse(e.postData.contents);
+    var raw = e.postData && e.postData.contents;
+    if (raw) {
+      try {
+        d = JSON.parse(raw);
+      } catch (parseErr) {
+        d = e.parameter || {};
+      }
     } else {
       d = e.parameter || {};
     }
