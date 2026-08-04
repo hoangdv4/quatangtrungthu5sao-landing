@@ -170,6 +170,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
   {/* ── Khối 2 — Thanh niềm tin ───────────────────────────────── */}
   <section class="border-b border-gold-soft/60 bg-paper">
     <ul
+      data-reveal
       class="mx-auto flex max-w-6xl gap-x-6 gap-y-2 overflow-x-auto px-4 py-4 text-sm text-ink-soft [scrollbar-width:none]"
     >
       {
@@ -195,7 +196,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
       {TONG_SO_MAU} mẫu hộp, giá từ {dinhDangGia(GIA_MIN)} đến {dinhDangGia(GIA_MAX)} — đã gồm VAT.
     </p>
 
-    <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+    <div data-reveal-group class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
       {
         KHACH_SAN.map((ks) => {
           const tenBst = HOTEL_STORY[ks.id]?.ten_bst;
@@ -203,6 +204,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
           return (
             <a
               href={duongDan(ks.id)}
+              data-reveal
               class={`group block border-t-2 ${tint} bg-paper transition`}
             >
               <div class="aspect-4/5 overflow-hidden">
@@ -238,10 +240,10 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
       <p class="label-gold">Gợi ý nhanh</p>
       <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">Chọn theo ngân sách</h2>
 
-      <div class="mt-8 grid gap-5 md:grid-cols-3">
+      <div data-reveal-group class="mt-8 grid gap-5 md:grid-cols-3">
         {
           nhomDaDo.map((nhom) => (
-            <div class="border border-gold-soft/60 bg-paper p-6">
+            <div data-reveal class="border border-gold-soft/60 bg-paper p-6">
               <h3 class="font-display text-lg text-ink">{nhom.nhan}</h3>
               <p class="mt-1 text-sm text-ink-soft">{nhom.mo_ta}</p>
               <ul class="mt-4 space-y-2.5 text-sm">
@@ -259,7 +261,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
         }
 
         {/* Thẻ VIP: nền ink, chữ paper + gold — phân tầng thị giác. KHÔNG liệt kê tên hộp/giá cụ thể. */}
-        <div class="bg-ink p-6">
+        <div data-reveal class="bg-ink p-6">
           <h3 class="font-display text-lg text-gold">Đẳng cấp VIP</h3>
           <p class="mt-3 text-sm leading-relaxed text-paper/85">
             Dòng hộp thượng hạng kèm quà tặng cao cấp cho lãnh đạo & đối tác quan trọng — cấu hình
@@ -292,7 +294,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
         </div>
       )}
 
-      <div class="lg:order-2">
+      <div data-reveal class="lg:order-2">
         <p class="label-gold">Doanh nghiệp</p>
         <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">
           Hộp quà mang thương hiệu doanh nghiệp của bạn
@@ -325,7 +327,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
 
   {/* ── Khối 6 — Brand story strip ────────────────────────────── */}
   <section class="bg-paper py-16 md:py-24">
-    <div class="mx-auto max-w-3xl px-4 text-center">
+    <div data-reveal class="mx-auto max-w-3xl px-4 text-center">
       <p class="font-display text-[clamp(1.15rem,3.2vw,1.6rem)] italic leading-relaxed text-ink">
         <span class="text-[--color-gold-text]" aria-hidden="true">“</span>
         {doanTrichStory}
@@ -339,7 +341,7 @@ const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
 
   {/* ── Khối 7 — FAQ ──────────────────────────────────────────── */}
   <section class="border-t border-gold-soft/60 bg-paper-warm py-16 md:py-24">
-    <div class="mx-auto max-w-3xl px-4">
+    <div data-reveal class="mx-auto max-w-3xl px-4">
       <p class="label-gold">Hỏi đáp</p>
       <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">Câu hỏi thường gặp</h2>
       <div class="mt-8 space-y-3">

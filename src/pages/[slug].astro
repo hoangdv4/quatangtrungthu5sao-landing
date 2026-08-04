@@ -124,18 +124,20 @@ const schema = [
   </section>
 
   <article class="mx-auto max-w-3xl px-4 py-12 md:py-16">
-    <p class="text-base leading-relaxed text-ink-soft sm:text-lg">
-      {doanMo}
-    </p>
+    <div data-reveal>
+      <p class="text-base leading-relaxed text-ink-soft sm:text-lg">
+        {doanMo}
+      </p>
 
-    {/* ── Khối 2 — Brand story (trích nguyên văn) ───────────────── */}
-    {
-      story?.loiTua && (
-        <p class="mt-6 max-w-[65ch] font-display text-[1.15rem] italic leading-relaxed text-ink">
-          {story.loiTua}
-        </p>
-      )
-    }
+      {/* ── Khối 2 — Brand story (trích nguyên văn) ───────────────── */}
+      {
+        story?.loiTua && (
+          <p class="mt-6 max-w-[65ch] font-display text-[1.15rem] italic leading-relaxed text-ink">
+            {story.loiTua}
+          </p>
+        )
+      }
+    </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
       <a
@@ -159,7 +161,7 @@ const schema = [
     {/* ── Khối 4 — Gallery cinematic (lightbox, chuyển ảnh do người dùng điều khiển) ── */}
     {
       anhConLai.length > 0 && (
-        <div class="mt-8">
+        <div data-reveal class="mt-8">
           <Lightbox
             id={ks.id}
             images={anhConLai}
@@ -170,54 +172,60 @@ const schema = [
     }
 
     {/* ── Khối 3 — Bảng giá ──────────────────────────────────────── */}
-    <h2 class="mt-12 font-display text-2xl text-ink">
-      Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
-    </h2>
-    <div class="mt-5">
-      <BangGia sanPham={ks.san_pham} />
-    </div>
-    <p class="mt-3 text-sm text-ink-soft">
-      Hạn sử dụng {ks.hsd_ngay} ngày kể từ ngày sản xuất.
-    </p>
+    <div data-reveal>
+      <h2 class="mt-12 font-display text-2xl text-ink">
+        Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
+      </h2>
+      <div class="mt-5">
+        <BangGia sanPham={ks.san_pham} />
+      </div>
+      <p class="mt-3 text-sm text-ink-soft">
+        Hạn sử dụng {ks.hsd_ngay} ngày kể từ ngày sản xuất.
+      </p>
 
-    {
-      story?.catalogue && (
-        <a
-          href={`/catalogue/${story.catalogue}`}
-          target="_blank"
-          rel="noopener"
-          data-contact="catalogue-download"
-          class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-[--color-gold-text] hover:bg-gold hover:text-ink"
-        >
-          Tải catalogue chính hãng (PDF)
-        </a>
-      )
-    }
-
-    <h2 class="mt-12 font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
-    <p class="mt-3 leading-relaxed text-ink-soft">{content.tuVan}</p>
-    {
-      doiTuongPhuHop.length > 0 && (
-        <p class="mt-2 text-sm text-ink-soft">
-          <span class="font-medium text-ink">Phù hợp biếu:</span> {doiTuongPhuHop.join(' · ')}
-        </p>
-      )
-    }
-
-    {/* ── Khối 6 — FAQ + CTA cuối ────────────────────────────────── */}
-    <h2 class="mt-12 font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
-    <div class="mt-5 space-y-3">
       {
-        faqTrang.map((item, i) => (
-          <details class="border border-gold-soft/60 bg-paper-warm p-4" open={i === 0}>
-            <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
-            <p class="mt-2 text-ink-soft">{item.a}</p>
-          </details>
-        ))
+        story?.catalogue && (
+          <a
+            href={`/catalogue/${story.catalogue}`}
+            target="_blank"
+            rel="noopener"
+            data-contact="catalogue-download"
+            class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-[--color-gold-text] hover:bg-gold hover:text-ink"
+          >
+            Tải catalogue chính hãng (PDF)
+          </a>
+        )
       }
     </div>
 
-    <div class="mt-12 bg-ink p-6 text-center sm:p-8">
+    <div data-reveal>
+      <h2 class="mt-12 font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
+      <p class="mt-3 leading-relaxed text-ink-soft">{content.tuVan}</p>
+      {
+        doiTuongPhuHop.length > 0 && (
+          <p class="mt-2 text-sm text-ink-soft">
+            <span class="font-medium text-ink">Phù hợp biếu:</span> {doiTuongPhuHop.join(' · ')}
+          </p>
+        )
+      }
+    </div>
+
+    {/* ── Khối 6 — FAQ + CTA cuối ────────────────────────────────── */}
+    <div data-reveal>
+      <h2 class="mt-12 font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
+      <div class="mt-5 space-y-3">
+        {
+          faqTrang.map((item, i) => (
+            <details class="border border-gold-soft/60 bg-paper-warm p-4" open={i === 0}>
+              <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
+              <p class="mt-2 text-ink-soft">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+
+    <div data-reveal class="mt-12 bg-ink p-6 text-center sm:p-8">
       <p class="font-display text-xl text-paper">Tư vấn qua Zalo trong 5 phút</p>
       <a
         href={SITE.zalo}
