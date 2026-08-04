@@ -10,26 +10,29 @@ interface Props {
 const { sanPham } = Astro.props;
 ---
 
-<div class="overflow-x-auto rounded-xl ring-1 ring-son-100">
+<div class="overflow-x-auto border border-gold-soft/60">
   <table class="w-full min-w-[560px] border-collapse text-left text-sm">
     <thead>
-      <tr class="bg-son-50 text-slate-900">
-        <th scope="col" class="px-4 py-3 font-semibold">STT</th>
-        <th scope="col" class="px-4 py-3 font-semibold">Tên hộp</th>
-        <th scope="col" class="px-4 py-3 font-semibold">Quy cách</th>
-        <th scope="col" class="px-4 py-3 text-right font-semibold">Giá đã VAT</th>
+      <tr class="bg-paper-warm text-ink">
+        <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">STT</th>
+        <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Tên hộp</th>
+        <th scope="col" class="hidden px-4 py-3 text-xs font-medium uppercase tracking-wide min-[480px]:table-cell">
+          Quy cách
+        </th>
+        <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide">
+          Giá đã VAT
+        </th>
       </tr>
     </thead>
     <tbody>
       {
         sanPham.map((sp) => (
-          <tr class="border-t border-son-100 odd:bg-white even:bg-son-50/40">
-            <td class="px-4 py-3 text-slate-600">{sp.stt}</td>
-            <td class="px-4 py-3 font-medium text-slate-900">{sp.ten_hien_thi}</td>
-            <td class="px-4 py-3 text-slate-700">{sp.quy_cach}</td>
-            <td class="px-4 py-3 text-right font-semibold text-son-700">
-              {dinhDangGia(sp.gia_da_vat)}
-            </td>
+          <tr class="border-t border-gold-soft/60">
+            <td class="px-4 py-3 text-ink-soft">{sp.stt}</td>
+            <td class="px-4 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
+            {/* Ẩn bằng CSS dưới 480px, vẫn giữ trong DOM — AI/crawler đọc được. */}
+            <td class="hidden px-4 py-3 text-ink-soft min-[480px]:table-cell">{sp.quy_cach}</td>
+            <td class="price px-4 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
           </tr>
         ))
       }

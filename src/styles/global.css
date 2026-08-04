@@ -1,20 +1,46 @@
 @import "tailwindcss";
 
-/* Font hệ thống — không tải webfont, giữ LCP/CLS tốt cho Lighthouse mobile. */
-@theme {
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif;
+/* Font tự host qua @fontsource (Vietnamese subset) — không gọi ra Google Fonts lúc runtime,
+   giữ LCP/CLS tốt cho Lighthouse mobile. Chỉ import đúng weight cần dùng. */
+@import "@fontsource/cormorant-garamond/vietnamese-500.css";
+@import "@fontsource/cormorant-garamond/vietnamese-600.css";
+@import "@fontsource/be-vietnam-pro/vietnamese-400.css";
+@import "@fontsource/be-vietnam-pro/vietnamese-500.css";
 
-  /* Bảng màu: đỏ son + vàng kim — tông Trung thu, tương phản đạt AA. */
-  --color-son-50: #fdf3f3;
-  --color-son-100: #fbe5e5;
-  --color-son-600: #b8232a;
-  --color-son-700: #99191f;
-  --color-son-800: #7f171c;
-  --color-kim-50: #fdf8ec;
-  --color-kim-400: #d9a441;
-  /* kim-600 dùng làm chữ trên nền trắng → phải đạt tương phản AA (≥4.5:1). */
-  --color-kim-600: #855e12;
+@theme {
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ── Màu nền tảng (luxury, KHÔNG đen tuyền / trắng tinh) ── */
+  --color-ink: #1a1b1e;
+  --color-ink-soft: #5a5c63;
+  --color-paper: #faf7f1;
+  --color-paper-warm: #f3ede2;
+  --color-gold: #b08a3e;
+  --color-gold-soft: #d9c39a;
+  /* Bản đậm của gold — DÙNG CHO CHỮ trên nền paper/paper-warm (đạt AA ≥4.5:1).
+     --color-gold gốc chỉ dùng cho border/background trang trí, không đủ tương phản cho text. */
+  --color-gold-text: #7a5d28;
+
+  /* Trạng thái bán hàng duy nhất được phép — nâu đỏ trầm, không đỏ sale/cam flash. */
+  --color-status-low-stock: #8a4b2d;
+
+  /* ── Brand tint riêng từng khách sạn (viền hero, tag BST, hover) ── */
+  --color-brand-sheraton: #1f3a6e;
+  --color-brand-intercontinental: #b4552d;
+  --color-brand-melia: #b98a50;
+  --color-brand-sofitel: #4a6b4f;
+  --color-brand-hilton: #2c2c34;
+  --color-brand-nikko: #8a2f3b;
+  --color-brand-renaissance: #6b4e71;
+  --color-brand-b2b: #b08a3e;
+
+  /* Bo góc nhỏ — luxury không bo tròn kiểu app. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  /* Shadow rất nhẹ — không glow, không gradient. */
+  --shadow-soft: 0 2px 12px rgba(26, 27, 30, 0.06);
 }
 
 html {
@@ -24,12 +50,60 @@ html {
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.7;
 }
 
-/* Chừa chỗ cho thanh CTA floating trên mobile, tránh che nội dung cuối trang. */
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+/* Giá tiền: số đều cột (tabular-nums), không màu đỏ, không gạch giá ảo.
+   Không ép color ở đây — mặc định kế thừa (--color-ink trên nền paper), trang tối
+   (/hop-vip) override bằng class Tailwind text-gold. */
+.price {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nhãn nhỏ dạng "BỘ SƯU TẬP 2026" — nhũ vàng chỉ dùng cho chữ ngắn, uppercase.
+   Dùng --color-gold-text (đậm hơn --color-gold) để đạt tương phản AA trên nền paper. */
+.label-gold {
+  color: var(--color-gold-text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Biến thể cho nền tối (--ink) — --color-gold gốc đã đạt AA trên ink,
+   --color-gold-text (đậm hơn) lại KHÔNG đủ tương phản trên nền tối. */
+.label-gold-dark {
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Đường kẻ trang trí mảnh, viền vàng nhạt. */
+.rule-gold {
+  border: none;
+  border-top: 1px solid var(--color-gold-soft);
+}
+
+/* Chừa chỗ cho thanh CTA floating trên mobile, tránh che nội dung cuối trang.
+   Cộng thêm safe-area-inset-bottom cho thiết bị có notch/home-indicator (iPhone). */
 @media (max-width: 767px) {
   body {
-    padding-bottom: 4.5rem;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
   }
 }
 

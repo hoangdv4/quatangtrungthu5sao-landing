@@ -11,22 +11,22 @@ const soLuong = ['30–50', '50–150', '150+'];
 <form
   id="form-b2b"
   data-endpoint={endpoint}
-  class="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-son-100 sm:p-6"
+  class="grid gap-6 border border-gold-soft bg-paper p-5 sm:p-8"
   novalidate
 >
-  <div class="grid gap-4 sm:grid-cols-3">
+  <div class="grid gap-5 sm:grid-cols-3">
     <label class="block">
-      <span class="text-sm font-medium text-slate-800">Tên <span class="text-son-600">*</span></span>
+      <span class="label-gold">Tên *</span>
       <input
         type="text"
         name="ten"
         required
         autocomplete="name"
-        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
       />
     </label>
     <label class="block">
-      <span class="text-sm font-medium text-slate-800">SĐT <span class="text-son-600">*</span></span>
+      <span class="label-gold">SĐT *</span>
       <input
         type="tel"
         name="sdt"
@@ -34,29 +34,27 @@ const soLuong = ['30–50', '50–150', '150+'];
         inputmode="tel"
         autocomplete="tel"
         pattern="[0-9+\s().-]{9,15}"
-        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
       />
     </label>
     <label class="block">
-      <span class="text-sm font-medium text-slate-800"
-        >Công ty <span class="text-son-600">*</span></span
-      >
+      <span class="label-gold">Công ty *</span>
       <input
         type="text"
         name="cong_ty"
         required
         autocomplete="organization"
-        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base focus:border-son-600 focus:outline-none focus:ring-1 focus:ring-son-600"
+        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
       />
     </label>
   </div>
 
   <fieldset>
-    <legend class="text-sm font-medium text-slate-800">Ngân sách/suất</legend>
-    <div class="mt-2 flex flex-wrap gap-2">
+    <legend class="label-gold">Ngân sách/suất</legend>
+    <div class="mt-3 flex flex-wrap gap-2">
       {
         nganSach.map((v, i) => (
-          <label class="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm has-checked:border-son-600 has-checked:bg-son-50 has-checked:font-semibold has-checked:text-son-700">
+          <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
             <input type="radio" name="ngan_sach" value={v} checked={i === 0} class="sr-only" />
             {v}
           </label>
@@ -66,11 +64,11 @@ const soLuong = ['30–50', '50–150', '150+'];
   </fieldset>
 
   <fieldset>
-    <legend class="text-sm font-medium text-slate-800">Số lượng (hộp)</legend>
-    <div class="mt-2 flex flex-wrap gap-2">
+    <legend class="label-gold">Số lượng (hộp)</legend>
+    <div class="mt-3 flex flex-wrap gap-2">
       {
         soLuong.map((v, i) => (
-          <label class="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm has-checked:border-son-600 has-checked:bg-son-50 has-checked:font-semibold has-checked:text-son-700">
+          <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
             <input type="radio" name="so_luong" value={v} checked={i === 0} class="sr-only" />
             {v}
           </label>
@@ -85,7 +83,7 @@ const soLuong = ['30–50', '50–150', '150+'];
 
   <button
     type="submit"
-    class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700 disabled:opacity-60"
+    class="bg-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold disabled:opacity-60"
   >
     Nhận báo giá trong 30 phút
   </button>
@@ -94,7 +92,7 @@ const soLuong = ['30–50', '50–150', '150+'];
     id="form-msg"
     role="status"
     aria-live="polite"
-    class="hidden rounded-lg px-4 py-3 text-sm"
+    class="hidden px-4 py-3 text-sm"
   >
   </p>
 </form>
@@ -115,8 +113,8 @@ const soLuong = ['30–50', '50–150', '150+'];
     function show(text, ok) {
       msg.textContent = text;
       msg.className =
-        'rounded-lg px-4 py-3 text-sm ' +
-        (ok ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800');
+        'border px-4 py-3 text-sm ' +
+        (ok ? 'border-gold-soft text-ink' : 'border-status-low-stock text-status-low-stock');
     }
 
     form.addEventListener('submit', async function (e) {

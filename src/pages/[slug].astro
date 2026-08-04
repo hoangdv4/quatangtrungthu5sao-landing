@@ -1,9 +1,9 @@
 ---
-// 7 trang con khách sạn — khuôn theo data/site-content.md mục 2.
+// 7 trang con khách sạn — khuôn theo data/site-content.md mục 2 (redesign luxury Phase 6).
 // ⚠️ C0: trang đích ads — không chữ "rượu" trong meta/OG, ten_hien_thi đã sanitize.
 export const prerender = true;
 
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import BangGia from '../components/BangGia.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
@@ -12,6 +12,7 @@ import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
+import { BRAND_TINT_BORDER } from '../lib/brand-tint';
 
 export function getStaticPaths() {
   return KHACH_SAN.map((ks) => ({
@@ -32,6 +33,7 @@ const min = dinhDangGia(ks.gia_tu);
 const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
+const tint = BRAND_TINT_BORDER[ks.id] ?? 'border-gold';
 
 const tenTrangThai = story?.ten_bst ? `${ks.ten} — BST ${story.ten_bst}` : ks.ten;
 const title = `Bánh Trung Thu ${tenTrangThai} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
@@ -51,6 +53,9 @@ const faqTrang: FaqItem[] = [
 const canonicalPath = duongDan(ks.id);
 const anh = anhKhachSan(ks.id);
 const [anhHero, ...anhConLai] = anh;
+const anhHeroOptimized = anhHero
+  ? await getImage({ src: anhHero, width: 1600, height: 1000 })
+  : null;
 
 const schema = [
   {
@@ -67,6 +72,7 @@ const schema = [
     '@type': 'Product',
     name: `Bánh trung thu ${ks.ten} 2026`,
     description: doanMo,
+    ...(anhHeroOptimized ? { image: `${SITE.domain}${anhHeroOptimized.src}` } : {}),
     brand: { '@type': 'Brand', name: SITE.brand },
     offers: ks.san_pham.map((sp) => ({
       '@type': 'Offer',
@@ -82,74 +88,76 @@ const schema = [
 ];
 ---
 
-<Base {title} {description} {dateModified} {schema}>
-  <article class="mx-auto max-w-3xl px-4 py-10">
-    <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
-      Bánh trung thu {ks.ten} 2026: Bảng giá, các hộp, mua ở đâu
-    </h1>
+<Base {title} {description} {dateModified} {schema} preloadImage={anhHeroOptimized?.src}>
+  {/* ── Khối 1 — Hero nhỏ (~55svh) ────────────────────────────── */}
+  <section class={`relative h-[55svh] min-h-[380px] w-full overflow-hidden border-b-[3px] ${tint}`}>
+    {
+      anhHero && (
+        <Image
+          src={anhHero}
+          alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
+          width={1600}
+          height={1000}
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      )
+    }
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/5" aria-hidden="true"></div>
 
-    <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+    <div class="absolute inset-x-0 bottom-0 px-4 pb-8 sm:px-6 sm:pb-10">
+      <div class="mx-auto max-w-3xl">
+        <nav aria-label="Breadcrumb" class="text-xs text-paper/70">
+          <a href="/" class="hover:text-paper hover:underline">Trang chủ</a>
+          <span aria-hidden="true"> / </span>
+          <span>{ks.ten}</span>
+        </nav>
+        <h1 class="mt-2 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-paper">
+          {ks.ten}
+        </h1>
+        {story?.ten_bst && <p class="mt-1 font-display text-lg italic text-paper/85">{story.ten_bst}</p>}
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-4 py-12 md:py-16">
+    <p class="text-base leading-relaxed text-ink-soft sm:text-lg">
       {doanMo}
     </p>
 
+    {/* ── Khối 2 — Brand story (trích nguyên văn) ───────────────── */}
     {
       story?.loiTua && (
-        <p class="mt-4 border-l-4 border-son-200 pl-4 text-base leading-relaxed text-slate-600 italic sm:text-lg">
+        <p class="mt-6 max-w-[65ch] font-display text-[1.15rem] italic leading-relaxed text-ink">
           {story.loiTua}
         </p>
       )
     }
 
-    <div class="mt-6 flex flex-wrap gap-3">
+    <div class="mt-8 flex flex-wrap gap-3">
       <a
         href={SITE.zalo}
         target="_blank"
         rel="noopener"
         data-contact="zalo-hero"
-        class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700"
+        class="bg-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold"
       >
         Chat Zalo {PHONE_DISPLAY}
       </a>
       <a
         href={`tel:${PHONE_TEL}`}
         data-contact="hotline-hero"
-        class="rounded-lg border-2 border-son-600 px-6 py-3 text-base font-semibold text-son-700 hover:bg-son-50"
+        class="border border-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-ink hover:text-paper"
       >
         Gọi ngay
       </a>
-      {
-        story?.catalogue && (
-          <a
-            href={`/catalogue/${story.catalogue}`}
-            target="_blank"
-            rel="noopener"
-            data-contact="catalogue-download"
-            class="rounded-lg px-6 py-3 text-base font-semibold text-slate-700 underline hover:text-son-700"
-          >
-            Tải catalogue chính hãng (PDF)
-          </a>
-        )
-      }
     </div>
 
-    {
-      anhHero && (
-        <div class="mt-8 overflow-hidden rounded-xl">
-          <Image
-            src={anhHero}
-            alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
-            width={1200}
-            height={900}
-            loading="eager"
-            class="w-full object-cover"
-          />
-        </div>
-      )
-    }
-
+    {/* ── Khối 4 — Gallery (scroll-snap mobile / grid desktop) ──── */}
     {
       anhConLai.length > 0 && (
-        <div class="mt-3 grid grid-cols-3 gap-3">
+        <div class="mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 [scrollbar-width:none]">
           {anhConLai.map((img, i) => (
             <Image
               src={img}
@@ -157,47 +165,66 @@ const schema = [
               width={400}
               height={300}
               loading="lazy"
-              class="aspect-4/3 w-full rounded-lg object-cover"
+              class="aspect-4/3 w-[75%] shrink-0 snap-start object-cover sm:w-full"
             />
           ))}
         </div>
       )
     }
 
-    <h2 class="mt-10 text-2xl font-bold text-slate-900">
+    {/* ── Khối 3 — Bảng giá ──────────────────────────────────────── */}
+    <h2 class="mt-12 font-display text-2xl text-ink">
       Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
     </h2>
-    <div class="mt-4">
+    <div class="mt-5">
       <BangGia sanPham={ks.san_pham} />
     </div>
-    <p class="mt-3 text-sm text-slate-600">
+    <p class="mt-3 text-sm text-ink-soft">
       Hạn sử dụng {ks.hsd_ngay} ngày kể từ ngày sản xuất.
     </p>
 
-    <h2 class="mt-10 text-2xl font-bold text-slate-900">Nên chọn hộp nào?</h2>
-    <p class="mt-3 leading-relaxed text-slate-700">{content.tuVan}</p>
+    {
+      story?.catalogue && (
+        <a
+          href={`/catalogue/${story.catalogue}`}
+          target="_blank"
+          rel="noopener"
+          data-contact="catalogue-download"
+          class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-[--color-gold-text] hover:bg-gold hover:text-ink"
+        >
+          Tải catalogue chính hãng (PDF)
+        </a>
+      )
+    }
 
-    <h2 class="mt-10 text-2xl font-bold text-slate-900">Câu hỏi thường gặp</h2>
-    <div class="mt-4 space-y-3">
+    <h2 class="mt-12 font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
+    <p class="mt-3 leading-relaxed text-ink-soft">{content.tuVan}</p>
+
+    {/* ── Khối 6 — FAQ + CTA cuối ────────────────────────────────── */}
+    <h2 class="mt-12 font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
+    <div class="mt-5 space-y-3">
       {
         faqTrang.map((item, i) => (
-          <details class="rounded-lg bg-son-50 p-4" open={i === 0}>
-            <summary class="cursor-pointer font-semibold text-slate-900">{item.q}</summary>
-            <p class="mt-2 text-slate-700">{item.a}</p>
+          <details class="border border-gold-soft/60 bg-paper-warm p-4" open={i === 0}>
+            <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
+            <p class="mt-2 text-ink-soft">{item.a}</p>
           </details>
         ))
       }
     </div>
 
-    <div class="mt-10 rounded-xl bg-son-50 p-5 text-sm text-slate-700">
-      <p>Cập nhật ngày 31/07/2026.</p>
-      <p class="mt-1">
-        Liên hệ {SITE.brand}:
-        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-footer" class="font-semibold text-son-700 underline"
-          >{PHONE_DISPLAY}</a
-        >
-        · <a href={SITE.zalo} target="_blank" rel="noopener" data-contact="zalo-footer" class="font-semibold text-son-700 underline">Zalo</a>
-      </p>
+    <div class="mt-12 bg-ink p-6 text-center sm:p-8">
+      <p class="font-display text-xl text-paper">Tư vấn qua Zalo trong 5 phút</p>
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo-cta-cuoi"
+        class="mt-4 inline-block bg-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
+      >
+        Chat Zalo {PHONE_DISPLAY}
+      </a>
+      <p class="mt-4 text-xs text-paper/60">Cập nhật ngày 31/07/2026.</p>
     </div>
   </article>
 </Base>

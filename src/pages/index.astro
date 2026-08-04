@@ -1,8 +1,8 @@
 ---
-// Trang chủ — khung 7 khối theo data/site-content.md.
+// Trang chủ — khung 7 khối theo data/site-content.md (redesign luxury Phase 6).
 // ⚠️ C0: đây là TRANG ĐÍCH CỦA ADS — không chữ "rượu" trong meta/OG,
 // không liệt kê hộp VIP kèm giá, không tên hãng rượu ở bất kỳ đâu.
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import FormB2B from '../components/FormB2B.astro';
 import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
@@ -17,6 +17,8 @@ import {
 } from '../lib/pricing';
 import { FAQ_CHUAN, faqSchema } from '../lib/faq';
 import { anhKhachSan, ANH_SMA } from '../lib/hotel-images';
+import { HOTEL_STORY } from '../lib/hotel-story';
+import { BRAND_TINT_BORDER } from '../lib/brand-tint';
 
 const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 — Giá Gốc Đã VAT | ${SITE.brand}`;
 const description = `Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko 2026. Chính hãng, đã VAT, giao nhanh Hà Nội & Sài Gòn. Zalo ${PHONE_DISPLAY}.`;
@@ -62,6 +64,10 @@ const nhomDaDo = nhomNganSach.map((nhom) => ({
   }),
 }));
 
+// Khối 1 — hero: ưu tiên ảnh hộp SMA vàng mộc lan (chất lượng cao nhất, đúng tông vàng đồng).
+const anhHero = ANH_SMA[0] ?? anhKhachSan('sheraton')[0];
+const anhHeroOptimized = await getImage({ src: anhHero, width: 1600, height: 2000 });
+
 const schema = [
   {
     '@type': 'WebPage',
@@ -89,6 +95,7 @@ const schema = [
     name: 'Bánh trung thu khách sạn 5 sao 2026',
     description:
       'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội và Sài Gòn, giá niêm yết đã gồm VAT.',
+    image: `${SITE.domain}${anhHeroOptimized.src}`,
     brand: { '@type': 'Brand', name: SITE.brand },
     offers: {
       '@type': 'AggregateOffer',
@@ -103,74 +110,75 @@ const schema = [
   faqSchema(FAQ_CHUAN),
 ];
 
-const niemTin = [
-  'Chính hãng khách sạn',
-  'Giá đã gồm VAT',
-  'Freeship Hà Nội',
-  'Công nợ DN 50%',
-  'Hộp in logo riêng theo yêu cầu',
-];
+// Khối 2 — thanh niềm tin.
+const niemTin = ['Chính hãng khách sạn', 'Đã gồm VAT', 'Giao 24–48h Hà Nội', 'Hóa đơn doanh nghiệp', 'Công nợ 50%'];
 
-const anhHeroTrangChu = anhKhachSan('sheraton')[1];
 const anhCardTheoKS = Object.fromEntries(KHACH_SAN.map((ks) => [ks.id, anhKhachSan(ks.id)[0]]));
+
+// Khối 6 — Brand Story Strip: đoạn lời tựa đẹp nhất, trích nguyên văn (Meliá — "Nguyệt Phúc Viên").
+const storyKS = KHACH_SAN.find((ks) => ks.id === 'melia')!;
+const story = HOTEL_STORY['melia'];
+const doanTrichStory = story.loiTua!.split('. ').slice(0, 2).join('. ') + '.';
 ---
 
-<Base {title} {description} {dateModified} {schema}>
-  {/* ── Khối 1 — Hero ─────────────────────────────────────────── */}
-  <section class="bg-gradient-to-b from-son-50 to-white">
-    <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-2 md:items-center md:py-16">
-      <div>
-        <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl md:text-[2.6rem]">
-          Bánh Trung Thu 7 Khách Sạn 5 Sao — Giá Gốc, Đã VAT, Giao Nhanh Hà Nội & Sài Gòn
+<Base {title} {description} {dateModified} {schema} preloadImage={anhHeroOptimized.src}>
+  {/* ── Khối 1 — Hero full-bleed ──────────────────────────────── */}
+  <section class="relative h-[85svh] min-h-[520px] w-full overflow-hidden md:h-[80vh]">
+    <Image
+      src={anhHero}
+      alt="Bánh trung thu khách sạn 5 sao 2026 — hộp quà chính hãng đã VAT"
+      width={1600}
+      height={2000}
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/60 to-ink/5"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="absolute inset-x-0 bottom-0 px-4 pb-10 sm:px-6 sm:pb-14 md:pb-16">
+      <div class="mx-auto max-w-6xl">
+        <p class="label-gold text-gold-soft [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]">Trung Thu 2026</p>
+        <h1 class="mt-3 max-w-2xl font-display text-[clamp(1.75rem,6vw,3rem)] leading-[1.15] text-paper">
+          Quà Trung Thu Khách Sạn 5 Sao
         </h1>
-        <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+        <p class="mt-3 max-w-xl text-base leading-relaxed text-paper/85 sm:text-lg">
           Sheraton · InterContinental Landmark72 · Meliá · Renaissance · Sofitel · Hilton · Nikko —
-          nhận hàng trực tiếp từ khách sạn, nguyên tem nguyên hộp, kiểm tra trước khi thanh toán.
+          nhận trực tiếp từ khách sạn, nguyên tem nguyên hộp.
         </p>
-        <div class="mt-6 flex flex-wrap gap-3">
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
           <a
             href="#bao-gia-b2b"
-            class="rounded-lg bg-son-600 px-6 py-3 text-base font-semibold text-white hover:bg-son-700"
+            class="w-full bg-ink px-6 py-3.5 text-center text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold sm:w-auto"
           >
             Nhận bảng giá B2B
           </a>
           <a
-            href={SITE.zalo}
-            target="_blank"
-            rel="noopener"
-            data-contact="zalo-hero"
-            class="rounded-lg border-2 border-son-600 px-6 py-3 text-base font-semibold text-son-700 hover:bg-son-50"
+            href="#catalogue"
+            class="w-full border border-paper/70 px-6 py-3.5 text-center text-sm font-medium uppercase tracking-wide text-paper hover:bg-paper hover:text-ink sm:w-auto"
           >
-            Chat Zalo {PHONE_DISPLAY}
+            Xem bộ sưu tập
           </a>
         </div>
-      </div>
-
-      <div class="overflow-hidden rounded-2xl ring-1 ring-son-600/20">
-        <Image
-          src={anhHeroTrangChu}
-          alt="Bánh trung thu khách sạn 5 sao 2026 — hộp quà chính hãng đã VAT"
-          width={800}
-          height={600}
-          loading="eager"
-          class="aspect-4/3 w-full object-cover"
-        />
       </div>
     </div>
   </section>
 
   {/* ── Khối 2 — Thanh niềm tin ───────────────────────────────── */}
-  <section class="border-y border-son-100 bg-white">
+  <section class="border-b border-gold-soft/60 bg-paper">
     <ul
-      class="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-6 gap-y-2 px-4 py-4 text-sm font-medium text-slate-800"
+      class="mx-auto flex max-w-6xl gap-x-6 gap-y-2 overflow-x-auto px-4 py-4 text-sm text-ink-soft [scrollbar-width:none]"
     >
       {
-        niemTin.map((item) => (
-          <li class="flex items-center gap-1.5">
-            <span aria-hidden="true" class="font-bold text-son-600">
-              ✓
-            </span>
-            {item}
+        niemTin.map((item, i) => (
+          <li class="flex shrink-0 items-center gap-6">
+            <span class="whitespace-nowrap">{item}</span>
+            {i < niemTin.length - 1 && (
+              <span aria-hidden="true" class="h-3.5 w-px shrink-0 bg-gold-soft" />
+            )}
           </li>
         ))
       }
@@ -178,70 +186,71 @@ const anhCardTheoKS = Object.fromEntries(KHACH_SAN.map((ks) => [ks.id, anhKhachS
   </section>
 
   {/* ── Khối 3 — Catalogue 7 khách sạn ────────────────────────── */}
-  <section id="catalogue" class="mx-auto max-w-6xl px-4 py-12">
-    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">
-      Bảng giá bánh trung thu 7 khách sạn 5 sao 2026 (đã gồm VAT)
+  <section id="catalogue" class="mx-auto max-w-6xl px-4 py-16 md:py-24">
+    <p class="label-gold">Bộ sưu tập 2026</p>
+    <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">
+      Bảng giá bánh trung thu 7 khách sạn 5 sao
     </h2>
-    <p class="mt-2 text-slate-700">
+    <p class="mt-2 text-ink-soft">
       {TONG_SO_MAU} mẫu hộp, giá từ {dinhDangGia(GIA_MIN)} đến {dinhDangGia(GIA_MAX)} — đã gồm VAT.
     </p>
 
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
       {
-        KHACH_SAN.map((ks) => (
-          <article class="flex flex-col overflow-hidden rounded-xl border border-son-100 transition hover:border-son-600 hover:shadow-sm">
-            {anhCardTheoKS[ks.id] && (
-              <Image
-                src={anhCardTheoKS[ks.id]}
-                alt={`Bánh trung thu ${ks.ten} 2026`}
-                width={400}
-                height={300}
-                loading="lazy"
-                class="aspect-4/3 w-full object-cover"
-              />
-            )}
-            <div class="flex flex-1 flex-col p-5">
-            <h3 class="text-lg font-bold text-slate-900">{ks.ten}</h3>
-            <p class="mt-2 text-son-700">
-              <span class="text-xl font-bold">{khoangGia(ks)}</span>
-              <span class="block text-xs text-slate-600">đã gồm VAT</span>
-            </p>
-            <p class="mt-2 text-sm text-slate-700">
-              {ks.san_pham.length} mẫu hộp · HSD {ks.hsd_ngay} ngày
-            </p>
+        KHACH_SAN.map((ks) => {
+          const tenBst = HOTEL_STORY[ks.id]?.ten_bst;
+          const tint = BRAND_TINT_BORDER[ks.id] ?? 'border-gold';
+          return (
             <a
               href={duongDan(ks.id)}
-              class="mt-4 inline-block rounded-lg border border-son-600 px-4 py-2 text-center text-sm font-semibold text-son-700 hover:bg-son-50"
+              class={`group block border-t-2 ${tint} bg-paper transition`}
             >
-              Xem bảng giá
+              <div class="aspect-4/5 overflow-hidden">
+                {anhCardTheoKS[ks.id] && (
+                  <Image
+                    src={anhCardTheoKS[ks.id]}
+                    alt={`Bánh trung thu ${ks.ten} 2026`}
+                    width={480}
+                    height={600}
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                )}
+              </div>
+              <div class="p-3 sm:p-4">
+                <h3 class="font-display text-base text-ink sm:text-lg">{ks.ten}</h3>
+                {tenBst && <p class="mt-0.5 font-display text-sm italic text-ink-soft">{tenBst}</p>}
+                <p class="price mt-2 text-sm sm:text-base">{khoangGia(ks)}</p>
+                <p class="mt-1 text-xs text-ink-soft">
+                  {ks.san_pham.length} mẫu hộp · HSD {ks.hsd_ngay} ngày
+                </p>
+              </div>
             </a>
-            </div>
-          </article>
-        ))
+          );
+        })
       }
     </div>
   </section>
 
   {/* ── Khối 4 — Chọn theo ngân sách ──────────────────────────── */}
-  <section class="bg-son-50 py-12">
+  <section class="bg-paper-warm py-16 md:py-24">
     <div class="mx-auto max-w-6xl px-4">
-      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Chọn theo ngân sách</h2>
+      <p class="label-gold">Gợi ý nhanh</p>
+      <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">Chọn theo ngân sách</h2>
 
-      <div class="mt-6 grid gap-5 md:grid-cols-3">
+      <div class="mt-8 grid gap-5 md:grid-cols-3">
         {
           nhomDaDo.map((nhom) => (
-            <div class="rounded-xl bg-white p-5 ring-1 ring-son-100">
-              <h3 class="text-lg font-bold text-son-700">{nhom.nhan}</h3>
-              <p class="mt-1 text-sm text-slate-600">{nhom.mo_ta}</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-800">
+            <div class="border border-gold-soft/60 bg-paper p-6">
+              <h3 class="font-display text-lg text-ink">{nhom.nhan}</h3>
+              <p class="mt-1 text-sm text-ink-soft">{nhom.mo_ta}</p>
+              <ul class="mt-4 space-y-2.5 text-sm">
                 {nhom.san_pham.map(({ hotel, sp }) => (
-                  <li class="flex justify-between gap-3 border-b border-slate-100 pb-2 last:border-0">
-                    <a href={duongDan(hotel.id)} class="hover:text-son-700 hover:underline">
+                  <li class="flex justify-between gap-3 border-b border-gold-soft/40 pb-2.5 last:border-0">
+                    <a href={duongDan(hotel.id)} class="text-ink hover:text-[--color-gold-text] hover:underline">
                       {sp.ten_hien_thi}
                     </a>
-                    <span class="shrink-0 font-semibold text-son-700">
-                      {dinhDangGia(sp.gia_da_vat)}
-                    </span>
+                    <span class="price shrink-0">{dinhDangGia(sp.gia_da_vat)}</span>
                   </li>
                 ))}
               </ul>
@@ -249,16 +258,16 @@ const anhCardTheoKS = Object.fromEntries(KHACH_SAN.map((ks) => [ks.id, anhKhachS
           ))
         }
 
-        {/* Cột VIP: KHÔNG liệt kê tên hộp/giá cụ thể ở trang đích ads. */}
-        <div class="rounded-xl bg-white p-5 ring-1 ring-kim-400/40">
-          <h3 class="text-lg font-bold text-kim-600">VIP thượng hạng</h3>
-          <p class="mt-3 text-sm leading-relaxed text-slate-800">
-            Dòng hộp VIP kèm quà tặng cao cấp cho lãnh đạo & đối tác quan trọng — cấu hình tùy biến
-            theo gu và ngân sách.
+        {/* Thẻ VIP: nền ink, chữ paper + gold — phân tầng thị giác. KHÔNG liệt kê tên hộp/giá cụ thể. */}
+        <div class="bg-ink p-6">
+          <h3 class="font-display text-lg text-gold">Đẳng cấp VIP</h3>
+          <p class="mt-3 text-sm leading-relaxed text-paper/85">
+            Dòng hộp thượng hạng kèm quà tặng cao cấp cho lãnh đạo & đối tác quan trọng — cấu hình
+            tùy biến theo gu và ngân sách.
           </p>
           <a
             href="/hop-vip"
-            class="mt-4 inline-block rounded-lg border border-kim-600 px-4 py-2 text-sm font-semibold text-kim-600 hover:bg-kim-50"
+            class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-gold hover:bg-gold hover:text-ink"
           >
             Xem hộp VIP
           </a>
@@ -267,70 +276,86 @@ const anhCardTheoKS = Object.fromEntries(KHACH_SAN.map((ks) => [ks.id, anhKhachS
     </div>
   </section>
 
-  {/* ── Khối 5 — B2B ──────────────────────────────────────────── */}
-  <section id="bao-gia-b2b" class="mx-auto max-w-6xl scroll-mt-16 px-4 py-12">
-    <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">
-      Doanh nghiệp đặt số lượng — báo giá riêng trong 30 phút
-    </h2>
+  {/* ── Khối 5 — B2B / SMA ────────────────────────────────────── */}
+  <section id="bao-gia-b2b" class="scroll-mt-16 bg-paper-warm py-16 md:py-24">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-2 lg:items-center">
+      {ANH_SMA[0] && (
+        <div class="aspect-4/5 overflow-hidden lg:order-1">
+          <Image
+            src={ANH_SMA[0]}
+            alt="Hộp bánh trung thu in logo doanh nghiệp — hộp vàng mộc lan"
+            width={640}
+            height={800}
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      )}
 
-    <div class="mt-6 grid gap-8 lg:grid-cols-2">
-      <ul class="space-y-3 text-slate-800">
-        <li class="flex gap-2">
-          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
-          Chiết khấu theo số lượng, báo giá theo 3 mức ngân sách/suất
-        </li>
-        <li class="flex gap-2">
-          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
-          Hộp thiết kế riêng in logo công ty (chốt trước 10/09)
-        </li>
-        <li class="flex gap-2">
-          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
-          Hóa đơn VAT đầy đủ, giá niêm yết đã gồm VAT
-        </li>
-        <li class="flex gap-2">
-          <span aria-hidden="true" class="font-bold text-son-600">✓</span>
-          Công nợ: cọc 50%, thanh toán nốt trong 10 ngày sau giao
-        </li>
-      </ul>
+      <div class="lg:order-2">
+        <p class="label-gold">Doanh nghiệp</p>
+        <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">
+          Hộp quà mang thương hiệu doanh nghiệp của bạn
+        </h2>
+        <ul class="mt-6 space-y-3 text-ink">
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-[--color-gold-text]">—</span>
+            Chiết khấu theo số lượng, báo giá theo 3 mức ngân sách/suất
+          </li>
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-[--color-gold-text]">—</span>
+            Hộp thiết kế riêng in logo công ty (chốt trước 10/09)
+          </li>
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-[--color-gold-text]">—</span>
+            Hóa đơn VAT đầy đủ, giá niêm yết đã gồm VAT
+          </li>
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-[--color-gold-text]">—</span>
+            Công nợ: cọc 50%, thanh toán nốt trong 10 ngày sau giao
+          </li>
+        </ul>
 
-      <div class="mt-6 lg:mt-0">
-        {ANH_SMA.length > 0 && (
-          <div class="mb-6 grid grid-cols-3 gap-2">
-            {ANH_SMA.slice(0, 3).map((img, i) => (
-              <Image
-                src={img}
-                alt={`Hộp bánh trung thu in logo doanh nghiệp — mẫu ${i + 1}`}
-                width={300}
-                height={225}
-                loading="lazy"
-                class="aspect-4/3 w-full rounded-lg object-cover"
-              />
-            ))}
-          </div>
-        )}
-        <FormB2B />
+        <div class="mt-8">
+          <FormB2B />
+        </div>
       </div>
     </div>
   </section>
 
-  {/* ── Khối 6 — FAQ ──────────────────────────────────────────── */}
-  <section class="bg-son-50 py-12">
+  {/* ── Khối 6 — Brand story strip ────────────────────────────── */}
+  <section class="bg-paper py-16 md:py-24">
+    <div class="mx-auto max-w-3xl px-4 text-center">
+      <p class="font-display text-[clamp(1.15rem,3.2vw,1.6rem)] italic leading-relaxed text-ink">
+        <span class="text-[--color-gold-text]" aria-hidden="true">“</span>
+        {doanTrichStory}
+        <span class="text-[--color-gold-text]" aria-hidden="true">”</span>
+      </p>
+      <p class="label-gold mt-6">
+        BST {HOTEL_STORY['melia'].ten_bst} — {storyKS.ten}
+      </p>
+    </div>
+  </section>
+
+  {/* ── Khối 7 — FAQ ──────────────────────────────────────────── */}
+  <section class="border-t border-gold-soft/60 bg-paper-warm py-16 md:py-24">
     <div class="mx-auto max-w-3xl px-4">
-      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Câu hỏi thường gặp</h2>
-      <div class="mt-6 space-y-3">
+      <p class="label-gold">Hỏi đáp</p>
+      <h2 class="mt-2 font-display text-2xl text-ink sm:text-3xl">Câu hỏi thường gặp</h2>
+      <div class="mt-8 space-y-3">
         {
           FAQ_CHUAN.map((item, i) => (
-            <details class="rounded-lg bg-white p-4 ring-1 ring-son-100" open={i === 0}>
-              <summary class="cursor-pointer font-semibold text-slate-900">{item.q}</summary>
-              <p class="mt-2 text-slate-700">{item.a}</p>
+            <details class="border border-gold-soft/60 bg-paper p-4 sm:p-5" open={i === 0}>
+              <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
+              <p class="mt-2 text-ink-soft">{item.a}</p>
             </details>
           ))
         }
       </div>
 
-      <p class="mt-8 text-sm text-slate-600">
+      <p class="mt-8 text-sm text-ink-soft">
         Cập nhật ngày 31/07/2026 · Liên hệ {SITE.brand}:
-        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-faq" class="font-semibold text-son-700 underline"
+        <a href={`tel:${PHONE_TEL}`} data-contact="hotline-faq" class="font-medium text-ink underline decoration-gold-soft underline-offset-4"
           >{PHONE_DISPLAY}</a
         >
       </p>

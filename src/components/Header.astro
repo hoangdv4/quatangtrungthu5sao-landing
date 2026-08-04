@@ -2,17 +2,17 @@
 import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
 ---
 
-<header class="sticky top-0 z-40 border-b border-son-100 bg-white/95 backdrop-blur">
+<header class="sticky top-0 z-40 border-b border-gold-soft/60 bg-paper/95 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-    <a href="/" class="flex items-baseline gap-2 text-son-700">
-      <span class="text-lg font-bold leading-tight sm:text-xl">{SITE.brand}</span>
+    <a href="/" class="font-display text-lg leading-tight text-ink sm:text-xl">
+      {SITE.brand}
     </a>
 
     <div class="flex items-center gap-2">
       <a
         href={`tel:${PHONE_TEL}`}
         data-contact="hotline"
-        class="hidden rounded-lg border border-son-600 px-3 py-2 text-sm font-semibold text-son-700 hover:bg-son-50 sm:inline-block"
+        class="hidden border border-ink px-3 py-2 text-sm font-medium tracking-wide text-ink hover:bg-ink hover:text-paper sm:inline-block"
       >
         {PHONE_DISPLAY}
       </a>
@@ -21,7 +21,7 @@ import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
         target="_blank"
         rel="noopener"
         data-contact="zalo"
-        class="rounded-lg bg-son-600 px-4 py-2 text-sm font-semibold text-white hover:bg-son-700"
+        class="inline-flex min-h-[44px] items-center bg-ink px-4 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold"
       >
         Chat Zalo
       </a>
