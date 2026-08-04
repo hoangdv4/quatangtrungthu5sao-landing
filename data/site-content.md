@@ -84,6 +84,26 @@ Gợi ý câu tư vấn "Nên chọn hộp nào?" từng KS:
 
 ---
 
+## 2b. Lời tựa BST (brand story) — trích nguyên văn từ brochure chính hãng
+
+> Nguồn: `SALE KIT TRUNG THU 2026/Catalogue Khách Sạn/*.pdf` (pdftotext -enc UTF-8 -layout),
+> chỉ lấy phần tiếng Việt, giữ nguyên văn không viết lại. Định nghĩa trong code tại
+> `src/lib/hotel-story.ts` (biến `loiTua` + `ten_bst`), dùng trong `[slug].astro` làm đoạn
+> mở cảm xúc dưới H1 mỗi trang con.
+
+- **Sheraton** — BST **Nguyệt Giao Thủy**: brochure là file scan/thiết kế đồ họa thuần,
+  không có text layer để trích → không có lời tựa (`loiTua: null`).
+- **InterContinental LM72** (không có tên BST riêng): "Mùa thu chạm ngõ cũng là lúc ký ức về những mùa trăng sum vầy khẽ được đánh thức. Lấy cảm hứng từ vẻ đẹp an yên của thiên nhiên Việt Nam, bộ sưu tập bánh Trung Thu năm nay của InterContinental Hanoi Landmark72 mở ra câu chuyện về những cuộc hội ngộ thân quen dưới ánh trăng viên mãn, nơi từng đường nét thiết kế trở thành lời tự tình của mùa đoàn viên."
+- **Meliá** — BST **Nguyệt Phúc Viên**: "Khi vầng trăng tròn soi bóng trên mặt nước, cũng là lúc những ký ức đoàn viên được khơi mở trong từng hương vị thân quen. Mùa Trung thu năm nay, Meliá Hanoi trân trọng giới thiệu bộ sưu tập bánh Trung thu 2026 mang tên Nguyệt Phúc Viên là lời chúc cho một mùa trăng tròn đầy, an lành và viên mãn. Bộ sưu tập được gửi gắm trong ba thiết kế hộp quà mang đậm tinh thần Á Đông và dấu ấn Hà Nội: Chu Tước Phúc Viên, Thanh Hoa Nguyệt Ảnh và Nguyệt Viên Hà Thành. Mỗi hộp quà là một câu chuyện riêng, được kể bằng những biểu tượng tinh tế của mùa trăng: hình ảnh phượng hoàng vươn cánh giữa ánh nguyệt, biểu trưng cho phúc lành, thịnh vượng và vẻ đẹp cao quý; sắc sen thanh nhã gợi sự an yên, thuần khiết; ánh trăng viên mãn soi bóng trên mặt nước; cùng nét kiến trúc Hà Nội cổ kính được tái hiện đầy trang nhã."
+- **Renaissance (Sài Gòn)** — BST **Nguyệt Hương**: "Nguyệt Hương" chỉ xuất hiện làm tiêu đề
+  trang bìa, brochure không có đoạn văn lời tựa (chỉ tên BST + bảng giá/chính sách)
+  → không có lời tựa (`loiTua: null`).
+- **Sofitel Sài Gòn Plaza** — BST **Le Jardin De La Lune**: "Cảm tác từ vẻ đẹp của đất trời khi vào Thu, Bộ sưu tập bánh trung thu 2026 'Le Jardin De La Lune' tái hiện khoảng vườn tre xanh tĩnh tại dưới ánh trăng đêm rằm. Không chỉ là nét giao hòa giữa thiên nhiên và nếp sống, đây còn là thức quà phong vị kết nối những tâm hồn đồng điệu."
+- **Hilton (Sài Gòn)** — BST **Bội Nguyệt Lưu**: "Tọa lạc tại Công trường Mê Linh và kiêu hãnh hướng mình ra khúc quanh của dòng sông Sài Gòn, Hilton Saigon mở ra câu chuyện mùa trăng đầy cảm hứng mang tên Bội Nguyệt Lưu. Được khơi gợi từ chính dòng chảy ánh trăng chuyển động không ngừng ngay trước ô cửa khách sạn, bộ sưu tập tách mình khỏi những khuôn mẫu tĩnh lặng, hướng đến ngôn ngữ thiết kế tinh giản, phóng khoáng và thời thượng. Với thiết kế sang trọng ôm trọn những hương vị tuyển chọn, Bội Nguyệt Lưu là lựa chọn đầy trân quý để bạn gửi trao thành ý và cùng người thân lưu giữ những khoảnh khắc ấm áp đêm rằm."
+- **Nikko (Sài Gòn)** (không có tên BST riêng — bộ chung "Trân Phẩm mùa trăng" gồm 3 dòng hộp): "Tựa như những lời chúc được gửi gắm dưới ánh trăng rằm, Trân Phẩm mùa trăng là sự kết tinh của nghệ thuật chế tác và tấm lòng trân quý. Mỗi món quà trở thành biểu tượng của phúc lành, thịnh vượng, sự viên mãn và những mối gắn kết bền chặt theo thời gian."
+
+---
+
 ## 3. Trang `/hop-vip` (ads KHÔNG trỏ vào)
 
 - H1: Hộp VIP — quà tặng thượng hạng cho lãnh đạo & đối tác quan trọng
