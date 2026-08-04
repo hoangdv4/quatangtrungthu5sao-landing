@@ -1,0 +1,117 @@
+---
+// Trang mới: so sánh trực quan 7 khách sạn (không phải từng SKU) — giúp khách chọn
+// KHÁCH SẠN phù hợp trước khi vào trang con xem chi tiết bảng giá.
+// Ads không trỏ vào trang này; sitemap priority 0.3 (xem astro.config.mjs).
+// ⚠️ C0: KHÔNG liệt kê schema Product/Offer riêng (tránh trùng lặp 7 trang con).
+import Base from '../layouts/Base.astro';
+import { SITE, PHONE_DISPLAY } from '../config/site';
+import { KHACH_SAN, duongDan, khoangGia } from '../lib/pricing';
+import { HOTEL_STORY } from '../lib/hotel-story';
+import { HOTEL_CONTENT } from '../lib/hotel-content';
+
+const dateModified = '2026-07-31';
+const title = `So Sánh 7 Khách Sạn Bánh Trung Thu 2026 | ${SITE.brand}`;
+const description = `So sánh nhanh bộ sưu tập, khoảng giá, số mẫu hộp và khu vực giao của 7 khách sạn 5 sao: Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko. Zalo ${PHONE_DISPLAY}.`;
+
+const hangSoSanh = KHACH_SAN.map((ks) => ({
+  ks,
+  tenBst: HOTEL_STORY[ks.id]?.ten_bst,
+  dacDiem: HOTEL_CONTENT[ks.id]?.tuVan,
+}));
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}/so-sanh#webpage`,
+    url: `${SITE.domain}/so-sanh`,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#business` },
+  },
+];
+---
+
+<Base {title} {description} {dateModified} {schema}>
+  <article class="mx-auto max-w-6xl px-4 py-12 md:py-20">
+    <p class="label-gold">So sánh nhanh</p>
+    <h1 class="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-ink">
+      So sánh 7 khách sạn bánh trung thu 2026
+    </h1>
+    <p class="mt-4 max-w-[65ch] text-base leading-relaxed text-ink-soft sm:text-lg">
+      Mỗi khách sạn có một bộ sưu tập riêng — bảng dưới đây giúp bạn chọn khách sạn phù hợp
+      trước khi xem chi tiết bảng giá từng mẫu hộp.
+    </p>
+
+    <div class="mt-10 overflow-x-auto border border-gold-soft/60">
+      <table class="w-full min-w-[720px] border-collapse text-left text-sm">
+        <thead>
+          <tr class="bg-paper-warm text-ink">
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Khách sạn</th>
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Bộ sưu tập</th>
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Khoảng giá (đã VAT)</th>
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Số mẫu</th>
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">HSD</th>
+            <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Khu vực giao</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            hangSoSanh.map(({ ks, tenBst }) => (
+              <tr class="border-t border-gold-soft/60">
+                <td class="px-4 py-3">
+                  <a href={duongDan(ks.id)} class="font-medium text-ink hover:text-[--color-gold-text] hover:underline">
+                    {ks.ten}
+                  </a>
+                </td>
+                <td class="px-4 py-3 text-ink-soft">{tenBst ?? '—'}</td>
+                <td class="price px-4 py-3">{khoangGia(ks)}</td>
+                <td class="px-4 py-3 text-ink-soft">{ks.san_pham.length} mẫu</td>
+                <td class="px-4 py-3 text-ink-soft">{ks.hsd_ngay} ngày</td>
+                <td class="px-4 py-3 text-ink-soft">{ks.thanh_pho}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        hangSoSanh.map(({ ks, tenBst, dacDiem }) => (
+          <div class="border border-gold-soft/60 bg-paper p-5">
+            <h2 class="font-display text-lg text-ink">{ks.ten}</h2>
+            {tenBst && <p class="mt-0.5 font-display text-sm italic text-ink-soft">{tenBst}</p>}
+            {dacDiem && <p class="mt-3 text-sm leading-relaxed text-ink-soft">{dacDiem}</p>}
+            <a
+              href={duongDan(ks.id)}
+              class="mt-4 inline-block text-sm font-medium text-ink underline decoration-gold-soft underline-offset-4 hover:text-[--color-gold-text]"
+            >
+              Xem bảng giá chi tiết →
+            </a>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-14 bg-ink p-6 text-center sm:p-8">
+      <p class="font-display text-xl text-paper">Chưa chắc chắn nên chọn khách sạn nào?</p>
+      <a
+        href="/tim-hop-qua"
+        class="mt-4 inline-block border border-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-gold hover:bg-gold hover:text-ink"
+      >
+        Dùng bộ lọc &amp; concierge
+      </a>
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo-cta-cuoi"
+        class="mt-4 ml-3 inline-block bg-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
+      >
+        Chat Zalo {PHONE_DISPLAY}
+      </a>
+    </div>
+  </article>
+</Base>

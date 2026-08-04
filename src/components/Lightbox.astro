@@ -1,0 +1,147 @@
+---
+// Gallery cinematic: click ảnh mở lightbox full-screen, chuyển ảnh bằng nút bấm/vuốt/phím mũi tên.
+// KHÔNG auto-play (carousel phải do người dùng điều khiển — quy định luxury Phase 6).
+// Dùng <dialog> native để có focus-trap/ESC miễn phí từ trình duyệt, không cần thư viện.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  /** id duy nhất trên trang (1 trang có thể có nhiều Lightbox — vd trang chủ + trang con). */
+  id: string;
+  images: ImageMetadata[];
+  /** Hàm sinh alt text theo index — cho phép caller giữ nguyên alt có từ khóa đã tối ưu SEO. */
+  altAt: (index: number) => string;
+}
+
+const { id, images, altAt } = Astro.props;
+const dialogId = `lightbox-${id}`;
+---
+
+{
+  images.length > 0 && (
+    <>
+      <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 [scrollbar-width:none]">
+        {images.map((img, i) => (
+          <button
+            type="button"
+            data-lightbox-open={dialogId}
+            data-lightbox-index={i}
+            class="aspect-4/3 w-[75%] shrink-0 snap-start cursor-zoom-in overflow-hidden sm:w-full"
+            aria-label={`Xem lớn ảnh ${i + 1}: ${altAt(i)}`}
+          >
+            <Image
+              src={img}
+              alt={altAt(i)}
+              width={400}
+              height={300}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              class="h-full w-full object-cover"
+            />
+          </button>
+        ))}
+      </div>
+
+      <dialog id={dialogId} class="m-0 h-full max-h-none w-full max-w-none bg-ink/95 p-0 backdrop:bg-ink/70">
+        <div class="relative flex h-full w-full items-center justify-center">
+          <button
+            type="button"
+            data-lightbox-close
+            aria-label="Đóng"
+            class="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center border border-paper/40 text-paper hover:bg-paper hover:text-ink sm:right-6 sm:top-6"
+          >
+            ✕
+          </button>
+
+          <button
+            type="button"
+            data-lightbox-prev
+            aria-label="Ảnh trước"
+            class="absolute left-1 z-10 flex h-11 w-11 items-center justify-center text-paper/80 hover:text-paper sm:left-4"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            data-lightbox-next
+            aria-label="Ảnh sau"
+            class="absolute right-1 z-10 flex h-11 w-11 items-center justify-center text-paper/80 hover:text-paper sm:right-4"
+          >
+            ›
+          </button>
+
+          <div class="flex h-full w-full items-center justify-center px-14 py-16">
+            {images.map((img, i) => (
+              <Image
+                src={img}
+                alt={altAt(i)}
+                width={1600}
+                height={1200}
+                loading="lazy"
+                data-lightbox-slide={i}
+                class="hidden max-h-full max-w-full object-contain"
+              />
+            ))}
+          </div>
+
+          <p class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-paper/60" data-lightbox-counter>
+            1 / {images.length}
+          </p>
+        </div>
+      </dialog>
+    </>
+  )
+}
+
+<script>
+  function setupLightbox(dialog: HTMLDialogElement) {
+    const slides = Array.from(dialog.querySelectorAll<HTMLElement>('[data-lightbox-slide]'));
+    const counter = dialog.querySelector('[data-lightbox-counter]');
+    let current = 0;
+
+    function show(index: number) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((el, i) => el.classList.toggle('hidden', i !== current));
+      if (counter) counter.textContent = `${current + 1} / ${slides.length}`;
+    }
+
+    dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(current - 1));
+    dialog.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+
+    // Vuốt ngang cơ bản (touch), không auto-play — chỉ phản hồi thao tác người dùng.
+    let touchStartX = 0;
+    dialog.addEventListener('touchstart', (e) => (touchStartX = e.touches[0].clientX), { passive: true });
+    dialog.addEventListener(
+      'touchend',
+      (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      },
+      { passive: true }
+    );
+
+    (dialog as HTMLDialogElement & { __openAt?: (i: number) => void }).__openAt = (i: number) => {
+      show(i);
+      dialog.showModal();
+    };
+  }
+
+  document.querySelectorAll<HTMLDialogElement>('dialog[id^="lightbox-"]').forEach(setupLightbox);
+
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const dialogId = btn.dataset.lightboxOpen;
+      const index = Number(btn.dataset.lightboxIndex ?? 0);
+      const dialog = dialogId ? document.getElementById(dialogId) : null;
+      const opener = (dialog as (HTMLDialogElement & { __openAt?: (i: number) => void }) | null)?.__openAt;
+      if (opener) opener(index);
+    });
+  });
+</script>

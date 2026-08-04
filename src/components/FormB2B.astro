@@ -2,10 +2,22 @@
 // Khối 5 — form B2B. POST JSON tới PUBLIC_FORM_ENDPOINT (Google Apps Script).
 // Apps Script không trả CORS header → dùng mode:'no-cors', hiển thị success
 // phía client sau khi gửi, KHÔNG redirect.
+import { KHACH_SAN, duongDan, dinhDangGia } from '../lib/pricing';
+
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() ?? '';
 
 const nganSach = ['Dưới 1,1tr', '1,2–2,6tr', '2,6–4tr', 'Trên 4tr'];
 const soLuong = ['30–50', '50–150', '150+'];
+
+// Bảng tra cứu "báo giá ước tính" — build-time từ KHACH_SAN thật (giữ 1 source of truth),
+// client JS chỉ đọc để hiển thị khoảng giá phù hợp theo lựa chọn, không tự tính giá song song.
+const uocTinh = KHACH_SAN.map((ks) => ({
+  id: ks.id,
+  ten: ks.ten,
+  gia_tu: ks.gia_tu,
+  gia_den: ks.gia_den,
+  url: duongDan(ks.id),
+}));
 ---
 
 <form
@@ -77,9 +89,40 @@ const soLuong = ['30–50', '50–150', '150+'];
     </div>
   </fieldset>
 
+  <div class="grid gap-5 sm:grid-cols-2">
+    <label class="block">
+      <span class="label-gold">Khách sạn quan tâm</span>
+      <select
+        name="khach_san_quan_tam"
+        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
+      >
+        <option value="">Chưa rõ / tư vấn giúp tôi</option>
+        {KHACH_SAN.map((ks) => <option value={ks.ten}>{ks.ten}</option>)}
+      </select>
+    </label>
+
+    <fieldset>
+      <legend class="label-gold">Cần in logo công ty?</legend>
+      <div class="mt-3 flex gap-2">
+        {
+          ['Có', 'Chưa cần'].map((v, i) => (
+            <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
+              <input type="radio" name="can_in_logo" value={v} checked={i === 1} class="sr-only" />
+              {v}
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+  </div>
+
+  <p id="form-uoc-tinh" class="border border-gold-soft/60 bg-paper-warm px-4 py-3 text-sm text-ink-soft"></p>
+
   <input type="hidden" name="utm_source" value="" />
   <input type="hidden" name="utm_campaign" value="" />
   <input type="hidden" name="trang" value="" />
+
+  <script type="application/json" id="form-uoc-tinh-data" set:html={JSON.stringify(uocTinh)} />
 
   <button
     type="submit"
@@ -109,6 +152,36 @@ const soLuong = ['30–50', '50–150', '150+'];
     form.utm_source.value = qs.get('utm_source') || '';
     form.utm_campaign.value = qs.get('utm_campaign') || '';
     form.trang.value = location.pathname;
+
+    // Báo giá ước tính — đọc bảng tra cứu build-time (không tính giá độc lập phía client).
+    var uocTinhEl = document.getElementById('form-uoc-tinh');
+    var uocTinhDataEl = document.getElementById('form-uoc-tinh-data');
+    var uocTinhData = uocTinhDataEl ? JSON.parse(uocTinhDataEl.textContent || '[]') : [];
+
+    function formatGia(n) {
+      return new Intl.NumberFormat('vi-VN').format(n) + 'đ';
+    }
+
+    function capNhatUocTinh() {
+      if (!uocTinhEl) return;
+      var ksTen = form.khach_san_quan_tam ? form.khach_san_quan_tam.value : '';
+      var phuHop = ksTen ? uocTinhData.filter(function (ks) { return ks.ten === ksTen; }) : uocTinhData;
+      if (phuHop.length === 0) {
+        uocTinhEl.textContent = '';
+        return;
+      }
+      var minGia = Math.min.apply(null, phuHop.map(function (ks) { return ks.gia_tu; }));
+      var maxGia = Math.max.apply(null, phuHop.map(function (ks) { return ks.gia_den; }));
+      var soKs = phuHop.length;
+      uocTinhEl.textContent = ksTen
+        ? 'Báo giá ước tính ' + ksTen + ': ' + formatGia(minGia) + ' – ' + formatGia(maxGia) + '/hộp (đã VAT). Số liệu chính xác theo số lượng sẽ được tư vấn qua Zalo.'
+        : 'Báo giá ước tính trên ' + soKs + ' khách sạn: ' + formatGia(minGia) + ' – ' + formatGia(maxGia) + '/hộp (đã VAT). Chọn khách sạn quan tâm để thu hẹp khoảng giá.';
+    }
+
+    if (form.khach_san_quan_tam) {
+      form.khach_san_quan_tam.addEventListener('change', capNhatUocTinh);
+    }
+    capNhatUocTinh();
 
     function show(text, ok) {
       msg.textContent = text;

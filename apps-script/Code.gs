@@ -16,6 +16,7 @@
 
 var TABS = {
   'LEAD-B2B': ['Ngày', 'Nguồn', 'Tên', 'Cty', 'SĐT', 'Ngân sách/suất', 'SL',
+               'KS quan tâm', 'In logo?',
                'Trạng thái', 'Ngày follow tiếp', 'Giá trị đơn', 'Mã đơn', 'Ghi chú'],
   'ĐƠN-B2C': ['Ngày', 'Kênh', 'Tên', 'SP', 'SL', 'Doanh thu', 'Mã đơn',
               'Đã giao?', 'Feedback?'],
@@ -40,11 +41,11 @@ function setup() {
   // Xóa Sheet1 mặc định nếu còn
   var s1 = ss.getSheetByName('Sheet1') || ss.getSheetByName('Trang tính1');
   if (s1 && ss.getSheets().length > 4) ss.deleteSheet(s1);
-  // Validation cột Trạng thái LEAD-B2B
+  // Validation cột Trạng thái LEAD-B2B (cột J sau khi thêm "KS quan tâm"/"In logo?")
   var lead = ss.getSheetByName('LEAD-B2B');
   var rule = SpreadsheetApp.newDataValidation()
     .requireValueInList(['Mới', 'Đã gửi giá', 'Đang trình', 'Chốt', 'Rớt'], true).build();
-  lead.getRange('H2:H1000').setDataValidation(rule);
+  lead.getRange('J2:J1000').setDataValidation(rule);
   Logger.log('Setup xong: ' + ss.getUrl());
 }
 
@@ -71,7 +72,9 @@ function doPost(e) {
     var nguon = (d.utm_source || 'landing') +
                 (d.utm_campaign ? '/' + d.utm_campaign : '');
     sh.appendRow([now, nguon, d.ten || '', d.cong_ty || '', "'" + (d.sdt || ''),
-                  d.ngan_sach || '', d.so_luong || '', 'Mới', '', '', '', '']);
+                  d.ngan_sach || '', d.so_luong || '',
+                  d.khach_san_quan_tam || '', d.can_in_logo || '',
+                  'Mới', '', '', '', '']);
     notify_(d, nguon, now);
     return json_({ ok: true });
   } catch (err) {
@@ -83,7 +86,10 @@ function notify_(d, nguon, now) {
   var msg = '🔔 LEAD B2B MỚI (' + now + ')\n' +
     'Tên: ' + (d.ten || '?') + '\nCty: ' + (d.cong_ty || '?') +
     '\nSĐT: ' + (d.sdt || '?') + '\nNgân sách/suất: ' + (d.ngan_sach || '?') +
-    '\nSL: ' + (d.so_luong || '?') + '\nNguồn: ' + nguon +
+    '\nSL: ' + (d.so_luong || '?') +
+    '\nKS quan tâm: ' + (d.khach_san_quan_tam || 'chưa rõ') +
+    '\nIn logo: ' + (d.can_in_logo || '?') +
+    '\nNguồn: ' + nguon +
     '\n⏱ SLA: gọi + add Zalo trong 15 phút!';
   var props = PropertiesService.getScriptProperties();
   var email = props.getProperty('NOTIFY_EMAIL');
@@ -107,6 +113,8 @@ function json_(obj) {
 function testPost() {
   doPost({ postData: { type: 'application/json', contents: JSON.stringify({
     ten: 'Test', cong_ty: 'Cty Test', sdt: '0900000000',
-    ngan_sach: '1,2–2,6tr', so_luong: '30–50', utm_source: 'test'
+    ngan_sach: '1,2–2,6tr', so_luong: '30–50',
+    khach_san_quan_tam: 'Sheraton Hà Nội', can_in_logo: 'Có',
+    utm_source: 'test'
   }) } });
 }

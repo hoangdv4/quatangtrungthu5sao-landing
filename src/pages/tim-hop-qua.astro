@@ -1,0 +1,335 @@
+---
+// Trang mới: bộ lọc theo nhu cầu + concierge chọn quà.
+// ⚠️ C0: trang này có thể được index — dùng ten_hien_thi, KHÔNG lộ rượu/tên hãng.
+// Toàn bộ 34 SKU render sẵn dạng HTML tĩnh (SEO/AI-agent-first) — JS chỉ ẩn/hiện bằng data-attribute,
+// không build lại DOM. Tắt JS vẫn đọc được đầy đủ nội dung.
+import Base from '../layouts/Base.astro';
+import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
+import {
+  TAT_CA_SAN_PHAM,
+  MAU_SAC_LIST,
+  CHAT_LIEU_LIST,
+  DOI_TUONG_LIST,
+  dinhDangGia,
+  duongDan,
+  GIA_MIN,
+  GIA_MAX,
+} from '../lib/pricing';
+
+const dateModified = '2026-07-31';
+const title = `Tìm Hộp Quà Trung Thu Phù Hợp 2026 — Lọc Theo Nhu Cầu | ${SITE.brand}`;
+const description = `Lọc ${TAT_CA_SAN_PHAM.length} mẫu hộp bánh trung thu 2026 theo ngân sách, khách sạn, màu sắc, chất liệu, đối tượng biếu tặng. Tư vấn concierge chọn quà nhanh qua Zalo ${PHONE_DISPLAY}.`;
+
+const nganSachMoc = [
+  { nhan: 'Dưới 1,5tr', min: 0, max: 1500000 },
+  { nhan: '1,5 – 3tr', min: 1500000, max: 3000000 },
+  { nhan: 'Trên 3tr', min: 3000000, max: Infinity },
+];
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}/tim-hop-qua#webpage`,
+    url: `${SITE.domain}/tim-hop-qua`,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#business` },
+  },
+];
+---
+
+<Base {title} {description} {dateModified} {schema}>
+  <article class="mx-auto max-w-6xl px-4 py-12 md:py-20">
+    <p class="label-gold">Concierge chọn quà</p>
+    <h1 class="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-ink">
+      Tìm hộp quà trung thu phù hợp
+    </h1>
+    <p class="mt-4 max-w-[65ch] text-base leading-relaxed text-ink-soft sm:text-lg">
+      Lọc {TAT_CA_SAN_PHAM.length} mẫu hộp theo ngân sách, khách sạn, màu sắc, chất liệu và đối
+      tượng biếu tặng — hoặc trả lời 2 câu hỏi để nhận gợi ý nhanh.
+    </p>
+
+    {/* ── Concierge wizard — tĩnh, client-side, không gọi API ─────── */}
+    <section class="mt-10 border border-gold-soft/60 bg-paper-warm p-5 sm:p-8" id="concierge">
+      <h2 class="font-display text-xl text-ink">Chưa biết chọn gì? Để chúng tôi gợi ý</h2>
+
+      <fieldset class="mt-5">
+        <legend class="label-gold">Quà tặng cho ai?</legend>
+        <div class="mt-3 flex flex-wrap gap-2" data-concierge-doituong>
+          {
+            DOI_TUONG_LIST.map((dt, i) => (
+              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
+                <input type="radio" name="concierge-doituong" value={dt} checked={i === 0} class="sr-only" />
+                {dt}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="mt-5">
+        <legend class="label-gold">Ngân sách?</legend>
+        <div class="mt-3 flex flex-wrap gap-2" data-concierge-gia>
+          {
+            nganSachMoc.map((m, i) => (
+              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
+                <input
+                  type="radio"
+                  name="concierge-gia"
+                  value={`${m.min}-${m.max}`}
+                  checked={i === 0}
+                  class="sr-only"
+                />
+                {m.nhan}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div class="mt-6" id="concierge-ket-qua"></div>
+    </section>
+
+    {/* ── Bộ lọc chi tiết ────────────────────────────────────────── */}
+    <section class="mt-14">
+      <h2 class="font-display text-xl text-ink">Hoặc tự lọc theo tiêu chí</h2>
+
+      <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <fieldset>
+          <legend class="label-gold">Ngân sách</legend>
+          <div class="mt-2 flex flex-col gap-1.5" data-filter-group="gia">
+            <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+              <input type="radio" name="filter-gia" value="" checked class="accent-[--color-gold]" /> Tất cả
+            </label>
+            {
+              nganSachMoc.map((m) => (
+                <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                  <input type="radio" name="filter-gia" value={`${m.min}-${m.max}`} class="accent-[--color-gold]" />
+                  {m.nhan}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-gold">Màu sắc</legend>
+          <div class="mt-2 flex flex-col gap-1.5" data-filter-group="mausac">
+            <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+              <input type="radio" name="filter-mausac" value="" checked class="accent-[--color-gold]" /> Tất cả
+            </label>
+            {
+              MAU_SAC_LIST.map((m) => (
+                <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                  <input type="radio" name="filter-mausac" value={m} class="accent-[--color-gold]" /> {m}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-gold">Chất liệu</legend>
+          <div class="mt-2 flex flex-col gap-1.5" data-filter-group="chatlieu">
+            <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+              <input type="radio" name="filter-chatlieu" value="" checked class="accent-[--color-gold]" /> Tất cả
+            </label>
+            {
+              CHAT_LIEU_LIST.map((c) => (
+                <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                  <input type="radio" name="filter-chatlieu" value={c} class="accent-[--color-gold]" /> {c}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-gold">Đối tượng</legend>
+          <div class="mt-2 flex flex-col gap-1.5" data-filter-group="doituong">
+            <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+              <input type="radio" name="filter-doituong" value="" checked class="accent-[--color-gold]" /> Tất cả
+            </label>
+            {
+              DOI_TUONG_LIST.map((dt) => (
+                <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                  <input type="radio" name="filter-doituong" value={dt} class="accent-[--color-gold]" /> {dt}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+      </div>
+
+      <p class="mt-6 text-sm text-ink-soft" data-filter-count>
+        Hiển thị {TAT_CA_SAN_PHAM.length}/{TAT_CA_SAN_PHAM.length} mẫu hộp — giá {dinhDangGia(GIA_MIN)}–{dinhDangGia(GIA_MAX)} (đã VAT).
+      </p>
+
+      <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="danh-sach-sku">
+        {
+          TAT_CA_SAN_PHAM.map(({ ks, sp }) => (
+            <li
+              class="border border-gold-soft/60 bg-paper p-4"
+              data-sku
+              data-gia={sp.gia_da_vat}
+              data-mausac={sp.mau_sac}
+              data-chatlieu={sp.chat_lieu}
+              data-doituong={sp.doi_tuong.join(',')}
+              data-hotel={ks.ten}
+            >
+              <p class="text-xs uppercase tracking-wide text-ink-soft">{ks.ten}</p>
+              <a href={duongDan(ks.id)} class="mt-1 block font-display text-lg text-ink hover:text-[--color-gold-text] hover:underline">
+                {sp.ten_hien_thi}
+              </a>
+              <p class="mt-1 text-sm text-ink-soft">{sp.quy_cach}</p>
+              <p class="price mt-2">{dinhDangGia(sp.gia_da_vat)}</p>
+              <p class="mt-1 text-xs text-ink-soft">
+                {sp.mau_sac} · {sp.chat_lieu} · {sp.doi_tuong.join(', ')}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-6 hidden text-sm text-ink-soft" id="khong-co-ket-qua">
+        Không có mẫu hộp nào khớp tiêu chí đã chọn. Thử nới ngân sách hoặc bỏ bớt bộ lọc, hoặc
+        <a href={SITE.zalo} target="_blank" rel="noopener" class="underline decoration-gold-soft underline-offset-4">nhắn Zalo</a> để được tư vấn trực tiếp.
+      </p>
+    </section>
+
+    <div class="mt-14 bg-ink p-6 text-center sm:p-8">
+      <p class="font-display text-xl text-paper">Chưa chắc chắn? Tư vấn qua Zalo trong 5 phút</p>
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo-cta-cuoi"
+        class="mt-4 inline-block bg-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
+      >
+        Chat Zalo {PHONE_DISPLAY}
+      </a>
+    </div>
+  </article>
+</Base>
+
+<script>
+  function docTieuChi(): { gia: string; mausac: string; chatlieu: string; doituong: string } {
+    const val = (name: string) =>
+      (document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`))?.value ?? '';
+    return {
+      gia: val('filter-gia'),
+      mausac: val('filter-mausac'),
+      chatlieu: val('filter-chatlieu'),
+      doituong: val('filter-doituong'),
+    };
+  }
+
+  function khopGia(giaSku: number, khoang: string): boolean {
+    if (!khoang) return true;
+    const [min, max] = khoang.split('-').map(Number);
+    return giaSku >= min && giaSku <= max;
+  }
+
+  function capNhatLoc() {
+    const tieuChi = docTieuChi();
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-sku]'));
+    let soKhop = 0;
+
+    items.forEach((el) => {
+      const gia = Number(el.dataset.gia);
+      const mausac = el.dataset.mausac ?? '';
+      const chatlieu = el.dataset.chatlieu ?? '';
+      const doituong = (el.dataset.doituong ?? '').split(',');
+
+      const khop =
+        khopGia(gia, tieuChi.gia) &&
+        (!tieuChi.mausac || mausac === tieuChi.mausac) &&
+        (!tieuChi.chatlieu || chatlieu === tieuChi.chatlieu) &&
+        (!tieuChi.doituong || doituong.includes(tieuChi.doituong));
+
+      el.classList.toggle('hidden', !khop);
+      if (khop) soKhop++;
+    });
+
+    const countEl = document.querySelector('[data-filter-count]');
+    if (countEl) countEl.textContent = `Hiển thị ${soKhop}/${items.length} mẫu hộp.`;
+
+    const emptyEl = document.getElementById('khong-co-ket-qua');
+    if (emptyEl) emptyEl.classList.toggle('hidden', soKhop > 0);
+  }
+
+  document.querySelectorAll<HTMLInputElement>('input[name^="filter-"]').forEach((input) => {
+    input.addEventListener('change', capNhatLoc);
+  });
+
+  // ── Concierge: gợi ý 2-3 hộp theo đối tượng + ngân sách đã chọn ──
+  function capNhatConcierge() {
+    const doituong =
+      document.querySelector<HTMLInputElement>('input[name="concierge-doituong"]:checked')?.value ?? '';
+    const khoangGia =
+      document.querySelector<HTMLInputElement>('input[name="concierge-gia"]:checked')?.value ?? '';
+
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-sku]'));
+    const goiY = items
+      .filter((el) => {
+        const gia = Number(el.dataset.gia);
+        const doiTuongList = (el.dataset.doituong ?? '').split(',');
+        return khopGia(gia, khoangGia) && doiTuongList.includes(doituong);
+      })
+      .slice(0, 3);
+
+    const ketQuaEl = document.getElementById('concierge-ket-qua');
+    if (!ketQuaEl) return;
+
+    if (goiY.length === 0) {
+      ketQuaEl.innerHTML =
+        '<p class="text-sm text-ink-soft">Chưa tìm được gợi ý khớp — nhắn Zalo để được tư vấn trực tiếp.</p>';
+      return;
+    }
+
+    const dsHtml = goiY
+      .map((el) => {
+        const ten = el.querySelector('a')?.textContent?.trim() ?? '';
+        const hotel = el.querySelector('p')?.textContent?.trim() ?? '';
+        const gia = el.querySelector('.price')?.textContent?.trim() ?? '';
+        const href = el.querySelector('a')?.getAttribute('href') ?? '/';
+        return `<li class="flex items-center justify-between gap-3 border-b border-gold-soft/40 py-2 last:border-0">
+          <span><a href="${href}" class="text-ink hover:underline">${ten}</a> <span class="text-ink-soft">(${hotel})</span></span>
+          <span class="price shrink-0">${gia}</span>
+        </li>`;
+      })
+      .join('');
+
+    const tomTat = `Quà tặng ${doituong}, ngân sách ${khoangGia.split('-')[0]}–${khoangGia.split('-')[1] === 'Infinity' ? 'trên 3tr' : khoangGia.split('-')[1]}đ`;
+
+    ketQuaEl.innerHTML = `
+      <p class="text-sm font-medium text-ink">Gợi ý phù hợp:</p>
+      <ul class="mt-2">${dsHtml}</ul>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" data-copy-tuvan="${tomTat}" class="border border-ink px-4 py-2 text-xs font-medium uppercase tracking-wide text-ink hover:bg-ink hover:text-paper">
+          Sao chép nội dung tư vấn
+        </button>
+      </div>
+      <p class="mt-2 hidden text-xs text-ink-soft" data-copy-msg>Đã sao chép — dán vào Zalo để được tư vấn nhanh hơn.</p>
+    `;
+
+    ketQuaEl.querySelector('[data-copy-tuvan]')?.addEventListener('click', async (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      const text = btn.dataset.copyTuvan ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        ketQuaEl.querySelector('[data-copy-msg]')?.classList.remove('hidden');
+      } catch {
+        // Clipboard API có thể bị chặn — bỏ qua, người dùng vẫn thấy tóm tắt trong nội dung gợi ý.
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLInputElement>('input[name^="concierge-"]').forEach((input) => {
+    input.addEventListener('change', capNhatConcierge);
+  });
+
+  capNhatConcierge();
+</script>

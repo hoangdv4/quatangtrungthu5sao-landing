@@ -14,9 +14,9 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     sitemap({
-      // /hop-vip có mặt trong sitemap nhưng priority thấp (ads không trỏ vào).
+      // /hop-vip và /so-sanh có mặt trong sitemap nhưng priority thấp (không phải trang đích ads chính).
       serialize(item) {
-        if (item.url.includes('/hop-vip')) item.priority = 0.3;
+        if (item.url.includes('/hop-vip') || item.url.includes('/so-sanh')) item.priority = 0.3;
         else if (item.url.replace(DOMAIN, '').replace(/\/$/, '') === '') item.priority = 1.0;
         else item.priority = 0.8;
         return item;
