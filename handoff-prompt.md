@@ -65,7 +65,7 @@ truy cập được, form test bắn vào Sheet, Pixel/tag fire (dùng Meta Pixe
 - Google Search Console: verify domain, submit sitemap.
 - Bing Webmaster Tools: import từ GSC, submit sitemap + 8 URL thủ công.
 - Chạy `scripts/indexnow.sh` với 8 URL.
-- Ảnh thật từ SALE KIT (06/08): convert HEIC→WebP, tên file có từ khóa, thay placeholder — quay lại Claude Code với prompt: "Thay placeholder bằng ảnh trong src/assets/, tối ưu WebP + lazy-load + alt text".
+- ~~Ảnh thật từ SALE KIT~~ → **ĐÃ THAY BẰNG FILE RIÊNG: dùng `handoff-prompt-phase5-anh-that.md`** (bản đầy đủ hơn: ảnh đủ 7/7 KS gồm Hilton, đổi tên hiển thị Hilton/Nikko/Renaissance/Sofitel sang Sài Gòn giữ nguyên URL, khai thác brochure trong folder Catalogue Khách Sạn). KHÔNG dùng prompt cũ ở dòng này nữa.
 
 ## Việc cần bạn tự làm (Claude Code không làm được)
 

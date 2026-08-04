@@ -19,6 +19,7 @@
     {
       "id": "sheraton",
       "ten": "Sheraton Hà Nội",
+      "thanh_pho": "Hà Nội",
       "hsd_ngay": 25,
       "gia_tu": 889000,
       "gia_den": 2599000,
@@ -35,6 +36,7 @@
     {
       "id": "intercontinental-lm72",
       "ten": "InterContinental Landmark72",
+      "thanh_pho": "Hà Nội",
       "hsd_ngay": 45,
       "gia_tu": 1026000,
       "gia_den": 7689000,
@@ -51,6 +53,7 @@
     {
       "id": "melia",
       "ten": "Meliá Hà Nội",
+      "thanh_pho": "Hà Nội",
       "hsd_ngay": 45,
       "gia_tu": 1067040,
       "gia_den": 5816800,
@@ -69,7 +72,8 @@
     },
     {
       "id": "renaissance",
-      "ten": "Renaissance Hà Nội",
+      "ten": "Renaissance Sài Gòn",
+      "thanh_pho": "Sài Gòn",
       "hsd_ngay": 45,
       "gia_tu": 1388000,
       "gia_den": 1988000,
@@ -80,7 +84,8 @@
     },
     {
       "id": "sofitel",
-      "ten": "Sofitel",
+      "ten": "Sofitel Sài Gòn Plaza",
+      "thanh_pho": "Sài Gòn",
       "hsd_ngay": 45,
       "gia_tu": 1236000,
       "gia_den": 2256000,
@@ -92,7 +97,8 @@
     },
     {
       "id": "hilton",
-      "ten": "Hilton Hà Nội",
+      "ten": "Hilton Sài Gòn",
+      "thanh_pho": "TP. Hồ Chí Minh",
       "hsd_ngay": 45,
       "gia_tu": 1688000,
       "gia_den": 2180000,
@@ -103,7 +109,8 @@
     },
     {
       "id": "nikko",
-      "ten": "Hotel Nikko Hà Nội",
+      "ten": "Hotel Nikko Sài Gòn",
+      "thanh_pho": "TP. Hồ Chí Minh",
       "hsd_ngay": 45,
       "gia_tu": 1288000,
       "gia_den": 1888000,

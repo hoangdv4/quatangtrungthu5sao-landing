@@ -3,12 +3,15 @@
 // ⚠️ C0: trang đích ads — không chữ "rượu" trong meta/OG, ten_hien_thi đã sanitize.
 export const prerender = true;
 
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import BangGia from '../components/BangGia.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
 import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
-import { FAQ_CHUAN, faqSchema, type FaqItem } from '../lib/faq';
+import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
+import { anhKhachSan } from '../lib/hotel-images';
+import { HOTEL_STORY } from '../lib/hotel-story';
 
 export function getStaticPaths() {
   return KHACH_SAN.map((ks) => ({
@@ -28,16 +31,26 @@ const dateModified = '2026-07-31';
 const min = dinhDangGia(ks.gia_tu);
 const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
+const story = HOTEL_STORY[ks.id];
 
-const title = `Bánh Trung Thu ${ks.ten} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
-const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT, tư vấn chọn hộp theo ngân sách. Giao nhanh 24–48h Hà Nội. Zalo ${PHONE_DISPLAY}.`;
+const tenTrangThai = story?.ten_bst ? `${ks.ten} — BST ${story.ten_bst}` : ks.ten;
+const title = `Bánh Trung Thu ${tenTrangThai} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
+const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT, tư vấn chọn hộp theo ngân sách. Giao nhanh 24–48h tại ${ks.thanh_pho}. Zalo ${PHONE_DISPLAY}.`;
 
-const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, giá từ ${min} đến ${max} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại Hà Nội, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
+const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, giá từ ${min} đến ${max} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại ${ks.thanh_pho}, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
 
-// FAQ trang = 6 câu chuẩn + câu riêng của khách sạn.
-const faqTrang: FaqItem[] = [...FAQ_CHUAN, ...content.faqRieng];
+// FAQ trang = 2 câu chung + câu giao hàng theo đúng thành phố + 3 câu chung còn lại + câu riêng KS.
+const faqTrang: FaqItem[] = [
+  FAQ_CHUAN[0],
+  FAQ_CHUAN[1],
+  faqGiaoHang(ks.thanh_pho),
+  ...FAQ_CHUAN.slice(2),
+  ...content.faqRieng,
+];
 
 const canonicalPath = duongDan(ks.id);
+const anh = anhKhachSan(ks.id);
+const [anhHero, ...anhConLai] = anh;
 
 const schema = [
   {
@@ -79,6 +92,14 @@ const schema = [
       {doanMo}
     </p>
 
+    {
+      story?.loiTua && (
+        <p class="mt-4 border-l-4 border-son-200 pl-4 text-base leading-relaxed text-slate-600 italic sm:text-lg">
+          {story.loiTua}
+        </p>
+      )
+    }
+
     <div class="mt-6 flex flex-wrap gap-3">
       <a
         href={SITE.zalo}
@@ -96,7 +117,52 @@ const schema = [
       >
         Gọi ngay
       </a>
+      {
+        story?.catalogue && (
+          <a
+            href={`/catalogue/${story.catalogue}`}
+            target="_blank"
+            rel="noopener"
+            data-contact="catalogue-download"
+            class="rounded-lg px-6 py-3 text-base font-semibold text-slate-700 underline hover:text-son-700"
+          >
+            Tải catalogue chính hãng (PDF)
+          </a>
+        )
+      }
     </div>
+
+    {
+      anhHero && (
+        <div class="mt-8 overflow-hidden rounded-xl">
+          <Image
+            src={anhHero}
+            alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
+            width={1200}
+            height={900}
+            loading="eager"
+            class="w-full object-cover"
+          />
+        </div>
+      )
+    }
+
+    {
+      anhConLai.length > 0 && (
+        <div class="mt-3 grid grid-cols-3 gap-3">
+          {anhConLai.map((img, i) => (
+            <Image
+              src={img}
+              alt={`Bánh trung thu ${ks.ten} 2026 — cận cảnh hộp bánh ${i + 2}`}
+              width={400}
+              height={300}
+              loading="lazy"
+              class="aspect-4/3 w-full rounded-lg object-cover"
+            />
+          ))}
+        </div>
+      )
+    }
 
     <h2 class="mt-10 text-2xl font-bold text-slate-900">
       Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)

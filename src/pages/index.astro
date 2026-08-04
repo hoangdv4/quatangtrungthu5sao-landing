@@ -2,6 +2,7 @@
 // Trang chủ — khung 7 khối theo data/site-content.md.
 // ⚠️ C0: đây là TRANG ĐÍCH CỦA ADS — không chữ "rượu" trong meta/OG,
 // không liệt kê hộp VIP kèm giá, không tên hãng rượu ở bất kỳ đâu.
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import FormB2B from '../components/FormB2B.astro';
 import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
@@ -15,9 +16,10 @@ import {
   TONG_SO_MAU,
 } from '../lib/pricing';
 import { FAQ_CHUAN, faqSchema } from '../lib/faq';
+import { anhKhachSan, ANH_SMA } from '../lib/hotel-images';
 
 const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 — Giá Gốc Đã VAT | ${SITE.brand}`;
-const description = `Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Sofitel, Hilton, Nikko, Renaissance 2026. Chính hãng, đã VAT, giao 24–48h Hà Nội. Zalo ${PHONE_DISPLAY}.`;
+const description = `Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko 2026. Chính hãng, đã VAT, giao nhanh Hà Nội & Sài Gòn. Zalo ${PHONE_DISPLAY}.`;
 const dateModified = '2026-07-31';
 
 // Khối 4 — chọn theo ngân sách. Danh sách theo site-content.md, giá lấy từ pricing.json.
@@ -73,7 +75,7 @@ const schema = [
   },
   {
     '@type': 'ItemList',
-    name: 'Bánh trung thu 7 khách sạn 5 sao Hà Nội 2026',
+    name: 'Bánh trung thu 7 khách sạn 5 sao 2026',
     numberOfItems: KHACH_SAN.length,
     itemListElement: KHACH_SAN.map((ks, i) => ({
       '@type': 'ListItem',
@@ -84,9 +86,9 @@ const schema = [
   },
   {
     '@type': 'Product',
-    name: 'Bánh trung thu khách sạn 5 sao Hà Nội 2026',
+    name: 'Bánh trung thu khách sạn 5 sao 2026',
     description:
-      'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội, giá niêm yết đã gồm VAT.',
+      'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội và Sài Gòn, giá niêm yết đã gồm VAT.',
     brand: { '@type': 'Brand', name: SITE.brand },
     offers: {
       '@type': 'AggregateOffer',
@@ -108,6 +110,9 @@ const niemTin = [
   'Công nợ DN 50%',
   'Hộp in logo riêng theo yêu cầu',
 ];
+
+const anhHeroTrangChu = anhKhachSan('sheraton')[1];
+const anhCardTheoKS = Object.fromEntries(KHACH_SAN.map((ks) => [ks.id, anhKhachSan(ks.id)[0]]));
 ---
 
 <Base {title} {description} {dateModified} {schema}>
@@ -116,7 +121,7 @@ const niemTin = [
     <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-2 md:items-center md:py-16">
       <div>
         <h1 class="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl md:text-[2.6rem]">
-          Bánh Trung Thu 7 Khách Sạn 5 Sao — Giá Gốc, Đã VAT, Giao Nhanh 24–48h Tại Hà Nội
+          Bánh Trung Thu 7 Khách Sạn 5 Sao — Giá Gốc, Đã VAT, Giao Nhanh Hà Nội & Sài Gòn
         </h1>
         <p class="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
           Sheraton · InterContinental Landmark72 · Meliá · Renaissance · Sofitel · Hilton · Nikko —
@@ -141,13 +146,15 @@ const niemTin = [
         </div>
       </div>
 
-      {/* Placeholder tới 06/08 — thay bằng ảnh đẹp nhất từ SALE KIT. */}
-      <div
-        class="flex aspect-4/3 items-center justify-center rounded-2xl bg-son-100 text-center text-sm text-son-700 ring-1 ring-son-600/20"
-        role="img"
-        aria-label="Hộp bánh trung thu khách sạn 5 sao Hà Nội 2026"
-      >
-        <span class="px-6">Ảnh hộp bánh trung thu khách sạn 5 sao<br />(cập nhật 06/08/2026)</span>
+      <div class="overflow-hidden rounded-2xl ring-1 ring-son-600/20">
+        <Image
+          src={anhHeroTrangChu}
+          alt="Bánh trung thu khách sạn 5 sao 2026 — hộp quà chính hãng đã VAT"
+          width={800}
+          height={600}
+          loading="eager"
+          class="aspect-4/3 w-full object-cover"
+        />
       </div>
     </div>
   </section>
@@ -182,7 +189,18 @@ const niemTin = [
     <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         KHACH_SAN.map((ks) => (
-          <article class="flex flex-col rounded-xl border border-son-100 p-5 transition hover:border-son-600 hover:shadow-sm">
+          <article class="flex flex-col overflow-hidden rounded-xl border border-son-100 transition hover:border-son-600 hover:shadow-sm">
+            {anhCardTheoKS[ks.id] && (
+              <Image
+                src={anhCardTheoKS[ks.id]}
+                alt={`Bánh trung thu ${ks.ten} 2026`}
+                width={400}
+                height={300}
+                loading="lazy"
+                class="aspect-4/3 w-full object-cover"
+              />
+            )}
+            <div class="flex flex-1 flex-col p-5">
             <h3 class="text-lg font-bold text-slate-900">{ks.ten}</h3>
             <p class="mt-2 text-son-700">
               <span class="text-xl font-bold">{khoangGia(ks)}</span>
@@ -197,6 +215,7 @@ const niemTin = [
             >
               Xem bảng giá
             </a>
+            </div>
           </article>
         ))
       }
@@ -274,7 +293,23 @@ const niemTin = [
         </li>
       </ul>
 
-      <FormB2B />
+      <div class="mt-6 lg:mt-0">
+        {ANH_SMA.length > 0 && (
+          <div class="mb-6 grid grid-cols-3 gap-2">
+            {ANH_SMA.slice(0, 3).map((img, i) => (
+              <Image
+                src={img}
+                alt={`Hộp bánh trung thu in logo doanh nghiệp — mẫu ${i + 1}`}
+                width={300}
+                height={225}
+                loading="lazy"
+                class="aspect-4/3 w-full rounded-lg object-cover"
+              />
+            ))}
+          </div>
+        )}
+        <FormB2B />
+      </div>
     </div>
   </section>
 

@@ -4,6 +4,7 @@ export interface FaqItem {
   a: string;
 }
 
+// 5 câu dùng chung cho mọi trang — không phụ thuộc thành phố.
 export const FAQ_CHUAN: FaqItem[] = [
   {
     q: 'Bánh có phải chính hãng khách sạn không?',
@@ -12,10 +13,6 @@ export const FAQ_CHUAN: FaqItem[] = [
   {
     q: 'Giá đã gồm VAT chưa, có hóa đơn không?',
     a: 'Giá niêm yết đã gồm VAT 8–10%, doanh nghiệp có hóa đơn đầy đủ.',
-  },
-  {
-    q: 'Giao trong bao lâu?',
-    a: 'Nội thành Hà Nội 24–48h, freeship; tỉnh 2–4 ngày (15.000–25.000đ/hộp).',
   },
   {
     q: 'Có in logo công ty được không?',
@@ -30,6 +27,14 @@ export const FAQ_CHUAN: FaqItem[] = [
     a: 'Sheraton 25 ngày, các khách sạn khác 45 ngày kể từ ngày sản xuất.',
   },
 ];
+
+/** Câu "Giao trong bao lâu?" phụ thuộc thành phố khách sạn — freeship nội thành đúng vùng. */
+export function faqGiaoHang(thanhPho: 'Hà Nội' | 'Sài Gòn'): FaqItem {
+  return {
+    q: 'Giao trong bao lâu?',
+    a: `Nội thành ${thanhPho} 24–48h, freeship; tỉnh 2–4 ngày (15.000–25.000đ/hộp).`,
+  };
+}
 
 /** Sinh node schema.org FAQPage từ danh sách Q&A. */
 export function faqSchema(items: FaqItem[]) {

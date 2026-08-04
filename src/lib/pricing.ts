@@ -20,6 +20,8 @@ export interface SanPham {
 export interface KhachSan {
   id: string;
   ten: string;
+  /** Thành phố đặt khách sạn — quyết định câu văn giao hàng/freeship theo đúng vùng. */
+  thanh_pho: 'Hà Nội' | 'Sài Gòn';
   hsd_ngay: number;
   gia_tu: number;
   gia_den: number;
