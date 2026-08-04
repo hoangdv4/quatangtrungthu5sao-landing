@@ -5,7 +5,7 @@ export interface HotelStory {
   /** Tên bộ sưu tập (BST) như in trên brochure — dùng cho title/meta khi có. */
   ten_bst: string | null;
   loiTua: string | null;
-  /** Tên file PDF trong public/catalogue/. null = chưa có bản nén dưới 25MiB (giới hạn Cloudflare Pages). */
+  /** Tên file PDF trong public/catalogue/. null nếu chưa có bản nén dưới 25MiB (giới hạn Cloudflare Pages). */
   catalogue: string | null;
 }
 
@@ -15,9 +15,7 @@ export const HOTEL_STORY: Record<string, HotelStory> = {
     // không có text layer để trích (pdftotext trả về rỗng).
     ten_bst: 'Nguyệt Giao Thủy',
     loiTua: null,
-    // File gốc 33.6MB, vượt giới hạn 25MiB/file của Cloudflare Pages — cần nén
-    // (gs/Ghostscript) trước khi đăng lại. Tạm bỏ nút tải trên trang.
-    catalogue: null,
+    catalogue: 'catalogue-banh-trung-thu-sheraton.pdf',
   },
   'intercontinental-lm72': {
     ten_bst: null,
@@ -29,9 +27,7 @@ export const HOTEL_STORY: Record<string, HotelStory> = {
     ten_bst: 'Nguyệt Phúc Viên',
     loiTua:
       'Khi vầng trăng tròn soi bóng trên mặt nước, cũng là lúc những ký ức đoàn viên được khơi mở trong từng hương vị thân quen. Mùa Trung thu năm nay, Meliá Hanoi trân trọng giới thiệu bộ sưu tập bánh Trung thu 2026 mang tên Nguyệt Phúc Viên là lời chúc cho một mùa trăng tròn đầy, an lành và viên mãn. Bộ sưu tập được gửi gắm trong ba thiết kế hộp quà mang đậm tinh thần Á Đông và dấu ấn Hà Nội: Chu Tước Phúc Viên, Thanh Hoa Nguyệt Ảnh và Nguyệt Viên Hà Thành. Mỗi hộp quà là một câu chuyện riêng, được kể bằng những biểu tượng tinh tế của mùa trăng: hình ảnh phượng hoàng vươn cánh giữa ánh nguyệt, biểu trưng cho phúc lành, thịnh vượng và vẻ đẹp cao quý; sắc sen thanh nhã gợi sự an yên, thuần khiết; ánh trăng viên mãn soi bóng trên mặt nước; cùng nét kiến trúc Hà Nội cổ kính được tái hiện đầy trang nhã.',
-    // File gốc 25.9MB, vượt giới hạn 25MiB/file của Cloudflare Pages — cần nén
-    // (gs/Ghostscript) trước khi đăng lại. Tạm bỏ nút tải trên trang.
-    catalogue: null,
+    catalogue: 'catalogue-banh-trung-thu-melia.pdf',
   },
   renaissance: {
     // "Nguyệt Hương" chỉ xuất hiện làm tiêu đề trang bìa — brochure không có
