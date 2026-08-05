@@ -3,7 +3,7 @@
 // Bảng HTML chữ thật (AI/crawler đọc được) — thay cho card-grid ảnh trước đây.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { duongDan, khoangGia, type KhachSan, type Tier } from '../lib/pricing';
+import { duongDan, khoangGia, dinhDangGia, GIA_MIN, GIA_MAX, type KhachSan, type Tier } from '../lib/pricing';
 
 interface Row {
   ks: KhachSan;
@@ -28,20 +28,39 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 6px,#f6f2e9 6
 ---
 
 <div>
-  <div class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Lọc theo mức giá">
-    {
-      FILTERS.map((f, i) => (
-        <button
-          type="button"
-          data-tier-chip={f.id}
-          class={`px-4 py-2.5 text-xs border ${
-            i === 0 ? 'bg-ink text-paper border-ink' : 'bg-transparent text-ink-soft border-hairline-strong'
-          }`}
-        >
-          {f.label}
-        </button>
-      ))
-    }
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-6">
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Lọc theo mức giá">
+      {
+        FILTERS.map((f, i) => (
+          <button
+            type="button"
+            data-tier-chip={f.id}
+            class={`px-4 py-2.5 text-xs border ${
+              i === 0 ? 'bg-ink text-paper border-ink' : 'bg-transparent text-ink-soft border-hairline-strong'
+            }`}
+          >
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="flex min-w-[220px] flex-1 flex-col gap-1.5 sm:max-w-[280px]">
+      <label for="gia-toi-da" class="label-muted flex items-center justify-between text-[10px]">
+        <span>Giá tối đa</span>
+        <span data-gia-toi-da-value>{dinhDangGia(GIA_MAX)}</span>
+      </label>
+      <input
+        id="gia-toi-da"
+        type="range"
+        min={GIA_MIN}
+        max={GIA_MAX}
+        step="1000"
+        value={GIA_MAX}
+        data-gia-slider
+        class="h-1 w-full appearance-none bg-hairline-strong accent-accent"
+      />
+    </div>
   </div>
 
   <div class="overflow-x-auto">
@@ -58,7 +77,7 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 6px,#f6f2e9 6
       <tbody>
         {
           rows.map(({ ks, anh, tiers }) => (
-            <tr data-tier-row data-tiers={tiers.join(',')} class="border-b border-hairline hover:bg-paper-warm">
+            <tr data-tier-row data-tiers={tiers.join(',')} data-gia-tu={ks.gia_tu} class="border-b border-hairline hover:bg-paper-warm">
               <td class="px-2 py-4">
                 {anh ? (
                   <Image src={anh} alt={`Bánh trung thu ${ks.ten} 2026`} width={88} height={66} loading="lazy" class="h-[66px] w-[88px] object-cover" />
@@ -87,6 +106,18 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 6px,#f6f2e9 6
 </div>
 
 <script>
+  let tierDangChon = 'all';
+  let giaToiDa = Infinity;
+
+  function apDungLoc() {
+    document.querySelectorAll<HTMLElement>('[data-tier-row]').forEach((row) => {
+      const tiers = (row.dataset.tiers || '').split(',');
+      const khopTier = tierDangChon === 'all' || tiers.includes(tierDangChon);
+      const giaTu = Number(row.dataset.giaTu || 0);
+      row.hidden = !khopTier || giaTu > giaToiDa;
+    });
+  }
+
   document.querySelectorAll<HTMLElement>('[data-tier-chip]').forEach((chip) => {
     chip.addEventListener('click', () => {
       document.querySelectorAll<HTMLElement>('[data-tier-chip]').forEach((c) => {
@@ -96,11 +127,20 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 6px,#f6f2e9 6
       chip.classList.remove('bg-transparent', 'text-ink-soft', 'border-hairline-strong');
       chip.classList.add('bg-ink', 'text-paper', 'border-ink');
 
-      const tier = chip.dataset.tierChip;
-      document.querySelectorAll<HTMLElement>('[data-tier-row]').forEach((row) => {
-        const tiers = (row.dataset.tiers || '').split(',');
-        row.hidden = tier !== 'all' && !tiers.includes(tier ?? '');
-      });
+      tierDangChon = chip.dataset.tierChip ?? 'all';
+      apDungLoc();
     });
   });
+
+  const slider = document.querySelector<HTMLInputElement>('[data-gia-slider]');
+  const giaLabel = document.querySelector<HTMLElement>('[data-gia-toi-da-value]');
+  const dinhDang = (n: number) => n.toLocaleString('vi-VN') + 'đ';
+
+  slider?.addEventListener('input', () => {
+    giaToiDa = Number(slider.value);
+    if (giaLabel) giaLabel.textContent = dinhDang(giaToiDa);
+    apDungLoc();
+  });
+
+  if (slider) giaToiDa = Number(slider.value);
 </script>
