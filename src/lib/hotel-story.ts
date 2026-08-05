@@ -11,10 +11,11 @@ export interface HotelStory {
 
 export const HOTEL_STORY: Record<string, HotelStory> = {
   sheraton: {
-    // Brochure "Nguyệt Giao Thủy.pdf" là file scan/thiết kế đồ họa thuần —
-    // không có text layer để trích (pdftotext trả về rỗng).
+    // Lời tựa trích từ ấn phẩm giới thiệu BST (bản chụp/thiết kế đồ họa do
+    // brochure PDF gốc không có text layer để pdftotext trích tự động).
     ten_bst: 'Nguyệt Giao Thủy',
-    loiTua: null,
+    loiTua:
+      'Tự hào là một trong những sản phẩm được yêu mến nhất mỗi mùa đoàn viên, bánh trung thu Sheraton Hanoi không chỉ khẳng định vị thế bởi hương vị tinh tế, độc đáo được chế biến thủ công bởi các nghệ nhân bếp bánh tài hoa, mà còn bởi chất lượng và đẳng cấp 5 sao được gìn giữ vẹn nguyên suốt hành trình 19 năm qua. Đến với mùa trăng năm nay, Khách sạn Sheraton Hanoi Hotel trân trọng giới thiệu Bộ sưu tập bánh Trung thu mang tên "Nguyệt Giao Thủy". Lấy cảm hứng từ vẻ đẹp thanh bình của Hồ Tây khi thu sang, bộ sưu tập gợi mở một không gian an nhiên giữa lòng Hà Nội, nơi sắc nước, hương thu và ánh trăng hòa quyện, kết nối những tâm hồn trong khoảnh khắc sum vầy. Hơn cả một món quà, mỗi hộp bánh là một nhịp cầu kết nối giữa nhịp sống hiện đại và giá trị di sản vượt thời gian.',
     catalogue: 'catalogue-banh-trung-thu-sheraton.pdf',
   },
   'intercontinental-lm72': {
@@ -31,9 +32,11 @@ export const HOTEL_STORY: Record<string, HotelStory> = {
   },
   renaissance: {
     // "Nguyệt Hương" chỉ xuất hiện làm tiêu đề trang bìa — brochure không có
-    // đoạn văn lời tựa (chỉ tên BST + bảng giá/chính sách).
+    // đoạn văn lời tựa gốc. Lời giới thiệu dưới đây do đội ngũ landing page
+    // tự biên soạn (không trích từ brochure khách sạn).
     ten_bst: 'Nguyệt Hương',
-    loiTua: null,
+    loiTua:
+      'Giữa tiết trời thu dịu nhẹ, Renaissance Hanoi mang đến bộ sưu tập bánh Trung thu "Nguyệt Hương" như một lời mời gọi trở về với những giá trị sum vầy giản dị mà sâu lắng. Từng chiếc bánh được chăm chút tỉ mỉ, gói trọn hương vị tinh tế và tấm lòng trân quý gửi đến người nhận. Dưới ánh trăng tròn, mong rằng mỗi món quà là nhịp cầu gắn kết yêu thương, để mùa đoàn viên thêm ấm áp và trọn vẹn bên những người thân thương.',
     catalogue: 'catalogue-banh-trung-thu-renaissance.pdf',
   },
   sofitel: {
