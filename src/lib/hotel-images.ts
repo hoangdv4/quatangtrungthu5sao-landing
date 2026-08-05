@@ -41,7 +41,7 @@ export const ANH_SMA: ImageMetadata[] = Object.entries(smaModules)
   .map(([, mod]) => mod.default);
 
 // Logo thật 7 khách sạn (thư mục /logo ở root repo, ngoài src/ — khách hàng có quyền dùng logo chính thức).
-const logoModules = import.meta.glob<string>('../../logo/*.{svg,png}', {
+const logoModules = import.meta.glob<string>('../../logo/*.{svg,png,jpg,jpeg}', {
   eager: true,
   query: '?url',
   import: 'default',
@@ -59,7 +59,7 @@ const LOGO_FILE_TO_ID: Record<string, string> = {
 
 const LOGO_BY_ID: Record<string, string> = Object.fromEntries(
   Object.entries(logoModules).flatMap(([path, url]) => {
-    const fileName = path.split('/').pop()?.replace(/\.(svg|png)$/i, '').toLowerCase() ?? '';
+    const fileName = path.split('/').pop()?.replace(/\.(svg|png|jpe?g)$/i, '').toLowerCase() ?? '';
     const id = LOGO_FILE_TO_ID[fileName];
     return id ? [[id, url]] : [];
   })
