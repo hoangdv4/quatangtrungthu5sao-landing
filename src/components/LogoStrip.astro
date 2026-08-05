@@ -1,14 +1,14 @@
 ---
-// Dải logo thật 7 khách sạn — "Phân phối chính thức". Logo do khách hàng cung cấp
-// tại /logo (root repo), khách có quyền dùng logo chính thức của cả 7 khách sạn.
+// Dải logo thật 7 khách sạn — "Phân phối chính thức", đặt ngay dưới hero (chữ),
+// trước hero slideshow. Logo do khách hàng cung cấp tại /logo (root repo).
 import { KHACH_SAN } from '../lib/pricing';
 import { layLogo } from '../lib/hotel-images';
 
 const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8px 16px)';
 ---
 
-<section class="border-t border-b border-hairline py-10" data-reveal>
-  <div class="mx-auto flex max-w-[1180px] items-center justify-center gap-3 px-6 pb-8 sm:px-10">
+<section class="pb-12" data-reveal>
+  <div class="mx-auto flex max-w-[1180px] items-center justify-center gap-3 px-6 pb-6 sm:px-10">
     <span class="h-px w-7 bg-gold" aria-hidden="true"></span>
     <p class="text-[11px] uppercase tracking-[.22em] text-text-faint">
       Phân phối chính thức · 7 khách sạn 5 sao
@@ -16,18 +16,18 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
     <span class="h-px w-7 bg-gold" aria-hidden="true"></span>
   </div>
 
-  <div class="mx-auto grid max-w-[1180px] grid-cols-3 border-l border-hairline sm:grid-cols-4 md:grid-cols-7">
+  <div class="mx-auto flex max-w-[1180px] flex-wrap items-center justify-center gap-x-10 gap-y-6 px-6 sm:px-10">
     {
       KHACH_SAN.map((ks) => {
         const logo = layLogo(ks.id);
-        return (
-          <div class="flex flex-col items-center gap-3 border-r border-t border-hairline px-4 py-6 sm:border-t-0">
-            {logo ? (
-              <img src={logo} alt={`Logo ${ks.ten}`} class="h-12 w-full object-contain sm:h-14" loading="lazy" />
-            ) : (
-              <div class="h-12 w-full sm:h-14" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
-            )}
-            <p class="text-center text-xs uppercase tracking-wide text-ink-soft">{ks.ten}</p>
+        return logo ? (
+          <img src={logo} alt={`Logo ${ks.ten}`} class="h-10 w-auto max-w-[140px] object-contain grayscale opacity-80" loading="lazy" />
+        ) : (
+          <div
+            class="flex h-10 w-[140px] items-center justify-center text-center text-[10px] uppercase tracking-wide text-ink-soft"
+            style={{ background: PLACEHOLDER_BG }}
+          >
+            {ks.ten}
           </div>
         );
       })
