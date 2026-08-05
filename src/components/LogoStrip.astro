@@ -20,13 +20,22 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
     {
       KHACH_SAN.map((ks) => {
         const logo = layLogo(ks.id);
-        // Intercontinental.png có nhiều khoảng trắng thừa quanh logo (nguồn gốc file) —
-        // phóng to hơn để bù trừ, giữ kích thước thị giác đồng đều với các logo khác.
-        const heightClass = ks.id === 'intercontinental-lm72' ? 'h-20' : 'h-10';
+        // Mỗi file logo có tỷ lệ khung hình + khoảng trắng thừa quanh nội dung khác nhau
+        // (nguồn gốc file) — chỉnh riêng height/max-width từng khách sạn để kích thước
+        // thị giác (diện tích hiển thị) đồng đều nhau trên dải logo.
+        const sizeClass: Record<string, string> = {
+          'intercontinental-lm72': 'h-20 max-w-[160px]',
+          hilton: 'h-16 max-w-[160px]',
+          renaissance: 'h-16 max-w-[170px]',
+          sheraton: 'h-14 max-w-[140px]',
+          sofitel: 'h-9 max-w-[220px]',
+          nikko: 'h-12 max-w-[140px]',
+        };
+        const heightClass = sizeClass[ks.id] ?? 'h-10 max-w-[140px]';
         // Nikko.png là logo màu trắng (thiết kế cho nền tối) — đảo màu để hiện rõ trên nền kem sáng.
         const filterClass = ks.id === 'nikko' ? 'invert grayscale opacity-80' : 'grayscale opacity-80';
         return logo ? (
-          <img src={logo} alt={`Logo ${ks.ten}`} class={`${heightClass} w-auto max-w-[140px] object-contain ${filterClass}`} loading="lazy" />
+          <img src={logo} alt={`Logo ${ks.ten}`} class={`${heightClass} w-auto object-contain ${filterClass}`} loading="lazy" />
         ) : (
           <div
             class="flex h-10 w-[140px] items-center justify-center text-center text-[10px] uppercase tracking-wide text-ink-soft"
