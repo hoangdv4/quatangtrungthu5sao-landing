@@ -7,7 +7,7 @@ import type { KhachSan } from '../lib/pricing';
 
 interface Slide {
   ks: KhachSan;
-  anh: ImageMetadata;
+  anh: ImageMetadata[];
   tenBst: string | null;
 }
 
@@ -18,22 +18,50 @@ interface Props {
 const { slides } = Astro.props;
 ---
 
-<div data-hero-slideshow class="relative h-[420px] w-full overflow-hidden md:h-[420px] max-md:aspect-[4/5] max-md:h-auto">
-  {
-    slides.map((slide, i) => (
-      <div data-slide class={`absolute inset-0 transition-opacity duration-[450ms] ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`}>
-        <Image
-          src={slide.anh}
-          alt={`Bánh trung thu ${slide.ks.ten} 2026 — hộp quà chính hãng`}
-          width={2400}
-          height={860}
-          loading={i === 0 ? 'eager' : 'lazy'}
-          fetchpriority={i === 0 ? 'high' : undefined}
-          class="h-full w-full object-cover"
-        />
-      </div>
-    ))
-  }
+<div class="mx-auto max-w-[1180px] px-6 sm:px-10">
+  <div data-hero-slideshow class="relative h-[420px] w-full overflow-hidden max-md:aspect-[4/5] max-md:h-auto">
+    {
+      slides.map((slide, i) => {
+        const [anhLon, anhPhu1, anhPhu2] = slide.anh;
+        return (
+          <div data-slide class={`absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1 transition-opacity duration-[450ms] ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`}>
+            <Image
+              src={anhLon}
+              alt={`Bánh trung thu ${slide.ks.ten} 2026 — hộp quà chính hãng`}
+              width={1600}
+              height={860}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
+              class="col-span-2 row-span-2 h-full w-full object-cover"
+            />
+            {anhPhu1 ? (
+              <Image
+                src={anhPhu1}
+                alt={`Bánh trung thu ${slide.ks.ten} 2026 — chi tiết hộp bánh`}
+                width={800}
+                height={420}
+                loading="lazy"
+                class="col-span-1 row-span-1 h-full w-full object-cover"
+              />
+            ) : (
+              <div class="col-span-1 row-span-1 bg-paper-warm" aria-hidden="true" />
+            )}
+            {anhPhu2 ? (
+              <Image
+                src={anhPhu2}
+                alt={`Bánh trung thu ${slide.ks.ten} 2026 — cận cảnh hộp bánh`}
+                width={800}
+                height={420}
+                loading="lazy"
+                class="col-span-1 row-span-1 h-full w-full object-cover"
+              />
+            ) : (
+              <div class="col-span-1 row-span-1 bg-paper-warm" aria-hidden="true" />
+            )}
+          </div>
+        );
+      })
+    }
 
   <button
     type="button"
@@ -80,6 +108,7 @@ const { slides } = Astro.props;
         ))
       }
     </div>
+  </div>
   </div>
 </div>
 

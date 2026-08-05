@@ -73,7 +73,7 @@ const slides = KHACH_SAN.map((ks) => ({
   tenBst: HOTEL_STORY[ks.id]?.ten_bst ?? null,
 })).filter((s) => s.anh.length > 0);
 
-const anhHeroOptimized = slides[0] ? await getImage({ src: slides[0].anh, width: 2400, height: 860 }) : null;
+const anhHeroOptimized = slides[0] ? await getImage({ src: slides[0].anh[0], width: 2400, height: 860 }) : null;
 
 // Khối 6 — bảng giá tổng hợp: ảnh đại diện + tier tính từ giá thật.
 const bangGiaRows = KHACH_SAN.map((ks) => ({
