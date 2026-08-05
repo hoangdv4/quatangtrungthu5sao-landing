@@ -8,7 +8,7 @@ import FormB2B from '../components/FormB2B.astro';
 import HeroSlideshow from '../components/HeroSlideshow.astro';
 import LogoStrip from '../components/LogoStrip.astro';
 import BangGiaTongHop from '../components/BangGiaTongHop.astro';
-import { SITE, PHONE_DISPLAY } from '../config/site';
+import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
 import {
   KHACH_SAN,
   duongDan,
@@ -170,20 +170,46 @@ const trustPoints = [
   {/* ── Khối 2 — Dải logo 7 khách sạn ──────────────────────────── */}
   <LogoStrip />
 
-  <section class="mx-auto -mt-2 flex max-w-[1180px] flex-col items-center px-6 pb-16 sm:px-10 sm:pb-20">
-    <div class="flex flex-col gap-4 sm:flex-row">
-      <a
-        href="#bao-gia-b2b"
-        class="bg-ink px-8 py-4 text-center text-[13px] font-medium uppercase tracking-wide text-paper hover:bg-accent"
-      >
-        Nhận bảng giá B2B
-      </a>
-      <a
-        href="#catalogue"
-        class="border-b border-gold px-1 py-4 text-center text-[13px] text-ink-soft hover:text-accent"
-      >
-        Xem bộ sưu tập
-      </a>
+  <section class="mx-auto -mt-2 max-w-[1180px] px-6 pb-16 sm:px-10 sm:pb-20">
+    <div class="relative overflow-hidden bg-ink px-6 py-10 text-center sm:px-12 sm:py-12">
+      <div
+        class="pointer-events-none absolute inset-0 opacity-[.08]"
+        style="background-image:radial-gradient(circle at 15% 20%, var(--color-gold) 0, transparent 45%),radial-gradient(circle at 85% 80%, var(--color-gold) 0, transparent 45%);"
+        aria-hidden="true"
+      ></div>
+      <div class="relative">
+        <p class="font-display text-[clamp(1.25rem,3.2vw,1.75rem)] uppercase tracking-[.04em] text-dark-text">
+          Tặng thiệp miễn phí &amp; giao hàng tận nơi
+        </p>
+        <p class="mt-3 text-[15px] text-dark-text-muted sm:text-base">
+          {SITE.brand}
+        </p>
+        <p class="mt-1 text-[15px] text-dark-text-muted sm:text-base">
+          Lựa chọn hoàn hảo cho <span class="font-medium text-dark-text">quà tặng doanh nghiệp</span>
+        </p>
+
+        <div class="mt-7 flex flex-col items-center justify-center gap-5 sm:flex-row">
+          <a
+            href={`tel:${PHONE_TEL}`}
+            data-contact="hotline-banner"
+            class="text-[15px] font-semibold text-gold underline decoration-gold/50 underline-offset-4 sm:text-base"
+          >
+            Hotline: {PHONE_DISPLAY}
+          </a>
+          <a
+            href="#bao-gia-b2b"
+            class="bg-gold px-8 py-3.5 text-[13px] font-medium uppercase tracking-wide text-ink hover:bg-paper"
+          >
+            Nhận bảng giá B2B
+          </a>
+          <a
+            href="#catalogue"
+            class="border-b border-gold px-1 py-3.5 text-[13px] text-dark-text-muted hover:text-gold"
+          >
+            Xem bộ sưu tập
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
