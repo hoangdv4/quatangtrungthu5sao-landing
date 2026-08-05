@@ -1,6 +1,7 @@
 # quatangtrungthu5sao.com — cho phép mọi bot, ưu tiên rõ các AI crawler (GEO).
 User-agent: *
 Allow: /
+Disallow: /hop-vip
 
 User-agent: GPTBot
 Allow: /

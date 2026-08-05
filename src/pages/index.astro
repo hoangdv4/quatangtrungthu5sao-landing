@@ -22,8 +22,8 @@ import { FAQ_CHUAN, faqSchema } from '../lib/faq';
 import { anhKhachSan, ANH_SMA } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
 
-const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 — Giá Gốc Đã VAT | ${SITE.brand}`;
-const description = `Bảng giá bánh trung thu Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko 2026. Chính hãng, đã VAT, giao nhanh Hà Nội & Sài Gòn. Zalo ${PHONE_DISPLAY}.`;
+const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 | ${SITE.brand}`;
+const description = `Bảng giá bánh trung thu 7 khách sạn 5 sao 2026: Sheraton, InterContinental, Meliá... Chính hãng, đã VAT, giao nhanh HN & SG. Zalo ${PHONE_DISPLAY}.`;
 const dateModified = '2026-07-31';
 
 // Khối 7 — chọn theo ngân sách. Danh sách theo site-content.md, giá lấy từ pricing.json.
@@ -66,12 +66,12 @@ const nhomDaDo = nhomNganSach.map((nhom) => ({
   }),
 }));
 
-// Khối 3 — Hero slideshow: ảnh đầu tiên mỗi khách sạn, đúng thứ tự KHACH_SAN.
+// Khối 3 — Hero slideshow: collage 3 ảnh mỗi khách sạn (1 lớn + 2 nhỏ), đúng thứ tự KHACH_SAN.
 const slides = KHACH_SAN.map((ks) => ({
   ks,
-  anh: anhKhachSan(ks.id)[0],
+  anh: anhKhachSan(ks.id).slice(0, 3),
   tenBst: HOTEL_STORY[ks.id]?.ten_bst ?? null,
-})).filter((s): s is typeof s & { anh: NonNullable<(typeof s)['anh']> } => Boolean(s.anh));
+})).filter((s) => s.anh.length > 0);
 
 const anhHeroOptimized = slides[0] ? await getImage({ src: slides[0].anh, width: 2400, height: 860 }) : null;
 

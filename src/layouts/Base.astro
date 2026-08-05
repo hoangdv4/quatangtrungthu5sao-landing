@@ -90,7 +90,11 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="article:modified_time" content={modified} />
+    {preloadImage && <meta property="og:image" content={new URL(preloadImage, SITE.domain).href} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {preloadImage && <meta name="twitter:image" content={new URL(preloadImage, SITE.domain).href} />}
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 

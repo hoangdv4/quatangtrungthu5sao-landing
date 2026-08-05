@@ -14,9 +14,13 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     sitemap({
-      // /hop-vip và /so-sanh có mặt trong sitemap nhưng priority thấp (không phải trang đích ads chính).
+      // /hop-vip bị loại hoàn toàn (noindex, ads không trỏ vào — xem robots.txt).
+      // /so-sanh vẫn ở sitemap nhưng priority thấp (không phải trang đích ads chính).
+      // lastmod hardcode khớp dateModified trên từng trang — cập nhật cả hai khi nội dung đổi.
+      filter: (page) => !page.includes('/hop-vip'),
       serialize(item) {
-        if (item.url.includes('/hop-vip') || item.url.includes('/so-sanh')) item.priority = 0.3;
+        item.lastmod = '2026-07-31';
+        if (item.url.includes('/so-sanh')) item.priority = 0.3;
         else if (item.url.replace(DOMAIN, '').replace(/\/$/, '') === '') item.priority = 1.0;
         else item.priority = 0.8;
         return item;

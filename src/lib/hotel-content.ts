@@ -41,11 +41,11 @@ export const HOTEL_CONTENT: Record<string, HotelContent> = {
   },
   renaissance: {
     tuVan:
-      'Chỉ 2 mẫu, An Nhã (1.388k) kèm trà Kim Tuyên — lựa chọn gọn cho ngân sách 1,2–1,5tr.',
+      'An Nhã (1.388k) kèm trà Kim Tuyên — lựa chọn gọn cho ngân sách 1,2–1,5tr, dễ đặt số lượng lớn cần đồng bộ.',
     faqRieng: [
       {
         q: 'Renaissance có nhiều mẫu hộp không?',
-        a: 'Chỉ 2 mẫu — danh mục gọn, dễ chọn nhanh cho đơn số lượng lớn cần đồng bộ.',
+        a: 'Danh mục gọn, tập trung vào một thiết kế chủ đạo — dễ chọn nhanh cho đơn số lượng lớn cần đồng bộ.',
       },
     ],
   },
@@ -61,11 +61,11 @@ export const HOTEL_CONTENT: Record<string, HotelContent> = {
   },
   hilton: {
     tuVan:
-      'Tea Version (1.688k) an toàn cho mọi đối tượng; Wine Version (2.180k) kèm rượu vang cho đối tác thân.',
+      'Tea Version (1.688k) 4 bánh 150gr kèm trà — an toàn cho mọi đối tượng, phù hợp biếu số lượng lớn.',
     faqRieng: [
       {
-        q: 'Hilton chỉ có 2 mẫu hộp?',
-        a: 'Đúng — Tea Version và Wine Version, cùng 4 bánh 150gr, khác phần quà tặng kèm theo.',
+        q: 'Hilton có mẫu nào khác Tea Version không?',
+        a: 'Ngoài Tea Version niêm yết công khai, Hilton còn có cấu hình quà tặng riêng cho khách VIP/lãnh đạo — liên hệ Zalo để được tư vấn cấu hình phù hợp.',
       },
     ],
   },

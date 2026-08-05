@@ -9,7 +9,7 @@ import BangGia from '../components/BangGia.astro';
 import Lightbox from '../components/Lightbox.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, coQuaTang, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -30,15 +30,16 @@ const { ks } = Astro.props;
 const content = HOTEL_CONTENT[ks.id];
 const dateModified = '2026-07-31';
 
-const min = dinhDangGia(ks.gia_tu);
-const max = dinhDangGia(ks.gia_den);
-const soMau = ks.san_pham.length;
+// ⚠️ C0: hộp có rượu (ruou !== null) chỉ hiện ở /hop-vip — trang này ẩn hoàn toàn.
+const sanPhamHienThi = ks.san_pham.filter((sp) => !coQuaTang(sp));
+const min = dinhDangGia(Math.min(...sanPhamHienThi.map((sp) => sp.gia_da_vat)));
+const max = dinhDangGia(Math.max(...sanPhamHienThi.map((sp) => sp.gia_da_vat)));
+const soMau = sanPhamHienThi.length;
 const story = HOTEL_STORY[ks.id];
 const logo = layLogo(ks.id);
 
-const tenTrangThai = story?.ten_bst ? `${ks.ten} — BST ${story.ten_bst}` : ks.ten;
-const title = `Bánh Trung Thu ${tenTrangThai} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
-const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT, tư vấn chọn hộp theo ngân sách. Giao nhanh 24–48h tại ${ks.thanh_pho}. Zalo ${PHONE_DISPLAY}.`;
+const title = `Bánh Trung Thu ${ks.ten} 2026 | ${SITE.brand}`;
+const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT. Giao nhanh 24–48h tại ${ks.thanh_pho}. Zalo ${PHONE_DISPLAY}.`;
 
 const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, giá từ ${min} đến ${max} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại ${ks.thanh_pho}, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
 
@@ -70,12 +71,19 @@ const schema = [
     isPartOf: { '@id': `${SITE.domain}/#business` },
   },
   {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: SITE.domain },
+      { '@type': 'ListItem', position: 2, name: `${ks.ten} 2026`, item: `${SITE.domain}${canonicalPath}` },
+    ],
+  },
+  {
     '@type': 'Product',
     name: `Bánh trung thu ${ks.ten} 2026`,
     description: doanMo,
     ...(anhHeroOptimized ? { image: `${SITE.domain}${anhHeroOptimized.src}` } : {}),
     brand: { '@type': 'Brand', name: SITE.brand },
-    offers: ks.san_pham.map((sp) => ({
+    offers: sanPhamHienThi.map((sp) => ({
       '@type': 'Offer',
       name: sp.ten_hien_thi,
       priceCurrency: 'VND',
@@ -148,7 +156,7 @@ const schema = [
           Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
         </h2>
         <div class="mt-4">
-          <BangGia hotelId={ks.id} sanPham={ks.san_pham} />
+          <BangGia hotelId={ks.id} sanPham={sanPhamHienThi} />
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">

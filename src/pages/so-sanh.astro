@@ -5,7 +5,7 @@
 // ⚠️ C0: KHÔNG liệt kê schema Product/Offer riêng (tránh trùng lặp 7 trang con).
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY } from '../config/site';
-import { KHACH_SAN, duongDan, khoangGia } from '../lib/pricing';
+import { KHACH_SAN, duongDan, khoangGia, coQuaTang } from '../lib/pricing';
 import { HOTEL_STORY } from '../lib/hotel-story';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 
@@ -13,8 +13,10 @@ const dateModified = '2026-07-31';
 const title = `So Sánh 7 Khách Sạn Bánh Trung Thu 2026 | ${SITE.brand}`;
 const description = `So sánh nhanh bộ sưu tập, khoảng giá, số mẫu hộp và khu vực giao của 7 khách sạn 5 sao: Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko. Zalo ${PHONE_DISPLAY}.`;
 
+// ⚠️ C0: đếm số mẫu chỉ tính SKU không rượu — khớp với số mẫu hiển thị trên trang con.
 const hangSoSanh = KHACH_SAN.map((ks) => ({
   ks,
+  soMau: ks.san_pham.filter((sp) => !coQuaTang(sp)).length,
   tenBst: HOTEL_STORY[ks.id]?.ten_bst,
   dacDiem: HOTEL_CONTENT[ks.id]?.tuVan,
 }));
@@ -60,7 +62,7 @@ const schema = [
         </thead>
         <tbody>
           {
-            hangSoSanh.map(({ ks, tenBst }) => (
+            hangSoSanh.map(({ ks, soMau, tenBst }) => (
               <tr class="border-t border-hairline">
                 <td class="px-4 py-3">
                   <a href={duongDan(ks.id)} class="font-medium text-ink hover:text-accent hover:underline">
@@ -69,7 +71,7 @@ const schema = [
                 </td>
                 <td class="px-4 py-3 text-ink-soft">{tenBst ?? '—'}</td>
                 <td class="price px-4 py-3">{khoangGia(ks)}</td>
-                <td class="px-4 py-3 text-ink-soft">{ks.san_pham.length} mẫu</td>
+                <td class="px-4 py-3 text-ink-soft">{soMau} mẫu</td>
                 <td class="px-4 py-3 text-ink-soft">{ks.hsd_ngay} ngày</td>
                 <td class="px-4 py-3 text-ink-soft">{ks.thanh_pho}</td>
               </tr>
