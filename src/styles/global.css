@@ -2,15 +2,13 @@
 
 /* Font tự host qua @fontsource (Vietnamese subset) — không gọi ra Google Fonts lúc runtime,
    giữ LCP/CLS tốt cho Lighthouse mobile. Chỉ import đúng weight cần dùng. */
-@import "@fontsource/lora/vietnamese-400.css";
-@import "@fontsource/lora/vietnamese-400-italic.css";
-@import "@fontsource/lora/vietnamese-500.css";
-@import "@fontsource/lora/vietnamese-600.css";
 @import "@fontsource/be-vietnam-pro/vietnamese-400.css";
+@import "@fontsource/be-vietnam-pro/vietnamese-400-italic.css";
 @import "@fontsource/be-vietnam-pro/vietnamese-500.css";
+@import "@fontsource/be-vietnam-pro/vietnamese-600.css";
 
 @theme {
-  --font-display: "Lora", "Times New Roman", serif;
+  --font-display: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* ── Bảng màu luxury kem/son đỏ/vàng đồng (redesign theo design_handoff_trungthu_landing) ── */
