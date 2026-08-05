@@ -258,8 +258,8 @@ const trustPoints = [
               <p class="mt-1 text-xs text-text-faint">{nhom.mo_ta}</p>
               <ul class="mt-5 space-y-2.5 text-sm">
                 {nhom.san_pham.map(({ hotel, sp }) => (
-                  <li class="flex justify-between gap-3 border-b border-paper-warm pb-2.5 last:border-0">
-                    <a href={duongDan(hotel.id)} class="text-ink-soft hover:text-accent hover:underline">
+                  <li class="flex items-baseline justify-between gap-3 border-b border-paper-warm pb-2.5 last:border-0">
+                    <a href={duongDan(hotel.id)} title={sp.ten_hien_thi} class="min-w-0 truncate text-ink-soft hover:text-accent hover:underline">
                       {sp.ten_hien_thi}
                     </a>
                     <span class="price shrink-0 whitespace-nowrap">{dinhDangGia(sp.gia_da_vat)}</span>
