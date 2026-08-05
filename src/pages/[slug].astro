@@ -5,8 +5,7 @@ export const prerender = true;
 
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import BangGia from '../components/BangGia.astro';
-import Lightbox from '../components/Lightbox.astro';
+import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
 import { KHACH_SAN, duongDan, dinhDangGia, coQuaTang, type KhachSan } from '../lib/pricing';
@@ -53,8 +52,7 @@ const faqTrang: FaqItem[] = [
 ];
 
 const canonicalPath = duongDan(ks.id);
-const anh = anhKhachSan(ks.id);
-const [anhHero, ...anhConLai] = anh;
+const [anhHero] = anhKhachSan(ks.id);
 const anhHeroOptimized = anhHero
   ? await getImage({ src: anhHero, width: 1600, height: 1600 })
   : null;
@@ -108,81 +106,60 @@ const schema = [
   </div>
 
   <article class="mx-auto max-w-[1180px] px-6 py-8 sm:px-10 md:py-12">
-    {/* ── Thân trên: gallery + thông tin ─────────────────────────── */}
-    <div class="grid gap-14 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
-      <div data-reveal>
-        {
-          anhHero && (
-            <Image
-              src={anhHero}
-              alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
-              width={1600}
-              height={1600}
-              loading="eager"
-              fetchpriority="high"
-              class="h-[460px] w-full object-cover"
-            />
-          )
-        }
-        {
-          anhConLai.length > 0 && (
-            <div class="mt-3">
-              <Lightbox
-                id={ks.id}
-                images={anhConLai}
-                altAt={(i) => `Bánh trung thu ${ks.ten} 2026 — cận cảnh hộp bánh ${i + 2}`}
-              />
-            </div>
-          )
-        }
-      </div>
-
-      <div data-reveal>
-        {story?.ten_bst && <p class="label-gold">{story.ten_bst} · Trung Thu 2026</p>}
-        <h1 class="mt-2 font-display text-[clamp(1.75rem,5vw,3.25rem)] font-light leading-[1.05] text-ink">
+    {/* ── Hero: lời giới thiệu bộ sưu tập ─────────────────────────── */}
+    <div class="grid gap-8 border-b border-hairline pb-10 md:gap-[60px] md:pb-[60px] lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+      <div data-reveal class="flex flex-col gap-5">
+        <p class="text-[11px] uppercase tracking-[.22em] text-accent">
+          {story?.ten_bst ?? ks.ten} · Trung Thu 2026
+        </p>
+        <h1 class="font-display text-[clamp(2.25rem,5vw,3.375rem)] font-light leading-[1.05] tracking-[-.012em] text-ink">
           Bánh trung thu {ks.ten}
         </h1>
-        <p class="price mt-3 text-xl">{min} – {max}</p>
-        <p class="mt-1 text-[13px] text-text-faint">
-          {soMau} mẫu hộp · HSD {ks.hsd_ngay} ngày · giá đã bao gồm VAT
-        </p>
+        {
+          story?.loiTua ? (
+            <p class="max-w-[60ch] text-balance font-display text-[clamp(1.125rem,2.4vw,1.375rem)] font-light italic leading-[1.6] text-[#4a453d]">
+              {story.loiTua}
+            </p>
+          ) : (
+            <p class="max-w-[60ch] text-[clamp(1.125rem,2.4vw,1.375rem)] italic leading-[1.6] text-text-faint">
+              TODO: chờ lời giới thiệu bộ sưu tập chính thức từ {ks.ten}.
+            </p>
+          )
+        }
 
-        <div class="mt-6 grid grid-cols-1 gap-3 border-t border-b border-hairline py-5 text-[13px] text-text-muted sm:grid-cols-2">
-          <p>Nhận trực tiếp từ khách sạn, nguyên tem nguyên hộp</p>
-          <p>Hóa đơn VAT đầy đủ, công nợ 50% cho đơn doanh nghiệp</p>
+        <div class="flex flex-wrap gap-x-8 gap-y-3.5 border-t border-hairline pt-0.5">
+          <div class="flex flex-col gap-1 pt-3.5">
+            <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Khoảng giá *</span>
+            <span class="price [font-variant-numeric:tabular-nums] text-[17px]">{min} – {max}</span>
+          </div>
+          <div class="flex flex-col gap-1 pt-3.5">
+            <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Số mẫu hộp</span>
+            <span class="text-[17px] text-ink">{soMau} mẫu</span>
+          </div>
+          <div class="flex flex-col gap-1 pt-3.5">
+            <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Hạn sử dụng</span>
+            <span class="text-[17px] text-ink">{ks.hsd_ngay} ngày</span>
+          </div>
         </div>
 
-        <h2 class="mt-8 font-display text-2xl text-ink">
-          Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
-        </h2>
-        <div class="mt-4">
-          <BangGia hotelId={ks.id} sanPham={sanPhamHienThi} />
-        </div>
-
-        <div class="mt-6 flex flex-wrap gap-3">
+        <div class="flex flex-wrap gap-3.5 pt-1">
           <a
             href={SITE.zalo}
             target="_blank"
             rel="noopener"
             data-contact="zalo-hero"
-            class="bg-accent px-7 py-4 text-sm font-medium uppercase tracking-wide text-paper hover:bg-accent-hover"
+            class="bg-accent px-7 py-4 text-[13px] font-medium tracking-[.05em] text-paper hover:bg-accent-hover"
           >
             Chat Zalo — báo giá 30 phút
           </a>
           <a
             href={`tel:${PHONE_TEL}`}
             data-contact="hotline-hero"
-            class="border border-hairline-input px-7 py-4 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper-warm"
+            class="border border-hairline-input px-6 py-4 text-[13px] font-medium text-ink hover:bg-paper-warm"
           >
             Gọi {PHONE_DISPLAY}
           </a>
         </div>
-
-        <ul class="mt-6 space-y-2 text-[13px] text-text-muted">
-          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>HSD {ks.hsd_ngay} ngày kể từ ngày sản xuất</li>
-          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>Giao 24–48h nội thành {ks.thanh_pho}, toàn quốc 2–4 ngày</li>
-          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>Thiết kế hộp riêng với logo công ty</li>
-        </ul>
 
         {
           story?.catalogue && (
@@ -191,42 +168,60 @@ const schema = [
               target="_blank"
               rel="noopener"
               data-contact="catalogue-download"
-              class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-accent hover:bg-gold hover:text-ink"
+              class="inline-block w-fit border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-accent hover:bg-gold hover:text-ink"
             >
               Tải catalogue chính hãng (PDF)
             </a>
           )
         }
       </div>
+
+      <div data-reveal class="flex flex-col gap-3">
+        {
+          anhHero && (
+            <div class="relative h-[300px] sm:h-[440px]">
+              <Image
+                src={anhHero}
+                alt={`Bộ sưu tập bánh trung thu ${ks.ten} 2026`}
+                width={1200}
+                height={1500}
+                loading="eager"
+                fetchpriority="high"
+                class="h-full w-full object-cover"
+              />
+            </div>
+          )
+        }
+        <p class="text-[11px] uppercase tracking-[.13em] text-accent">
+          BST {story?.ten_bst ?? ks.ten}
+        </p>
+      </div>
     </div>
 
-    {/* ── Khối lời giới thiệu BST (chỉ hiện nếu có nội dung thật) ── */}
-    {
-      story?.loiTua && (
-        <div data-reveal class="mt-14 grid gap-12 bg-paper-warm p-8 sm:p-11 md:grid-cols-2">
-          <div>
-            <p class="max-w-[65ch] font-display text-[1.5rem] font-light italic leading-[1.55] text-ink">
-              {story.loiTua}
-            </p>
-            <p class="mt-6 text-xs uppercase tracking-[.14em] text-accent">
-              BST {story.ten_bst ?? ks.ten}
-            </p>
-          </div>
-          {
-            anh[1] && (
-              <Image
-                src={anh[1]}
-                alt={`Bộ sưu tập bánh trung thu ${ks.ten} 2026`}
-                width={800}
-                height={520}
-                loading="lazy"
-                class="h-[260px] w-full object-cover"
-              />
-            )
-          }
+    {/* ── Bảng giá dạng thẻ có ảnh ─────────────────────────────────── */}
+    <div data-reveal class="flex flex-col gap-[26px] pt-14">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="text-[11px] uppercase tracking-[.22em] text-accent">Bảng giá 2026</p>
+          <h2 class="mt-2 font-display text-[38px] leading-[1.1] text-ink">Toàn bộ {soMau} mẫu hộp</h2>
         </div>
-      )
-    }
+        <p class="pb-1.5 text-xs text-text-faint">* Giá niêm yết đã bao gồm VAT.</p>
+      </div>
+
+      <BangGiaTheAnh hotelId={ks.id} sanPham={sanPhamHienThi} />
+
+      <div class="mt-1.5 grid gap-6 border-t border-hairline pt-[26px] sm:grid-cols-3">
+        <p class="flex gap-3 text-[13px] leading-[1.6] text-[#4a453d]">
+          <span aria-hidden="true" class="text-gold">—</span>Nhận trực tiếp từ khách sạn, nguyên tem nguyên hộp
+        </p>
+        <p class="flex gap-3 text-[13px] leading-[1.6] text-[#4a453d]">
+          <span aria-hidden="true" class="text-gold">—</span>Giao 24–48h nội thành {ks.thanh_pho}, toàn quốc 2–4 ngày
+        </p>
+        <p class="flex gap-3 text-[13px] leading-[1.6] text-[#4a453d]">
+          <span aria-hidden="true" class="text-gold">—</span>Thiết kế hộp riêng với logo công ty
+        </p>
+      </div>
+    </div>
 
     {/* ── Khách sạn khác ─────────────────────────────────────────── */}
     <div class="mt-14">
