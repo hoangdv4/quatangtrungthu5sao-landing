@@ -8,7 +8,7 @@ import FormB2B from '../components/FormB2B.astro';
 import HeroSlideshow from '../components/HeroSlideshow.astro';
 import LogoStrip from '../components/LogoStrip.astro';
 import BangGiaTongHop from '../components/BangGiaTongHop.astro';
-import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
+import { SITE, PHONE_DISPLAY } from '../config/site';
 import {
   KHACH_SAN,
   duongDan,
@@ -165,7 +165,13 @@ const trustPoints = [
     <h1 class="max-w-3xl text-balance font-display text-[clamp(2.25rem,7vw,4.5rem)] font-light leading-[1.04] tracking-[-.015em] text-ink">
       Quà Trung Thu<br />Khách Sạn 5 Sao
     </h1>
-    <div class="mt-2 flex flex-col gap-4 sm:flex-row">
+  </section>
+
+  {/* ── Khối 2 — Dải logo 7 khách sạn ──────────────────────────── */}
+  <LogoStrip />
+
+  <section class="mx-auto -mt-2 flex max-w-[1180px] flex-col items-center px-6 pb-16 sm:px-10 sm:pb-20">
+    <div class="flex flex-col gap-4 sm:flex-row">
       <a
         href="#bao-gia-b2b"
         class="bg-ink px-8 py-4 text-center text-[13px] font-medium uppercase tracking-wide text-paper hover:bg-accent"
@@ -180,9 +186,6 @@ const trustPoints = [
       </a>
     </div>
   </section>
-
-  {/* ── Khối 2 — Dải logo 7 khách sạn ──────────────────────────── */}
-  <LogoStrip />
 
   {/* ── Khối 3 — Hero slideshow (auto-play 5500ms) ────────────── */}
   <HeroSlideshow slides={slides} />
@@ -343,12 +346,6 @@ const trustPoints = [
             </div>
           ))
         }
-        <p class="mt-8 text-sm text-text-faint">
-          Cập nhật ngày 31/07/2026 · Liên hệ {SITE.brand}:
-          <a href={`tel:${PHONE_TEL}`} data-contact="hotline-faq" class="font-medium text-ink underline decoration-hairline-strong underline-offset-4"
-            >{PHONE_DISPLAY}</a
-          >
-        </p>
       </div>
     </div>
   </section>

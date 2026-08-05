@@ -1,16 +1,19 @@
 ---
 // Bảng giá dạng HTML chữ — TUYỆT ĐỐI không dùng ảnh chụp bảng (AI không đọc ảnh).
-// ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du.
+// ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du; ảnh SKU đã rà soát
+// thủ công loại bỏ mọi ảnh lộ chai/ly rượu (xem lib/hotel-images.ts layAnhSku).
+import { Image } from 'astro:assets';
 import { dinhDangGia, type SanPham } from '../lib/pricing';
+import { layAnhSku } from '../lib/hotel-images';
 
 interface Props {
+  hotelId: string;
   sanPham: SanPham[];
 }
 
-const { sanPham } = Astro.props;
+const { hotelId, sanPham } = Astro.props;
 
-// Placeholder kẻ sọc chéo — giữ đúng pattern trong design_handoff_trungthu_landing/Landing page.dc.html.
-// TODO: thay bằng ảnh thật riêng từng SKU khi có SALE KIT — hiện chưa đủ ảnh 1-1 theo mẫu hộp.
+// Placeholder kẻ sọc chéo — dùng khi chưa có ảnh riêng cho SKU đó.
 const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5px 10px)';
 ---
 
@@ -30,17 +33,24 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5
     </thead>
     <tbody>
       {
-        sanPham.map((sp) => (
-          <tr class="border-b border-hairline hover:bg-paper-warm">
-            <td class="px-2 py-3">
-              <div class="h-12 w-12" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
-            </td>
-            <td class="px-2 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
-            {/* Ẩn bằng CSS dưới 480px, vẫn giữ trong DOM — AI/crawler đọc được. */}
-            <td class="hidden px-2 py-3 text-text-muted min-[480px]:table-cell">{sp.quy_cach}</td>
-            <td class="price px-2 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
-          </tr>
-        ))
+        sanPham.map((sp) => {
+          const anh = layAnhSku(hotelId, sp.stt);
+          return (
+            <tr class="border-b border-hairline hover:bg-paper-warm">
+              <td class="px-2 py-3">
+                {anh ? (
+                  <Image src={anh} alt={sp.ten_hien_thi} width={48} height={48} loading="lazy" class="h-12 w-12 object-cover" />
+                ) : (
+                  <div class="h-12 w-12" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
+                )}
+              </td>
+              <td class="px-2 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
+              {/* Ẩn bằng CSS dưới 480px, vẫn giữ trong DOM — AI/crawler đọc được. */}
+              <td class="hidden px-2 py-3 text-text-muted min-[480px]:table-cell">{sp.quy_cach}</td>
+              <td class="price px-2 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
+            </tr>
+          );
+        })
       }
     </tbody>
   </table>

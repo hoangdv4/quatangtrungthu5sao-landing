@@ -13,12 +13,26 @@ const smaModules = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
+// Ảnh đại diện từng SKU (nguồn: BAOGIA.xlsx, đã rà soát thủ công loại bỏ mọi ảnh
+// lộ chai/ly rượu theo quy tắc C0 — SKU có rượu dùng ảnh hộp đóng nắp cùng dòng sản phẩm).
+const skuModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*/sku/sku-*.webp',
+  { eager: true }
+);
+
 /** Ảnh theo khách sạn (id trong pricing.json), sắp xếp theo tên file (01, 02, ...). */
 export function anhKhachSan(hotelId: string): ImageMetadata[] {
   return Object.entries(modules)
     .filter(([path]) => path.includes(`/assets/${hotelId}/`))
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([, mod]) => mod.default);
+}
+
+/** Ảnh đại diện của một SKU cụ thể (theo stt trong pricing.json), undefined nếu chưa có. */
+export function layAnhSku(hotelId: string, stt: number): ImageMetadata | undefined {
+  const suffix = `/assets/${hotelId}/sku/sku-${stt}.webp`;
+  const entry = Object.entries(skuModules).find(([path]) => path.endsWith(suffix));
+  return entry?.[1].default;
 }
 
 /** Ảnh hộp SMA — dùng cho khối B2B trang chủ, không gắn khách sạn cụ thể. */

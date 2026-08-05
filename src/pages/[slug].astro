@@ -93,7 +93,7 @@ const schema = [
 <Base {title} {description} {dateModified} {schema} headerCompact preloadImage={anhHeroOptimized?.src}>
   <div class="mx-auto max-w-[1180px] px-6 pt-6 sm:px-10">
     <nav aria-label="Breadcrumb" class="flex items-center gap-3 text-xs text-text-faint">
-      <a href="/#catalogue" class="text-accent hover:text-accent-hover">Bảng giá</a>
+      <a href="/#catalogue" class="text-accent hover:text-accent-hover">Bộ sưu tập</a>
       <span aria-hidden="true">/</span>
       <span>{ks.ten} 2026</span>
       {logo && <img src={logo} alt={`Logo ${ks.ten}`} class="ml-2 h-8 w-auto object-contain" loading="lazy" />}
@@ -149,7 +149,7 @@ const schema = [
           Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
         </h2>
         <div class="mt-4">
-          <BangGia sanPham={ks.san_pham} />
+          <BangGia hotelId={ks.id} sanPham={ks.san_pham} />
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">

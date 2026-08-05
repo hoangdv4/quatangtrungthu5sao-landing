@@ -20,8 +20,13 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
     {
       KHACH_SAN.map((ks) => {
         const logo = layLogo(ks.id);
+        // Intercontinental.png có nhiều khoảng trắng thừa quanh logo (nguồn gốc file) —
+        // phóng to hơn để bù trừ, giữ kích thước thị giác đồng đều với các logo khác.
+        const heightClass = ks.id === 'intercontinental-lm72' ? 'h-20' : 'h-10';
+        // Nikko.png là logo màu trắng (thiết kế cho nền tối) — đảo màu để hiện rõ trên nền kem sáng.
+        const filterClass = ks.id === 'nikko' ? 'invert grayscale opacity-80' : 'grayscale opacity-80';
         return logo ? (
-          <img src={logo} alt={`Logo ${ks.ten}`} class="h-10 w-auto max-w-[140px] object-contain grayscale opacity-80" loading="lazy" />
+          <img src={logo} alt={`Logo ${ks.ten}`} class={`${heightClass} w-auto max-w-[140px] object-contain ${filterClass}`} loading="lazy" />
         ) : (
           <div
             class="flex h-10 w-[140px] items-center justify-center text-center text-[10px] uppercase tracking-wide text-ink-soft"
