@@ -43,6 +43,33 @@
   --color-brand-nikko: #8a2f3b;
   --color-brand-renaissance: #6b4e71;
   --color-brand-b2b: #b08a3e;
+
+  /* Rung lắc kiểu điện thoại đổ chuông — dùng cho nút nổi Zalo/Gọi, lặp lại có khoảng nghỉ. */
+  --animate-ring-shake: ring-shake 2.8s ease-in-out infinite;
+}
+
+@keyframes ring-shake {
+  0%, 66% {
+    rotate: 0deg;
+  }
+  68% {
+    rotate: -12deg;
+  }
+  70% {
+    rotate: 10deg;
+  }
+  72% {
+    rotate: -8deg;
+  }
+  74% {
+    rotate: 6deg;
+  }
+  76% {
+    rotate: -4deg;
+  }
+  78%, 100% {
+    rotate: 0deg;
+  }
 }
 
 html {
