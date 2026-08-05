@@ -16,11 +16,11 @@ export const FAQ_CHUAN: FaqItem[] = [
   },
   {
     q: 'Có in logo công ty được không?',
-    a: 'Có — hộp thiết kế riêng cho đơn số lượng lớn, chốt trước 10/09.',
+    a: 'Có — hộp thiết kế riêng cùng logo, thiệp cho đơn số lượng lớn.',
   },
   {
     q: 'Đặt số lượng lớn chiết khấu thế nào?',
-    a: 'Báo giá riêng theo số lượng: cọc 50%, còn lại thanh toán trong 10 ngày sau giao.',
+    a: 'Báo giá riêng theo số lượng, mức chiết khấu cực kì tốt.',
   },
   {
     q: 'Hạn sử dụng bao lâu?',
