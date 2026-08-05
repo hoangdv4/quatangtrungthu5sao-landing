@@ -3,6 +3,12 @@
 // Env trống → KHÔNG render script (dev không bắn event rác, build vẫn pass).
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID?.trim();
 const gtagId = import.meta.env.PUBLIC_GTAG_ID?.trim();
+
+// Nhãn 2 conversion action tạo trong Google Ads (Mục tiêu → Lượt chuyển đổi).
+// Dạng đầy đủ "AW-XXXXXXXXX/YYYYYYYYYY" — copy từ đoạn mã sự kiện Google Ads đưa ra.
+// Thiếu 1 trong 2 thì conversion tương ứng không tính được (gtag('config') không tự suy ra).
+const gadsLeadLabel = import.meta.env.PUBLIC_GADS_LEAD_LABEL?.trim(); // "Submit form"
+const gadsContactLabel = import.meta.env.PUBLIC_GADS_CONTACT_LABEL?.trim(); // "Click Zalo/Gọi"
 ---
 
 {
@@ -58,12 +64,24 @@ const gtagId = import.meta.env.PUBLIC_GTAG_ID?.trim();
   )
 }
 
-<script is:inline>
-  // Helper dùng chung: bắn event tới cả Pixel lẫn Google tag nếu chúng tồn tại.
+<script is:inline define:vars={{ gadsLeadLabel, gadsContactLabel }}>
+  // Helper dùng chung: bắn event tới Pixel + GA4-style event (Meta/Ads Manager đọc theo tên)
+  // + conversion action thật của Google Ads (đọc theo send_to, không theo tên event).
   // Luôn định nghĩa (kể cả khi env trống) để nút Zalo/Gọi không lỗi JS.
   window.track = function (name, params) {
     if (typeof window.fbq === 'function') window.fbq('track', name, params || {});
-    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, params || {});
+
+      // Google Ads conversion "Submit form" — bắn kèm khi có nhãn cấu hình.
+      if (name === 'Lead' && gadsLeadLabel) {
+        window.gtag('event', 'conversion', { send_to: gadsLeadLabel });
+      }
+      // Google Ads conversion "Click Zalo/Gọi" — bắn kèm khi có nhãn cấu hình.
+      if (name === 'Contact' && gadsContactLabel) {
+        window.gtag('event', 'conversion', { send_to: gadsContactLabel });
+      }
+    }
   };
 
   // Click nút Zalo/Gọi ở bất kỳ đâu → event Contact.
