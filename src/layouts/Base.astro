@@ -10,11 +10,11 @@ import FloatingCTA from '../components/FloatingCTA.astro';
 import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 
-// Preload 2 woff2 (subset vietnamese) dùng ngay ở above-the-fold: H1 (Cormorant 500)
+// Preload 2 woff2 (subset vietnamese) dùng ngay ở above-the-fold: H1 (Lora 400)
 // + body (Be Vietnam Pro 400). URL lấy qua glob để luôn khớp hash build, không hardcode.
 const fontUrls = import.meta.glob<string>(
   [
-    '../../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-vietnamese-500-normal.woff2',
+    '../../node_modules/@fontsource/lora/files/lora-vietnamese-400-normal.woff2',
     '../../node_modules/@fontsource/be-vietnam-pro/files/be-vietnam-pro-vietnamese-400-normal.woff2',
   ],
   { eager: true, query: '?url', import: 'default' }
