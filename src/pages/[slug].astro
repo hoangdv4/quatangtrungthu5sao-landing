@@ -8,7 +8,7 @@ import Base from '../layouts/Base.astro';
 import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, coQuaTang, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -29,11 +29,9 @@ const { ks } = Astro.props;
 const content = HOTEL_CONTENT[ks.id];
 const dateModified = '2026-07-31';
 
-// ⚠️ C0: hộp có rượu (ruou !== null) chỉ hiện ở /hop-vip — trang này ẩn hoàn toàn.
-const sanPhamHienThi = ks.san_pham.filter((sp) => !coQuaTang(sp));
-const min = dinhDangGia(Math.min(...sanPhamHienThi.map((sp) => sp.gia_da_vat)));
-const max = dinhDangGia(Math.max(...sanPhamHienThi.map((sp) => sp.gia_da_vat)));
-const soMau = sanPhamHienThi.length;
+const min = dinhDangGia(ks.gia_tu);
+const max = dinhDangGia(ks.gia_den);
+const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
 const logo = layLogo(ks.id);
 
@@ -81,7 +79,7 @@ const schema = [
     description: doanMo,
     ...(anhHeroOptimized ? { image: `${SITE.domain}${anhHeroOptimized.src}` } : {}),
     brand: { '@type': 'Brand', name: SITE.brand },
-    offers: sanPhamHienThi.map((sp) => ({
+    offers: ks.san_pham.map((sp) => ({
       '@type': 'Offer',
       name: sp.ten_hien_thi,
       priceCurrency: 'VND',
@@ -208,7 +206,7 @@ const schema = [
         <p class="pb-1.5 text-xs text-text-faint">* Giá niêm yết đã bao gồm VAT.</p>
       </div>
 
-      <BangGiaTheAnh hotelId={ks.id} sanPham={sanPhamHienThi} />
+      <BangGiaTheAnh hotelId={ks.id} sanPham={ks.san_pham} />
 
       <div class="mt-1.5 grid gap-6 border-t border-hairline pt-[26px] sm:grid-cols-3">
         <p class="flex gap-3 text-[13px] leading-[1.6] text-[#4a453d]">

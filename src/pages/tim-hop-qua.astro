@@ -12,17 +12,13 @@ import {
   DOI_TUONG_LIST,
   dinhDangGia,
   duongDan,
-  coQuaTang,
   GIA_MIN,
   GIA_MAX,
 } from '../lib/pricing';
 
-// ⚠️ C0: hộp có rượu (ruou !== null) chỉ hiện ở /hop-vip — trang này ẩn hoàn toàn.
-const SAN_PHAM_HIEN_THI = TAT_CA_SAN_PHAM.filter(({ sp }) => !coQuaTang(sp));
-
 const dateModified = '2026-07-31';
 const title = `Tìm Hộp Quà Trung Thu Phù Hợp 2026 — Lọc Theo Nhu Cầu | ${SITE.brand}`;
-const description = `Lọc ${SAN_PHAM_HIEN_THI.length} mẫu hộp bánh trung thu 2026 theo ngân sách, khách sạn, màu sắc, chất liệu, đối tượng biếu tặng. Tư vấn concierge chọn quà nhanh qua Zalo ${PHONE_DISPLAY}.`;
+const description = `Lọc ${TAT_CA_SAN_PHAM.length} mẫu hộp bánh trung thu 2026 theo ngân sách, khách sạn, màu sắc, chất liệu, đối tượng biếu tặng. Tư vấn concierge chọn quà nhanh qua Zalo ${PHONE_DISPLAY}.`;
 
 const nganSachMoc = [
   { nhan: 'Dưới 1,5tr', min: 0, max: 1500000 },
@@ -51,7 +47,7 @@ const schema = [
       Tìm hộp quà trung thu phù hợp
     </h1>
     <p class="mt-4 max-w-[65ch] text-base leading-relaxed text-ink-soft sm:text-lg">
-      Lọc {SAN_PHAM_HIEN_THI.length} mẫu hộp theo ngân sách, khách sạn, màu sắc, chất liệu và đối
+      Lọc {TAT_CA_SAN_PHAM.length} mẫu hộp theo ngân sách, khách sạn, màu sắc, chất liệu và đối
       tượng biếu tặng — hoặc trả lời 2 câu hỏi để nhận gợi ý nhanh.
     </p>
 
@@ -168,12 +164,12 @@ const schema = [
       </div>
 
       <p class="mt-6 text-sm text-ink-soft" data-filter-count>
-        Hiển thị {SAN_PHAM_HIEN_THI.length}/{SAN_PHAM_HIEN_THI.length} mẫu hộp — giá {dinhDangGia(GIA_MIN)}–{dinhDangGia(GIA_MAX)} (đã VAT).
+        Hiển thị {TAT_CA_SAN_PHAM.length}/{TAT_CA_SAN_PHAM.length} mẫu hộp — giá {dinhDangGia(GIA_MIN)}–{dinhDangGia(GIA_MAX)} (đã VAT).
       </p>
 
       <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="danh-sach-sku">
         {
-          SAN_PHAM_HIEN_THI.map(({ ks, sp }) => (
+          TAT_CA_SAN_PHAM.map(({ ks, sp }) => (
             <li
               class="border border-hairline bg-paper p-4"
               data-sku
