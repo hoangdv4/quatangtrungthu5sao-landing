@@ -1,19 +1,31 @@
 ---
 import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
+
+interface Props {
+  /** true → menu rút gọn (dùng ở 7 trang chi tiết khách sạn): chỉ Trang chủ + hotline + Zalo. */
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
 ---
 
-<header class="sticky top-0 z-40 border-b border-gold-soft/60 bg-paper/95 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-    <a href="/" class="font-display text-lg leading-tight text-ink sm:text-xl">
-      {SITE.brand}
+<header class="sticky top-0 z-40 border-b border-hairline bg-paper/95 backdrop-blur">
+  <div class="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-6 py-4 sm:px-10">
+    <a href="/" class="flex flex-col gap-0.5 leading-none">
+      <span class="font-display text-[19px] uppercase tracking-[.12em] text-ink">{SITE.brand}</span>
+      <span class="text-[10px] uppercase tracking-[.14em] text-accent">Đại lý phân phối chính thức</span>
     </a>
 
-    <div class="flex items-center gap-2">
-      <a
-        href={`tel:${PHONE_TEL}`}
-        data-contact="hotline"
-        class="hidden border border-ink px-3 py-2 text-sm font-medium tracking-wide text-ink hover:bg-ink hover:text-paper sm:inline-block"
-      >
+    <nav class="hidden items-center gap-6 text-[13px] text-text-muted md:flex">
+      <a href="/" class="text-ink hover:text-accent">Trang chủ</a>
+      {!compact && (
+        <>
+          <a href="/#catalogue" class="hover:text-accent">Bảng giá</a>
+          <a href="/#ngan-sach" class="hover:text-accent">Chọn theo ngân sách</a>
+          <a href="/#bao-gia-b2b" class="hover:text-accent">Doanh nghiệp</a>
+        </>
+      )}
+      <a href={`tel:${PHONE_TEL}`} data-contact="hotline" class="font-medium text-ink hover:text-accent">
         {PHONE_DISPLAY}
       </a>
       <a
@@ -21,10 +33,56 @@ import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
         target="_blank"
         rel="noopener"
         data-contact="zalo"
-        class="inline-flex min-h-[44px] items-center bg-ink px-4 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold"
+        class="inline-flex min-h-[44px] items-center bg-ink px-5 text-xs font-medium uppercase tracking-[.06em] text-paper hover:bg-accent"
       >
         Chat Zalo
       </a>
-    </div>
+    </nav>
+
+    <button
+      type="button"
+      data-menu-toggle
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="flex h-11 w-11 flex-col items-center justify-center gap-[5px] md:hidden"
+    >
+      <span class="sr-only">Mở menu</span>
+      <span class="block h-px w-5 bg-ink"></span>
+      <span class="block h-px w-5 bg-ink"></span>
+      <span class="block h-px w-5 bg-ink"></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" data-menu-panel hidden class="border-t border-hairline bg-paper px-6 py-4 md:hidden">
+    <nav class="flex flex-col gap-3 text-sm text-text-muted">
+      <a href="/" class="text-ink">Trang chủ</a>
+      {!compact && (
+        <>
+          <a href="/#catalogue">Bảng giá</a>
+          <a href="/#ngan-sach">Chọn theo ngân sách</a>
+          <a href="/#bao-gia-b2b">Doanh nghiệp</a>
+        </>
+      )}
+      <a href={`tel:${PHONE_TEL}`} data-contact="hotline" class="font-medium text-ink">{PHONE_DISPLAY}</a>
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo"
+        class="inline-flex min-h-[44px] w-fit items-center bg-ink px-5 text-xs font-medium uppercase tracking-[.06em] text-paper"
+      >
+        Chat Zalo
+      </a>
+    </nav>
   </div>
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    panel?.toggleAttribute('hidden', isOpen);
+  });
+</script>

@@ -1,0 +1,145 @@
+---
+// Hero slideshow trang chủ — tự chuyển 5500ms, tôn trọng prefers-reduced-motion.
+// Khác với Lightbox (trang chi tiết): ở đây auto-play là quyết định thiết kế đã chốt.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { KhachSan } from '../lib/pricing';
+
+interface Slide {
+  ks: KhachSan;
+  anh: ImageMetadata;
+  tenBst: string | null;
+}
+
+interface Props {
+  slides: Slide[];
+}
+
+const { slides } = Astro.props;
+---
+
+<div data-hero-slideshow class="relative h-[420px] w-full overflow-hidden md:h-[420px] max-md:aspect-[4/5] max-md:h-auto">
+  {
+    slides.map((slide, i) => (
+      <div data-slide class={`absolute inset-0 transition-opacity duration-[450ms] ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`}>
+        <Image
+          src={slide.anh}
+          alt={`Bánh trung thu ${slide.ks.ten} 2026 — hộp quà chính hãng`}
+          width={2400}
+          height={860}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : undefined}
+          class="h-full w-full object-cover"
+        />
+      </div>
+    ))
+  }
+
+  <button
+    type="button"
+    data-arrow-prev
+    aria-label="Ảnh trước"
+    class="absolute left-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-[rgba(253,251,246,.92)] hover:bg-paper"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="#8c2f22" stroke-width="1.2" class="h-[18px] w-[18px]">
+      <path d="M14.5 5L8 12l6.5 7"></path>
+    </svg>
+  </button>
+  <button
+    type="button"
+    data-arrow-next
+    aria-label="Ảnh tiếp theo"
+    class="absolute right-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-[rgba(253,251,246,.92)] hover:bg-paper"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="#8c2f22" stroke-width="1.2" class="h-[18px] w-[18px]">
+      <path d="M9.5 5L16 12l-6.5 7"></path>
+    </svg>
+  </button>
+
+  <div class="absolute inset-x-0 bottom-0 flex items-end justify-between px-4 pb-4 sm:px-6 sm:pb-6">
+    <div class="max-w-[62%] bg-[rgba(253,251,246,.92)] px-5 py-4">
+      {
+        slides.map((slide, i) => (
+          <div data-slide-label class={i === 0 ? '' : 'hidden'}>
+            <p class="font-display text-xl text-ink">{slide.ks.ten}</p>
+            {slide.tenBst && <p class="mt-1 text-[11px] uppercase tracking-[.13em] text-accent">{slide.tenBst}</p>}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="flex items-center gap-2">
+      {
+        slides.map((_, i) => (
+          <button
+            type="button"
+            data-dot-index={i}
+            aria-label={`Xem ảnh ${i + 1}`}
+            class={`h-0.5 transition-[width] ${i === 0 ? 'w-[26px] bg-accent' : 'w-[13px] bg-[#c4bcae]'}`}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  const AUTOPLAY_MS = 5500;
+
+  document.querySelectorAll<HTMLElement>('[data-hero-slideshow]').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const labels = Array.from(root.querySelectorAll<HTMLElement>('[data-slide-label]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot-index]'));
+    if (slides.length === 0) return;
+
+    let current = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i: number) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((el, idx) => el.classList.toggle('opacity-100', idx === current));
+      slides.forEach((el, idx) => el.classList.toggle('opacity-0', idx !== current));
+      labels.forEach((el, idx) => el.classList.toggle('hidden', idx !== current));
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('w-[26px]', idx === current);
+        dot.classList.toggle('bg-accent', idx === current);
+        dot.classList.toggle('w-[13px]', idx !== current);
+        dot.classList.toggle('bg-[#c4bcae]', idx !== current);
+      });
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      if (!reduceMotion && !document.hidden) {
+        timer = setInterval(() => show(current + 1), AUTOPLAY_MS);
+      }
+    }
+
+    root.querySelector('[data-arrow-prev]')?.addEventListener('click', () => {
+      show(current - 1);
+      resetTimer();
+    });
+    root.querySelector('[data-arrow-next]')?.addEventListener('click', () => {
+      show(current + 1);
+      resetTimer();
+    });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => {
+      show(i);
+      resetTimer();
+    }));
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && timer) {
+        clearInterval(timer);
+        timer = null;
+      } else if (!document.hidden) {
+        resetTimer();
+      }
+    });
+
+    show(0);
+    resetTimer();
+  });
+</script>

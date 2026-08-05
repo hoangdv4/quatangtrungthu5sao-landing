@@ -32,9 +32,19 @@ interface Props {
   noindex?: boolean;
   /** URL ảnh hero (LCP element) — preload để giảm LCP trên 4G. */
   preloadImage?: string;
+  /** true → Header rút gọn (dùng cho 7 trang chi tiết khách sạn). */
+  headerCompact?: boolean;
 }
 
-const { title, description, dateModified, schema = [], noindex = false, preloadImage } = Astro.props;
+const {
+  title,
+  description,
+  dateModified,
+  schema = [],
+  noindex = false,
+  preloadImage,
+  headerCompact = false,
+} = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.domain).href.replace(/\/$/, '') || SITE.domain;
 const modified = dateModified ?? new Date().toISOString().slice(0, 10);
@@ -94,7 +104,7 @@ const jsonLd = {
     <Analytics />
   </head>
   <body class="bg-paper text-ink antialiased">
-    <Header />
+    <Header compact={headerCompact} />
     <main>
       <slot />
     </main>

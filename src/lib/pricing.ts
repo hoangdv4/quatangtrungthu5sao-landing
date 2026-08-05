@@ -89,3 +89,17 @@ function danhSachDuyNhat<T>(values: T[]): T[] {
 export const MAU_SAC_LIST = danhSachDuyNhat(TAT_CA_SAN_PHAM.map(({ sp }) => sp.mau_sac));
 export const CHAT_LIEU_LIST = danhSachDuyNhat(TAT_CA_SAN_PHAM.map(({ sp }) => sp.chat_lieu));
 export const DOI_TUONG_LIST = danhSachDuyNhat(TAT_CA_SAN_PHAM.flatMap(({ sp }) => sp.doi_tuong));
+
+/** Mức giá dùng cho 4 chip lọc bảng giá tổng hợp trang chủ. */
+export type Tier = 'low' | 'mid' | 'vip';
+
+/** Một khách sạn có thể thuộc nhiều tier nếu có SKU trải nhiều mức giá. */
+export function tinhTiers(ks: KhachSan): Tier[] {
+  const tiers = new Set<Tier>();
+  for (const sp of ks.san_pham) {
+    if (sp.gia_da_vat < 1_100_000) tiers.add('low');
+    else if (sp.gia_da_vat <= 2_600_000) tiers.add('mid');
+    else tiers.add('vip');
+  }
+  return [...tiers];
+}

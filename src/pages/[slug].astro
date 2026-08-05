@@ -1,5 +1,5 @@
 ---
-// 7 trang con khách sạn — khuôn theo data/site-content.md mục 2 (redesign luxury Phase 6).
+// 7 trang con khách sạn — cấu trúc mới theo design_handoff_trungthu_landing/README.md mục 2.
 // ⚠️ C0: trang đích ads — không chữ "rượu" trong meta/OG, ten_hien_thi đã sanitize.
 export const prerender = true;
 
@@ -7,13 +7,13 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import BangGia from '../components/BangGia.astro';
 import Lightbox from '../components/Lightbox.astro';
+import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
 import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
-import { anhKhachSan } from '../lib/hotel-images';
+import { anhKhachSan, layLogo } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
-import { BRAND_TINT_BORDER } from '../lib/brand-tint';
 
 export function getStaticPaths() {
   return KHACH_SAN.map((ks) => ({
@@ -34,7 +34,7 @@ const min = dinhDangGia(ks.gia_tu);
 const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
-const tint = BRAND_TINT_BORDER[ks.id] ?? 'border-gold';
+const logo = layLogo(ks.id);
 const doiTuongPhuHop = [...new Set(ks.san_pham.flatMap((sp) => sp.doi_tuong))];
 
 const tenTrangThai = story?.ten_bst ? `${ks.ten} — BST ${story.ten_bst}` : ks.ten;
@@ -56,7 +56,7 @@ const canonicalPath = duongDan(ks.id);
 const anh = anhKhachSan(ks.id);
 const [anhHero, ...anhConLai] = anh;
 const anhHeroOptimized = anhHero
-  ? await getImage({ src: anhHero, width: 1600, height: 1000 })
+  ? await getImage({ src: anhHero, width: 1600, height: 1600 })
   : null;
 
 const schema = [
@@ -90,153 +90,186 @@ const schema = [
 ];
 ---
 
-<Base {title} {description} {dateModified} {schema} preloadImage={anhHeroOptimized?.src}>
-  {/* ── Khối 1 — Hero nhỏ (~55svh) ────────────────────────────── */}
-  <section class={`relative h-[55svh] min-h-[380px] w-full overflow-hidden border-b-[3px] ${tint}`}>
-    {
-      anhHero && (
-        <Image
-          src={anhHero}
-          alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
-          width={1600}
-          height={1000}
-          loading="eager"
-          fetchpriority="high"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-      )
-    }
-    <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/5" aria-hidden="true"></div>
+<Base {title} {description} {dateModified} {schema} headerCompact preloadImage={anhHeroOptimized?.src}>
+  <div class="mx-auto max-w-[1180px] px-6 pt-6 sm:px-10">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-3 text-xs text-text-faint">
+      <a href="/#catalogue" class="text-accent hover:text-accent-hover">Bảng giá</a>
+      <span aria-hidden="true">/</span>
+      <span>{ks.ten} 2026</span>
+      {logo && <img src={logo} alt={`Logo ${ks.ten}`} class="ml-2 h-8 w-auto object-contain" loading="lazy" />}
+    </nav>
+  </div>
 
-    <div class="absolute inset-x-0 bottom-0 px-4 pb-8 sm:px-6 sm:pb-10">
-      <div class="mx-auto max-w-3xl">
-        <nav aria-label="Breadcrumb" class="text-xs text-paper/70">
-          <a href="/" class="hover:text-paper hover:underline">Trang chủ</a>
-          <span aria-hidden="true"> / </span>
-          <span>{ks.ten}</span>
-        </nav>
-        <h1 class="mt-2 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-paper">
-          {ks.ten}
+  <article class="mx-auto max-w-[1180px] px-6 py-8 sm:px-10 md:py-12">
+    {/* ── Thân trên: gallery + thông tin ─────────────────────────── */}
+    <div class="grid gap-14 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
+      <div data-reveal>
+        {
+          anhHero && (
+            <Image
+              src={anhHero}
+              alt={`Bánh trung thu ${ks.ten} 2026 — hộp quà chính hãng`}
+              width={1600}
+              height={1600}
+              loading="eager"
+              fetchpriority="high"
+              class="h-[460px] w-full object-cover"
+            />
+          )
+        }
+        {
+          anhConLai.length > 0 && (
+            <div class="mt-3">
+              <Lightbox
+                id={ks.id}
+                images={anhConLai}
+                altAt={(i) => `Bánh trung thu ${ks.ten} 2026 — cận cảnh hộp bánh ${i + 2}`}
+              />
+            </div>
+          )
+        }
+      </div>
+
+      <div data-reveal>
+        {story?.ten_bst && <p class="label-gold">{story.ten_bst} · Trung Thu 2026</p>}
+        <h1 class="mt-2 font-display text-[clamp(1.75rem,5vw,3.25rem)] font-light leading-[1.05] text-ink">
+          Bánh trung thu {ks.ten}
         </h1>
-        {story?.ten_bst && <p class="mt-1 font-display text-lg italic text-paper/85">{story.ten_bst}</p>}
-      </div>
-    </div>
-  </section>
+        <p class="price mt-3 text-xl">{min} – {max}</p>
+        <p class="mt-1 text-[13px] text-text-faint">
+          {soMau} mẫu hộp · HSD {ks.hsd_ngay} ngày · giá đã bao gồm VAT
+        </p>
 
-  <article class="mx-auto max-w-3xl px-4 py-12 md:py-16">
-    <div data-reveal>
-      <p class="text-base leading-relaxed text-ink-soft sm:text-lg">
-        {doanMo}
-      </p>
-
-      {/* ── Khối 2 — Brand story (trích nguyên văn) ───────────────── */}
-      {
-        story?.loiTua && (
-          <p class="mt-6 max-w-[65ch] font-display text-[1.15rem] italic leading-relaxed text-ink">
-            {story.loiTua}
-          </p>
-        )
-      }
-    </div>
-
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a
-        href={SITE.zalo}
-        target="_blank"
-        rel="noopener"
-        data-contact="zalo-hero"
-        class="bg-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold"
-      >
-        Chat Zalo {PHONE_DISPLAY}
-      </a>
-      <a
-        href={`tel:${PHONE_TEL}`}
-        data-contact="hotline-hero"
-        class="border border-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-ink hover:text-paper"
-      >
-        Gọi ngay
-      </a>
-    </div>
-
-    {/* ── Khối 4 — Gallery cinematic (lightbox, chuyển ảnh do người dùng điều khiển) ── */}
-    {
-      anhConLai.length > 0 && (
-        <div data-reveal class="mt-8">
-          <Lightbox
-            id={ks.id}
-            images={anhConLai}
-            altAt={(i) => `Bánh trung thu ${ks.ten} 2026 — cận cảnh hộp bánh ${i + 2}`}
-          />
+        <div class="mt-6 grid grid-cols-1 gap-3 border-t border-b border-hairline py-5 text-[13px] text-text-muted sm:grid-cols-2">
+          <p>Nhận trực tiếp từ khách sạn, nguyên tem nguyên hộp</p>
+          <p>Hóa đơn VAT đầy đủ, công nợ 50% cho đơn doanh nghiệp</p>
         </div>
-      )
-    }
 
-    {/* ── Khối 3 — Bảng giá ──────────────────────────────────────── */}
-    <div data-reveal>
-      <h2 class="mt-12 font-display text-2xl text-ink">
-        Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
-      </h2>
-      <div class="mt-5">
-        <BangGia sanPham={ks.san_pham} />
-      </div>
-      <p class="mt-3 text-sm text-ink-soft">
-        Hạn sử dụng {ks.hsd_ngay} ngày kể từ ngày sản xuất.
-      </p>
+        <h2 class="mt-8 font-display text-2xl text-ink">
+          Bảng giá bánh trung thu {ks.ten} 2026 (đã gồm VAT)
+        </h2>
+        <div class="mt-4">
+          <BangGia sanPham={ks.san_pham} />
+        </div>
 
-      {
-        story?.catalogue && (
+        <div class="mt-6 flex flex-wrap gap-3">
           <a
-            href={`/catalogue/${story.catalogue}`}
+            href={SITE.zalo}
             target="_blank"
             rel="noopener"
-            data-contact="catalogue-download"
-            class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-[--color-gold-text] hover:bg-gold hover:text-ink"
+            data-contact="zalo-hero"
+            class="bg-accent px-7 py-4 text-sm font-medium uppercase tracking-wide text-paper hover:bg-accent-hover"
           >
-            Tải catalogue chính hãng (PDF)
+            Chat Zalo — báo giá 30 phút
           </a>
-        )
-      }
+          <a
+            href={`tel:${PHONE_TEL}`}
+            data-contact="hotline-hero"
+            class="border border-hairline-input px-7 py-4 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper-warm"
+          >
+            Gọi {PHONE_DISPLAY}
+          </a>
+        </div>
+
+        <ul class="mt-6 space-y-2 text-[13px] text-text-muted">
+          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>HSD {ks.hsd_ngay} ngày kể từ ngày sản xuất</li>
+          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>Giao 24–48h nội thành {ks.thanh_pho}, toàn quốc 2–4 ngày</li>
+          <li class="flex gap-3"><span aria-hidden="true" class="text-gold">—</span>Thiết kế hộp riêng với logo công ty</li>
+        </ul>
+
+        {
+          story?.catalogue && (
+            <a
+              href={`/catalogue/${story.catalogue}`}
+              target="_blank"
+              rel="noopener"
+              data-contact="catalogue-download"
+              class="mt-5 inline-block border border-gold px-5 py-2.5 text-sm font-medium uppercase tracking-wide text-accent hover:bg-gold hover:text-ink"
+            >
+              Tải catalogue chính hãng (PDF)
+            </a>
+          )
+        }
+      </div>
     </div>
 
-    <div data-reveal>
-      <h2 class="mt-12 font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
-      <p class="mt-3 leading-relaxed text-ink-soft">{content.tuVan}</p>
+    {/* ── Nên chọn hộp nào? (nội dung biên tập tay, giữ nguyên) ──── */}
+    <div data-reveal class="mt-14">
+      <h2 class="font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
+      <p class="mt-3 max-w-[70ch] leading-relaxed text-text-muted">{content.tuVan}</p>
       {
         doiTuongPhuHop.length > 0 && (
-          <p class="mt-2 text-sm text-ink-soft">
+          <p class="mt-2 text-sm text-text-muted">
             <span class="font-medium text-ink">Phù hợp biếu:</span> {doiTuongPhuHop.join(' · ')}
           </p>
         )
       }
     </div>
 
-    {/* ── Khối 6 — FAQ + CTA cuối ────────────────────────────────── */}
-    <div data-reveal>
-      <h2 class="mt-12 font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
+    {/* ── Khối lời giới thiệu BST (chỉ hiện nếu có nội dung thật) ── */}
+    {
+      story?.loiTua && (
+        <div data-reveal class="mt-14 grid gap-12 bg-paper-warm p-8 sm:p-11 md:grid-cols-2">
+          <div>
+            <p class="max-w-[65ch] font-display text-[1.5rem] font-light italic leading-[1.55] text-ink">
+              {story.loiTua}
+            </p>
+            <p class="mt-6 text-xs uppercase tracking-[.14em] text-accent">
+              BST {story.ten_bst ?? ks.ten}
+            </p>
+          </div>
+          {
+            anh[1] && (
+              <Image
+                src={anh[1]}
+                alt={`Bộ sưu tập bánh trung thu ${ks.ten} 2026`}
+                width={800}
+                height={520}
+                loading="lazy"
+                class="h-[260px] w-full object-cover"
+              />
+            )
+          }
+        </div>
+      )
+    }
+
+    {/* ── Khách sạn khác ─────────────────────────────────────────── */}
+    <div class="mt-14">
+      <RelatedHotels hienTai={ks.id} />
+    </div>
+
+    {/* ── FAQ ──────────────────────────────────────────────────────── */}
+    <div data-reveal class="mt-14">
+      <h2 class="font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
       <div class="mt-5 space-y-3">
         {
           faqTrang.map((item, i) => (
-            <details class="border border-gold-soft/60 bg-paper-warm p-4" open={i === 0}>
+            <details class="border border-hairline bg-paper-warm p-4" open={i === 0}>
               <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
-              <p class="mt-2 text-ink-soft">{item.a}</p>
+              <p class="mt-2 text-text-muted">{item.a}</p>
             </details>
           ))
         }
       </div>
     </div>
 
-    <div data-reveal class="mt-12 bg-ink p-6 text-center sm:p-8">
-      <p class="font-display text-xl text-paper">Tư vấn qua Zalo trong 5 phút</p>
+    {/* ── CTA cuối ─────────────────────────────────────────────────── */}
+    <div data-reveal class="mt-14 flex flex-col items-center gap-4 bg-ink p-8 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div>
+        <p class="font-display text-xl text-dark-text">Đặt từ 30 hộp trở lên?</p>
+        <p class="mt-1 text-[13px] text-dark-text-muted">Chiết khấu tốt · hóa đơn VAT đầy đủ · logo và thiệp công ty</p>
+      </div>
       <a
         href={SITE.zalo}
         target="_blank"
         rel="noopener"
         data-contact="zalo-cta-cuoi"
-        class="mt-4 inline-block bg-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
+        class="inline-block bg-gold px-6 py-3 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
       >
-        Chat Zalo {PHONE_DISPLAY}
+        Chat Zalo — báo giá 30 phút
       </a>
-      <p class="mt-4 text-xs text-paper/60">Cập nhật ngày 31/07/2026.</p>
+      <p class="text-xs text-dark-text-muted sm:hidden">Cập nhật ngày 31/07/2026.</p>
     </div>
   </article>
 </Base>

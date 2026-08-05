@@ -2,6 +2,8 @@
 
 /* Font tự host qua @fontsource (Vietnamese subset) — không gọi ra Google Fonts lúc runtime,
    giữ LCP/CLS tốt cho Lighthouse mobile. Chỉ import đúng weight cần dùng. */
+@import "@fontsource/cormorant-garamond/vietnamese-300.css";
+@import "@fontsource/cormorant-garamond/vietnamese-300-italic.css";
 @import "@fontsource/cormorant-garamond/vietnamese-500.css";
 @import "@fontsource/cormorant-garamond/vietnamese-600.css";
 @import "@fontsource/be-vietnam-pro/vietnamese-400.css";
@@ -11,21 +13,30 @@
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  /* ── Màu nền tảng (luxury, KHÔNG đen tuyền / trắng tinh) ── */
-  --color-ink: #1a1b1e;
-  --color-ink-soft: #5a5c63;
-  --color-paper: #faf7f1;
-  --color-paper-warm: #f3ede2;
-  --color-gold: #b08a3e;
-  --color-gold-soft: #d9c39a;
-  /* Bản đậm của gold — DÙNG CHO CHỮ trên nền paper/paper-warm (đạt AA ≥4.5:1).
-     --color-gold gốc chỉ dùng cho border/background trang trí, không đủ tương phản cho text. */
-  --color-gold-text: #7a5d28;
+  /* ── Bảng màu luxury kem/son đỏ/vàng đồng (redesign theo design_handoff_trungthu_landing) ── */
+  --color-paper: #fdfbf6;
+  --color-paper-warm: #f6f2e9;
+  --color-ink: #2b2723;
+  --color-ink-soft: #4a453d;
+  --color-text-muted: #6b6459;
+  --color-text-faint: #8a8377;
+  --color-text-faintest: #9a9285;
+
+  --color-accent: #8c2f22;
+  --color-accent-hover: #6e2318;
+  --color-gold: #c9a15a;
+
+  --color-hairline: #e8e3d9;
+  --color-hairline-strong: #ddd6c9;
+  --color-hairline-input: #cfc7b8;
+
+  --color-dark-text: #f4f1ea;
+  --color-dark-text-muted: #b7ac9b;
 
   /* Trạng thái bán hàng duy nhất được phép — nâu đỏ trầm, không đỏ sale/cam flash. */
   --color-status-low-stock: #8a4b2d;
 
-  /* ── Brand tint riêng từng khách sạn (viền hero, tag BST, hover) ── */
+  /* ── Brand tint riêng từng khách sạn (viền hero, tag BST, hover) — giữ nguyên, không thuộc bảng màu chủ đạo ── */
   --color-brand-sheraton: #1f3a6e;
   --color-brand-intercontinental: #b4552d;
   --color-brand-melia: #b98a50;
@@ -34,13 +45,6 @@
   --color-brand-nikko: #8a2f3b;
   --color-brand-renaissance: #6b4e71;
   --color-brand-b2b: #b08a3e;
-
-  /* Bo góc nhỏ — luxury không bo tròn kiểu app. */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-
-  /* Shadow rất nhẹ — không glow, không gradient. */
-  --shadow-soft: 0 2px 12px rgba(26, 27, 30, 0.06);
 }
 
 html {
@@ -73,18 +77,16 @@ h4,
   font-variant-numeric: tabular-nums;
 }
 
-/* Nhãn nhỏ dạng "BỘ SƯU TẬP 2026" — nhũ vàng chỉ dùng cho chữ ngắn, uppercase.
-   Dùng --color-gold-text (đậm hơn --color-gold) để đạt tương phản AA trên nền paper. */
+/* Nhãn nhỏ dạng eyebrow "BỘ SƯU TẬP 2026" — son đỏ, chỉ dùng cho chữ ngắn, uppercase. */
 .label-gold {
-  color: var(--color-gold-text);
+  color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.8125rem;
   font-weight: 500;
 }
 
-/* Biến thể cho nền tối (--ink) — --color-gold gốc đã đạt AA trên ink,
-   --color-gold-text (đậm hơn) lại KHÔNG đủ tương phản trên nền tối. */
+/* Biến thể cho nền tối (--ink) — vàng đồng đạt AA trên nền tối. */
 .label-gold-dark {
   color: var(--color-gold);
   text-transform: uppercase;
@@ -93,10 +95,19 @@ h4,
   font-weight: 500;
 }
 
-/* Đường kẻ trang trí mảnh, viền vàng nhạt. */
+/* Nhãn mờ dùng cho label input/legend filter — tránh quá nhiều chữ đỏ chói mắt ở form. */
+.label-muted {
+  color: var(--color-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+/* Đường kẻ trang trí mảnh — hairline thay cho shadow/bo góc. */
 .rule-gold {
   border: none;
-  border-top: 1px solid var(--color-gold-soft);
+  border-top: 1px solid var(--color-gold);
 }
 
 /* Scroll-reveal: chỉ áp dụng khi JS đã chạy và gắn class "js" lên <html> (xem Base.astro

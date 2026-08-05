@@ -1,0 +1,45 @@
+---
+// Khối "Khách sạn khác" — trang chi tiết mỗi khách sạn. Lấy 3 khách sạn đầu tiên
+// khác khách sạn hiện tại, giữ đúng thứ tự mảng KHACH_SAN gốc (không sort/random).
+import { Image } from 'astro:assets';
+import { KHACH_SAN, duongDan, khoangGia } from '../lib/pricing';
+import { anhKhachSan } from '../lib/hotel-images';
+
+interface Props {
+  hienTai: string;
+}
+
+const { hienTai } = Astro.props;
+const related = KHACH_SAN.filter((ks) => ks.id !== hienTai).slice(0, 3);
+
+const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 7px,#f6f2e9 7px 14px)';
+---
+
+<div data-reveal>
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <h2 class="font-display text-[32px] leading-tight text-ink">Khách sạn khác</h2>
+    <a href="/#catalogue" class="border-b border-ink text-sm text-ink hover:text-accent">
+      Xem toàn bộ bảng giá
+    </a>
+  </div>
+
+  <div class="mt-6 grid gap-6 sm:grid-cols-3">
+    {
+      related.map((ks) => {
+        const anh = anhKhachSan(ks.id)[0];
+        return (
+          <a href={duongDan(ks.id)} class="block">
+            {anh ? (
+              <Image src={anh} alt={`Bánh trung thu ${ks.ten} 2026`} width={600} height={400} loading="lazy" class="h-[200px] w-full object-cover" />
+            ) : (
+              <div class="h-[200px] w-full" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
+            )}
+            <p class="mt-3 font-display text-[22px] text-ink">{ks.ten}</p>
+            <p class="price mt-1 text-sm text-ink-soft">{khoangGia(ks)}</p>
+            <p class="mt-1 text-xs text-text-faint">{ks.san_pham.length} mẫu hộp · HSD {ks.hsd_ngay} ngày</p>
+          </a>
+        );
+      })
+    }
+  </div>
+</div>

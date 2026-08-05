@@ -1,0 +1,106 @@
+---
+// Khối 1.5 — Bảng giá 7 khách sạn (trang chủ) + 4 chip lọc theo tier giá.
+// Bảng HTML chữ thật (AI/crawler đọc được) — thay cho card-grid ảnh trước đây.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { duongDan, khoangGia, type KhachSan, type Tier } from '../lib/pricing';
+
+interface Row {
+  ks: KhachSan;
+  anh: ImageMetadata | undefined;
+  tiers: Tier[];
+}
+
+interface Props {
+  rows: Row[];
+}
+
+const { rows } = Astro.props;
+
+const FILTERS: { id: 'all' | Tier; label: string }[] = [
+  { id: 'all', label: 'Tất cả' },
+  { id: 'low', label: 'Dưới 1,1tr' },
+  { id: 'mid', label: '1,2–2,6tr' },
+  { id: 'vip', label: 'Trên 2,6tr' },
+];
+
+const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 6px,#f6f2e9 6px 12px)';
+---
+
+<div>
+  <div class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Lọc theo mức giá">
+    {
+      FILTERS.map((f, i) => (
+        <button
+          type="button"
+          data-tier-chip={f.id}
+          class={`px-4 py-2.5 text-xs border ${
+            i === 0 ? 'bg-ink text-paper border-ink' : 'bg-transparent text-ink-soft border-hairline-strong'
+          }`}
+        >
+          {f.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-t border-b border-ink">
+          <th scope="col" class="w-[88px] px-2 py-3"><span class="sr-only">Ảnh</span></th>
+          <th scope="col" class="px-3 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint">Khách sạn</th>
+          <th scope="col" class="px-3 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint">Khoảng giá *</th>
+          <th scope="col" class="px-3 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint">Mẫu · HSD</th>
+          <th scope="col" class="px-3 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint"><span class="sr-only">Liên kết</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map(({ ks, anh, tiers }) => (
+            <tr data-tier-row data-tiers={tiers.join(',')} class="border-b border-hairline hover:bg-paper-warm">
+              <td class="px-2 py-4">
+                {anh ? (
+                  <Image src={anh} alt={`Bánh trung thu ${ks.ten} 2026`} width={88} height={66} loading="lazy" class="h-[66px] w-[88px] object-cover" />
+                ) : (
+                  <div class="h-[66px] w-[88px]" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
+                )}
+              </td>
+              <td class="px-3 py-4 font-display text-2xl leading-tight text-ink">{ks.ten}</td>
+              <td class="price px-3 py-4">{khoangGia(ks)}</td>
+              <td class="px-3 py-4 text-xs text-text-faint">
+                {ks.san_pham.length} mẫu · HSD {ks.hsd_ngay} ngày
+              </td>
+              <td class="px-3 py-4 text-right">
+                <a href={duongDan(ks.id)} class="border-b border-hairline-strong text-xs text-accent hover:text-accent-hover">
+                  Xem chi tiết
+                </a>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 text-xs text-text-faint">* Giá niêm yết đã bao gồm VAT.</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tier-chip]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll<HTMLElement>('[data-tier-chip]').forEach((c) => {
+        c.classList.remove('bg-ink', 'text-paper', 'border-ink');
+        c.classList.add('bg-transparent', 'text-ink-soft', 'border-hairline-strong');
+      });
+      chip.classList.remove('bg-transparent', 'text-ink-soft', 'border-hairline-strong');
+      chip.classList.add('bg-ink', 'text-paper', 'border-ink');
+
+      const tier = chip.dataset.tierChip;
+      document.querySelectorAll<HTMLElement>('[data-tier-row]').forEach((row) => {
+        const tiers = (row.dataset.tiers || '').split(',');
+        row.hidden = tier !== 'all' && !tiers.includes(tier ?? '');
+      });
+    });
+  });
+</script>

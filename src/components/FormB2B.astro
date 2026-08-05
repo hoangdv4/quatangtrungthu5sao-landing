@@ -2,7 +2,8 @@
 // Khối 5 — form B2B. POST JSON tới PUBLIC_FORM_ENDPOINT (Google Apps Script).
 // Apps Script không trả CORS header → dùng mode:'no-cors', hiển thị success
 // phía client sau khi gửi, KHÔNG redirect.
-import { KHACH_SAN, duongDan, dinhDangGia } from '../lib/pricing';
+import { KHACH_SAN, duongDan } from '../lib/pricing';
+import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
 
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() ?? '';
 
@@ -20,125 +21,160 @@ const uocTinh = KHACH_SAN.map((ks) => ({
 }));
 ---
 
-<form
-  id="form-b2b"
-  data-endpoint={endpoint}
-  class="grid gap-6 border border-gold-soft bg-paper p-5 sm:p-8"
-  novalidate
->
-  <div class="grid gap-5 sm:grid-cols-3">
-    <label class="block">
-      <span class="label-gold">Tên *</span>
-      <input
-        type="text"
-        name="ten"
-        required
-        autocomplete="name"
-        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
-      />
-    </label>
-    <label class="block">
-      <span class="label-gold">SĐT *</span>
-      <input
-        type="tel"
-        name="sdt"
-        required
-        inputmode="tel"
-        autocomplete="tel"
-        pattern="[0-9+\s().-]{9,15}"
-        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
-      />
-    </label>
-    <label class="block">
-      <span class="label-gold">Công ty *</span>
-      <input
-        type="text"
-        name="cong_ty"
-        required
-        autocomplete="organization"
-        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
-      />
-    </label>
+<div class="grid border border-hairline lg:grid-cols-[340px_minmax(0,1fr)]">
+  <div class="flex flex-col justify-between border-b border-hairline bg-paper-warm p-7 sm:p-9 lg:border-b-0 lg:border-r">
+    <div>
+      <p class="label-gold">Báo giá trong 30 phút</p>
+      <h3 class="mt-2 font-display text-[34px] leading-tight text-ink">
+        Gửi yêu cầu, nhận bảng giá riêng theo số lượng
+      </h3>
+      <p class="mt-3 text-sm leading-relaxed text-text-muted">
+        Điền thông tin bên cạnh hoặc liên hệ trực tiếp — chúng tôi phản hồi trong 30 phút giờ hành chính.
+      </p>
+    </div>
+    <div class="mt-6 flex flex-col gap-3">
+      <a
+        href={SITE.zalo}
+        target="_blank"
+        rel="noopener"
+        data-contact="zalo"
+        class="inline-flex min-h-[44px] items-center justify-center bg-ink px-6 text-sm font-medium uppercase tracking-wide text-paper hover:bg-accent"
+      >
+        Chat Zalo {PHONE_DISPLAY}
+      </a>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        data-contact="hotline"
+        class="inline-flex min-h-[44px] items-center justify-center border border-hairline-input px-6 text-sm font-medium uppercase tracking-wide text-ink hover:bg-paper"
+      >
+        Gọi hotline
+      </a>
+    </div>
   </div>
 
-  <fieldset>
-    <legend class="label-gold">Ngân sách/suất</legend>
-    <div class="mt-3 flex flex-wrap gap-2">
-      {
-        nganSach.map((v, i) => (
-          <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
-            <input type="radio" name="ngan_sach" value={v} checked={i === 0} class="sr-only" />
-            {v}
-          </label>
-        ))
-      }
+  <form
+    id="form-b2b"
+    data-endpoint={endpoint}
+    class="grid gap-6 p-5 sm:p-8"
+    novalidate
+  >
+    <div class="grid gap-5 sm:grid-cols-3">
+      <label class="block">
+        <span class="label-muted">Tên *</span>
+        <input
+          type="text"
+          name="ten"
+          required
+          autocomplete="name"
+          class="mt-1 w-full border-0 border-b border-hairline-input bg-transparent px-0 py-2 text-base text-ink focus:border-accent focus:outline-none focus:ring-0"
+        />
+      </label>
+      <label class="block">
+        <span class="label-muted">SĐT *</span>
+        <input
+          type="tel"
+          name="sdt"
+          required
+          inputmode="tel"
+          autocomplete="tel"
+          pattern="[0-9+\s().-]{9,15}"
+          class="mt-1 w-full border-0 border-b border-hairline-input bg-transparent px-0 py-2 text-base text-ink focus:border-accent focus:outline-none focus:ring-0"
+        />
+      </label>
+      <label class="block">
+        <span class="label-muted">Công ty *</span>
+        <input
+          type="text"
+          name="cong_ty"
+          required
+          autocomplete="organization"
+          class="mt-1 w-full border-0 border-b border-hairline-input bg-transparent px-0 py-2 text-base text-ink focus:border-accent focus:outline-none focus:ring-0"
+        />
+      </label>
     </div>
-  </fieldset>
-
-  <fieldset>
-    <legend class="label-gold">Số lượng (hộp)</legend>
-    <div class="mt-3 flex flex-wrap gap-2">
-      {
-        soLuong.map((v, i) => (
-          <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
-            <input type="radio" name="so_luong" value={v} checked={i === 0} class="sr-only" />
-            {v}
-          </label>
-        ))
-      }
-    </div>
-  </fieldset>
-
-  <div class="grid gap-5 sm:grid-cols-2">
-    <label class="block">
-      <span class="label-gold">Khách sạn quan tâm</span>
-      <select
-        name="khach_san_quan_tam"
-        class="mt-1 w-full border-0 border-b border-ink-soft/40 bg-transparent px-0 py-2 text-base text-ink focus:border-gold focus:outline-none focus:ring-0"
-      >
-        <option value="">Chưa rõ / tư vấn giúp tôi</option>
-        {KHACH_SAN.map((ks) => <option value={ks.ten}>{ks.ten}</option>)}
-      </select>
-    </label>
 
     <fieldset>
-      <legend class="label-gold">Cần in logo công ty?</legend>
-      <div class="mt-3 flex gap-2">
+      <legend class="label-muted">Ngân sách/suất</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
         {
-          ['Có', 'Chưa cần'].map((v, i) => (
-            <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
-              <input type="radio" name="can_in_logo" value={v} checked={i === 1} class="sr-only" />
+          nganSach.map((v, i) => (
+            <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-hairline-strong px-3.5 text-sm text-ink-soft has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-checked:font-medium">
+              <input type="radio" name="ngan_sach" value={v} checked={i === 0} class="sr-only" />
               {v}
             </label>
           ))
         }
       </div>
     </fieldset>
-  </div>
 
-  <p id="form-uoc-tinh" class="border border-gold-soft/60 bg-paper-warm px-4 py-3 text-sm text-ink-soft"></p>
+    <fieldset>
+      <legend class="label-muted">Số lượng (hộp)</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {
+          soLuong.map((v, i) => (
+            <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-hairline-strong px-3.5 text-sm text-ink-soft has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-checked:font-medium">
+              <input type="radio" name="so_luong" value={v} checked={i === 0} class="sr-only" />
+              {v}
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
 
-  <input type="hidden" name="utm_source" value="" />
-  <input type="hidden" name="utm_campaign" value="" />
-  <input type="hidden" name="trang" value="" />
+    <div class="grid gap-5 sm:grid-cols-2">
+      <label class="block">
+        <span class="label-muted">Khách sạn quan tâm</span>
+        <select
+          name="khach_san_quan_tam"
+          class="mt-1 w-full border-0 border-b border-hairline-input bg-transparent px-0 py-2 text-base text-ink focus:border-accent focus:outline-none focus:ring-0"
+        >
+          <option value="">Chưa rõ / tư vấn giúp tôi</option>
+          {KHACH_SAN.map((ks) => <option value={ks.ten}>{ks.ten}</option>)}
+        </select>
+      </label>
 
-  <script type="application/json" id="form-uoc-tinh-data" set:html={JSON.stringify(uocTinh)} />
+      <fieldset>
+        <legend class="label-muted">Cần in logo công ty?</legend>
+        <div class="mt-3 flex gap-2">
+          {
+            ['Có', 'Chưa cần'].map((v, i) => (
+              <label class="cursor-pointer inline-flex min-h-[44px] items-center border border-hairline-strong px-3.5 text-sm text-ink-soft has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-checked:font-medium">
+                <input type="radio" name="can_in_logo" value={v} checked={i === 1} class="sr-only" />
+                {v}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+    </div>
 
-  <button
-    type="submit"
-    class="bg-ink px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper hover:bg-gold disabled:opacity-60"
-  >
-    Nhận báo giá trong 30 phút
-  </button>
+    <p id="form-uoc-tinh" class="border border-hairline bg-paper-warm px-4 py-3 text-sm text-ink-soft"></p>
 
-  <p
-    id="form-msg"
-    role="status"
-    aria-live="polite"
-    class="hidden px-4 py-3 text-sm"
-  >
-  </p>
-</form>
+    <input type="hidden" name="utm_source" value="" />
+    <input type="hidden" name="utm_campaign" value="" />
+    <input type="hidden" name="trang" value="" />
+
+    <script type="application/json" id="form-uoc-tinh-data" set:html={JSON.stringify(uocTinh)} />
+
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <button
+        type="submit"
+        class="bg-accent px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper hover:bg-accent-hover disabled:opacity-60"
+      >
+        Nhận báo giá trong 30 phút
+      </button>
+      <p class="text-xs text-text-faint">Không spam. Thông tin chỉ dùng để báo giá.</p>
+    </div>
+
+    <p
+      id="form-msg"
+      role="status"
+      aria-live="polite"
+      class="hidden px-4 py-3 text-sm"
+    >
+    </p>
+  </form>
+</div>
 
 <script is:inline>
   (function () {
@@ -187,7 +223,7 @@ const uocTinh = KHACH_SAN.map((ks) => ({
       msg.textContent = text;
       msg.className =
         'border px-4 py-3 text-sm ' +
-        (ok ? 'border-gold-soft text-ink' : 'border-status-low-stock text-status-low-stock');
+        (ok ? 'border-hairline text-ink' : 'border-status-low-stock text-status-low-stock');
     }
 
     form.addEventListener('submit', async function (e) {

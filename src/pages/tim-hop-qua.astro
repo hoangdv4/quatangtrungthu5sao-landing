@@ -52,15 +52,15 @@ const schema = [
     </p>
 
     {/* ── Concierge wizard — tĩnh, client-side, không gọi API ─────── */}
-    <section class="mt-10 border border-gold-soft/60 bg-paper-warm p-5 sm:p-8" id="concierge">
+    <section class="mt-10 border border-hairline bg-paper-warm p-5 sm:p-8" id="concierge">
       <h2 class="font-display text-xl text-ink">Chưa biết chọn gì? Để chúng tôi gợi ý</h2>
 
       <fieldset class="mt-5">
-        <legend class="label-gold">Quà tặng cho ai?</legend>
+        <legend class="label-muted">Quà tặng cho ai?</legend>
         <div class="mt-3 flex flex-wrap gap-2" data-concierge-doituong>
           {
             DOI_TUONG_LIST.map((dt, i) => (
-              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
+              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-hairline-strong px-3.5 text-sm text-ink-soft has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-checked:font-medium">
                 <input type="radio" name="concierge-doituong" value={dt} checked={i === 0} class="sr-only" />
                 {dt}
               </label>
@@ -70,11 +70,11 @@ const schema = [
       </fieldset>
 
       <fieldset class="mt-5">
-        <legend class="label-gold">Ngân sách?</legend>
+        <legend class="label-muted">Ngân sách?</legend>
         <div class="mt-3 flex flex-wrap gap-2" data-concierge-gia>
           {
             nganSachMoc.map((m, i) => (
-              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-ink-soft/30 px-3.5 text-sm text-ink-soft has-checked:border-gold has-checked:text-ink has-checked:font-medium">
+              <label class="inline-flex min-h-[44px] cursor-pointer items-center border border-hairline-strong px-3.5 text-sm text-ink-soft has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-checked:font-medium">
                 <input
                   type="radio"
                   name="concierge-gia"
@@ -98,15 +98,15 @@ const schema = [
 
       <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <fieldset>
-          <legend class="label-gold">Ngân sách</legend>
+          <legend class="label-muted">Ngân sách</legend>
           <div class="mt-2 flex flex-col gap-1.5" data-filter-group="gia">
             <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-              <input type="radio" name="filter-gia" value="" checked class="accent-[--color-gold]" /> Tất cả
+              <input type="radio" name="filter-gia" value="" checked class="accent-ink" /> Tất cả
             </label>
             {
               nganSachMoc.map((m) => (
                 <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-                  <input type="radio" name="filter-gia" value={`${m.min}-${m.max}`} class="accent-[--color-gold]" />
+                  <input type="radio" name="filter-gia" value={`${m.min}-${m.max}`} class="accent-ink" />
                   {m.nhan}
                 </label>
               ))
@@ -115,15 +115,15 @@ const schema = [
         </fieldset>
 
         <fieldset>
-          <legend class="label-gold">Màu sắc</legend>
+          <legend class="label-muted">Màu sắc</legend>
           <div class="mt-2 flex flex-col gap-1.5" data-filter-group="mausac">
             <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-              <input type="radio" name="filter-mausac" value="" checked class="accent-[--color-gold]" /> Tất cả
+              <input type="radio" name="filter-mausac" value="" checked class="accent-ink" /> Tất cả
             </label>
             {
               MAU_SAC_LIST.map((m) => (
                 <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-                  <input type="radio" name="filter-mausac" value={m} class="accent-[--color-gold]" /> {m}
+                  <input type="radio" name="filter-mausac" value={m} class="accent-ink" /> {m}
                 </label>
               ))
             }
@@ -131,15 +131,15 @@ const schema = [
         </fieldset>
 
         <fieldset>
-          <legend class="label-gold">Chất liệu</legend>
+          <legend class="label-muted">Chất liệu</legend>
           <div class="mt-2 flex flex-col gap-1.5" data-filter-group="chatlieu">
             <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-              <input type="radio" name="filter-chatlieu" value="" checked class="accent-[--color-gold]" /> Tất cả
+              <input type="radio" name="filter-chatlieu" value="" checked class="accent-ink" /> Tất cả
             </label>
             {
               CHAT_LIEU_LIST.map((c) => (
                 <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-                  <input type="radio" name="filter-chatlieu" value={c} class="accent-[--color-gold]" /> {c}
+                  <input type="radio" name="filter-chatlieu" value={c} class="accent-ink" /> {c}
                 </label>
               ))
             }
@@ -147,15 +147,15 @@ const schema = [
         </fieldset>
 
         <fieldset>
-          <legend class="label-gold">Đối tượng</legend>
+          <legend class="label-muted">Đối tượng</legend>
           <div class="mt-2 flex flex-col gap-1.5" data-filter-group="doituong">
             <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-              <input type="radio" name="filter-doituong" value="" checked class="accent-[--color-gold]" /> Tất cả
+              <input type="radio" name="filter-doituong" value="" checked class="accent-ink" /> Tất cả
             </label>
             {
               DOI_TUONG_LIST.map((dt) => (
                 <label class="inline-flex items-center gap-2 text-sm text-ink-soft">
-                  <input type="radio" name="filter-doituong" value={dt} class="accent-[--color-gold]" /> {dt}
+                  <input type="radio" name="filter-doituong" value={dt} class="accent-ink" /> {dt}
                 </label>
               ))
             }
@@ -171,7 +171,7 @@ const schema = [
         {
           TAT_CA_SAN_PHAM.map(({ ks, sp }) => (
             <li
-              class="border border-gold-soft/60 bg-paper p-4"
+              class="border border-hairline bg-paper p-4"
               data-sku
               data-gia={sp.gia_da_vat}
               data-mausac={sp.mau_sac}
@@ -180,7 +180,7 @@ const schema = [
               data-hotel={ks.ten}
             >
               <p class="text-xs uppercase tracking-wide text-ink-soft">{ks.ten}</p>
-              <a href={duongDan(ks.id)} class="mt-1 block font-display text-lg text-ink hover:text-[--color-gold-text] hover:underline">
+              <a href={duongDan(ks.id)} class="mt-1 block font-display text-lg text-ink hover:text-accent hover:underline">
                 {sp.ten_hien_thi}
               </a>
               <p class="mt-1 text-sm text-ink-soft">{sp.quy_cach}</p>
@@ -195,7 +195,7 @@ const schema = [
 
       <p class="mt-6 hidden text-sm text-ink-soft" id="khong-co-ket-qua">
         Không có mẫu hộp nào khớp tiêu chí đã chọn. Thử nới ngân sách hoặc bỏ bớt bộ lọc, hoặc
-        <a href={SITE.zalo} target="_blank" rel="noopener" class="underline decoration-gold-soft underline-offset-4">nhắn Zalo</a> để được tư vấn trực tiếp.
+        <a href={SITE.zalo} target="_blank" rel="noopener" class="underline decoration-hairline-strong underline-offset-4">nhắn Zalo</a> để được tư vấn trực tiếp.
       </p>
     </section>
 
@@ -295,7 +295,7 @@ const schema = [
         const hotel = el.querySelector('p')?.textContent?.trim() ?? '';
         const gia = el.querySelector('.price')?.textContent?.trim() ?? '';
         const href = el.querySelector('a')?.getAttribute('href') ?? '/';
-        return `<li class="flex items-center justify-between gap-3 border-b border-gold-soft/40 py-2 last:border-0">
+        return `<li class="flex items-center justify-between gap-3 border-b border-hairline py-2 last:border-0">
           <span><a href="${href}" class="text-ink hover:underline">${ten}</a> <span class="text-ink-soft">(${hotel})</span></span>
           <span class="price shrink-0">${gia}</span>
         </li>`;

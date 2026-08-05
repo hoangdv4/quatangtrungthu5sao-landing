@@ -8,18 +8,22 @@ interface Props {
 }
 
 const { sanPham } = Astro.props;
+
+// Placeholder kẻ sọc chéo — giữ đúng pattern trong design_handoff_trungthu_landing/Landing page.dc.html.
+// TODO: thay bằng ảnh thật riêng từng SKU khi có SALE KIT — hiện chưa đủ ảnh 1-1 theo mẫu hộp.
+const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5px 10px)';
 ---
 
-<div class="overflow-x-auto border border-gold-soft/60">
+<div class="overflow-x-auto">
   <table class="w-full min-w-[560px] border-collapse text-left text-sm">
     <thead>
-      <tr class="bg-paper-warm text-ink">
-        <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">STT</th>
-        <th scope="col" class="px-4 py-3 text-xs font-medium uppercase tracking-wide">Tên hộp</th>
-        <th scope="col" class="hidden px-4 py-3 text-xs font-medium uppercase tracking-wide min-[480px]:table-cell">
+      <tr class="border-t border-b border-ink">
+        <th scope="col" class="w-12 px-2 py-3"><span class="sr-only">Ảnh</span></th>
+        <th scope="col" class="px-2 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint">Tên hộp</th>
+        <th scope="col" class="hidden px-2 py-3 text-[10px] font-medium uppercase tracking-[.14em] text-text-faint min-[480px]:table-cell">
           Quy cách
         </th>
-        <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide">
+        <th scope="col" class="px-2 py-3 text-right text-[10px] font-medium uppercase tracking-[.14em] text-text-faint">
           Giá đã VAT
         </th>
       </tr>
@@ -27,12 +31,14 @@ const { sanPham } = Astro.props;
     <tbody>
       {
         sanPham.map((sp) => (
-          <tr class="border-t border-gold-soft/60">
-            <td class="px-4 py-3 text-ink-soft">{sp.stt}</td>
-            <td class="px-4 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
+          <tr class="border-b border-hairline hover:bg-paper-warm">
+            <td class="px-2 py-3">
+              <div class="h-12 w-12" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
+            </td>
+            <td class="px-2 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
             {/* Ẩn bằng CSS dưới 480px, vẫn giữ trong DOM — AI/crawler đọc được. */}
-            <td class="hidden px-4 py-3 text-ink-soft min-[480px]:table-cell">{sp.quy_cach}</td>
-            <td class="price px-4 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
+            <td class="hidden px-2 py-3 text-text-muted min-[480px]:table-cell">{sp.quy_cach}</td>
+            <td class="price px-2 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
           </tr>
         ))
       }
