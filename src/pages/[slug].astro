@@ -35,7 +35,6 @@ const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
 const logo = layLogo(ks.id);
-const doiTuongPhuHop = [...new Set(ks.san_pham.flatMap((sp) => sp.doi_tuong))];
 
 const tenTrangThai = story?.ten_bst ? `${ks.ten} — BST ${story.ten_bst}` : ks.ten;
 const title = `Bánh Trung Thu ${tenTrangThai} 2026: Bảng Giá Từ ${min} | ${SITE.brand}`;
@@ -193,19 +192,6 @@ const schema = [
       </div>
     </div>
 
-    {/* ── Nên chọn hộp nào? (nội dung biên tập tay, giữ nguyên) ──── */}
-    <div data-reveal class="mt-14">
-      <h2 class="font-display text-2xl text-ink">Nên chọn hộp nào?</h2>
-      <p class="mt-3 max-w-[70ch] leading-relaxed text-text-muted">{content.tuVan}</p>
-      {
-        doiTuongPhuHop.length > 0 && (
-          <p class="mt-2 text-sm text-text-muted">
-            <span class="font-medium text-ink">Phù hợp biếu:</span> {doiTuongPhuHop.join(' · ')}
-          </p>
-        )
-      }
-    </div>
-
     {/* ── Khối lời giới thiệu BST (chỉ hiện nếu có nội dung thật) ── */}
     {
       story?.loiTua && (
@@ -237,21 +223,6 @@ const schema = [
     {/* ── Khách sạn khác ─────────────────────────────────────────── */}
     <div class="mt-14">
       <RelatedHotels hienTai={ks.id} />
-    </div>
-
-    {/* ── FAQ ──────────────────────────────────────────────────────── */}
-    <div data-reveal class="mt-14">
-      <h2 class="font-display text-2xl text-ink">Câu hỏi thường gặp</h2>
-      <div class="mt-5 space-y-3">
-        {
-          faqTrang.map((item, i) => (
-            <details class="border border-hairline bg-paper-warm p-4" open={i === 0}>
-              <summary class="cursor-pointer font-medium text-ink">{item.q}</summary>
-              <p class="mt-2 text-text-muted">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
     </div>
 
     {/* ── CTA cuối ─────────────────────────────────────────────────── */}
