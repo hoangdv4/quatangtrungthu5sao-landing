@@ -62,7 +62,7 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-07-31',
+  '/': '2026-08-06',
   '/so-sanh': '2026-07-31',
   '/hop-vip': '2026-07-31',
   '/tim-hop-qua': '2026-07-31',

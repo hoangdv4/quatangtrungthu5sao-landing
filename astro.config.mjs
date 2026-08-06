@@ -21,10 +21,13 @@ export default defineConfig({
       // dateModified trên từng trang, cập nhật ở đó khi nội dung đổi.
       filter: (page) => !page.includes('/hop-vip'),
       serialize(item) {
+        // Bỏ trailing slash để khớp canonical (Base.astro cũng strip /\/$/) —
+        // tránh tín hiệu URL không nhất quán giữa sitemap và trang thật.
         const path = item.url.replace(DOMAIN, '').replace(/\/$/, '') || '/';
+        item.url = path === '/' ? DOMAIN : `${DOMAIN}${path}`;
         item.lastmod = PAGE_MODIFIED[path] ?? '2026-07-31';
-        if (item.url.includes('/so-sanh')) item.priority = 0.3;
-        else if (item.url.replace(DOMAIN, '').replace(/\/$/, '') === '') item.priority = 1.0;
+        if (path === '/so-sanh') item.priority = 0.3;
+        else if (path === '/') item.priority = 1.0;
         else item.priority = 0.8;
         return item;
       },
