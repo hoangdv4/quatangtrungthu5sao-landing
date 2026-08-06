@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { PAGE_MODIFIED } from './src/lib/pricing.ts';
 
 // Domain hardcode ở đây (KHÔNG import từ src/config/site.ts — file đó đã gitignore,
 // astro.config.mjs phải build được ngay cả khi site.ts chưa tồn tại trên máy CI/CD).
@@ -16,10 +17,12 @@ export default defineConfig({
     sitemap({
       // /hop-vip bị loại hoàn toàn (noindex, ads không trỏ vào — xem robots.txt).
       // /so-sanh vẫn ở sitemap nhưng priority thấp (không phải trang đích ads chính).
-      // lastmod hardcode khớp dateModified trên từng trang — cập nhật cả hai khi nội dung đổi.
+      // lastmod lấy từ PAGE_MODIFIED (src/lib/pricing.ts) — nguồn dùng chung với
+      // dateModified trên từng trang, cập nhật ở đó khi nội dung đổi.
       filter: (page) => !page.includes('/hop-vip'),
       serialize(item) {
-        item.lastmod = '2026-07-31';
+        const path = item.url.replace(DOMAIN, '').replace(/\/$/, '') || '/';
+        item.lastmod = PAGE_MODIFIED[path] ?? '2026-07-31';
         if (item.url.includes('/so-sanh')) item.priority = 0.3;
         else if (item.url.replace(DOMAIN, '').replace(/\/$/, '') === '') item.priority = 1.0;
         else item.priority = 0.8;

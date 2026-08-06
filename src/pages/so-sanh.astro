@@ -5,11 +5,11 @@
 // ⚠️ C0: KHÔNG liệt kê schema Product/Offer riêng (tránh trùng lặp 7 trang con).
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY } from '../config/site';
-import { KHACH_SAN, duongDan, khoangGia } from '../lib/pricing';
+import { KHACH_SAN, duongDan, khoangGia, PAGE_MODIFIED } from '../lib/pricing';
 import { HOTEL_STORY } from '../lib/hotel-story';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 
-const dateModified = '2026-07-31';
+const dateModified = PAGE_MODIFIED['/so-sanh'];
 const title = `So Sánh 7 Khách Sạn Bánh Trung Thu 2026 | ${SITE.brand}`;
 const description = `So sánh nhanh bộ sưu tập, khoảng giá, số mẫu hộp và khu vực giao của 7 khách sạn 5 sao: Sheraton, InterContinental, Meliá, Renaissance, Sofitel, Hilton, Nikko. Zalo ${PHONE_DISPLAY}.`;
 

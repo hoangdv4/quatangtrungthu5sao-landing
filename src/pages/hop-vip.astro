@@ -4,9 +4,9 @@
 // Dark luxury duy nhất của site: nền --ink toàn trang, chữ --paper, giá --gold.
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, dinhDangGia, coQuaTang, duongDan } from '../lib/pricing';
+import { KHACH_SAN, dinhDangGia, coQuaTang, duongDan, PAGE_MODIFIED } from '../lib/pricing';
 
-const dateModified = '2026-07-31';
+const dateModified = PAGE_MODIFIED['/hop-vip'];
 const title = `Hộp VIP — Quà Tặng Thượng Hạng Cho Lãnh Đạo & Đối Tác | ${SITE.brand}`;
 const description = `Hộp bánh trung thu VIP kèm quà tặng cao cấp từ 7 khách sạn 5 sao, giá đã VAT. Tư vấn cấu hình riêng theo ngân sách qua Zalo ${PHONE_DISPLAY}.`;
 

@@ -17,6 +17,7 @@ import {
   GIA_MIN,
   GIA_MAX,
   TONG_SO_MAU,
+  PAGE_MODIFIED,
 } from '../lib/pricing';
 import { FAQ_CHUAN, faqSchema } from '../lib/faq';
 import { anhKhachSan, ANH_SMA } from '../lib/hotel-images';
@@ -24,7 +25,7 @@ import { HOTEL_STORY } from '../lib/hotel-story';
 
 const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 | ${SITE.brand}`;
 const description = `Bảng giá bánh trung thu 7 khách sạn 5 sao 2026: Sheraton, InterContinental, Meliá... Chính hãng, đã VAT, giao nhanh HN & SG. Zalo ${PHONE_DISPLAY}.`;
-const dateModified = '2026-07-31';
+const dateModified = PAGE_MODIFIED['/'];
 
 // Khối 7 — chọn theo ngân sách. Danh sách theo site-content.md, giá lấy từ pricing.json.
 const nhomNganSach = [

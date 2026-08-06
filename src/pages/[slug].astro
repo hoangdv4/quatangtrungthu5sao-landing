@@ -8,7 +8,7 @@ import Base from '../layouts/Base.astro';
 import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -27,7 +27,7 @@ interface Props {
 
 const { ks } = Astro.props;
 const content = HOTEL_CONTENT[ks.id];
-const dateModified = '2026-07-31';
+const dateModified = PAGE_MODIFIED[duongDan(ks.id)];
 
 const min = dinhDangGia(ks.gia_tu);
 const max = dinhDangGia(ks.gia_den);
@@ -241,7 +241,7 @@ const schema = [
       >
         Chat Zalo — báo giá 30 phút
       </a>
-      <p class="text-xs text-dark-text-muted sm:hidden">Cập nhật ngày 31/07/2026.</p>
+      <p class="text-xs text-dark-text-muted sm:hidden">Cập nhật ngày 06/08/2026.</p>
     </div>
   </article>
 </Base>

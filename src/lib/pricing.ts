@@ -56,6 +56,19 @@ const SLUG: Record<string, string> = {
 
 export const duongDan = (id: string) => SLUG[id] ?? '/';
 
+/**
+ * Ngày cập nhật nội dung theo từng path — nguồn dùng chung cho dateModified
+ * (schema JSON-LD từng trang) và lastmod (sitemap trong astro.config.mjs),
+ * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
+ */
+export const PAGE_MODIFIED: Record<string, string> = {
+  '/': '2026-07-31',
+  '/so-sanh': '2026-07-31',
+  '/hop-vip': '2026-07-31',
+  '/tim-hop-qua': '2026-07-31',
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-06'])),
+};
+
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
 
 /** 889.000đ — định dạng giá VN, dùng thống nhất toàn site. */
