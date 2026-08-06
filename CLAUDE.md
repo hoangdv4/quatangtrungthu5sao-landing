@@ -26,10 +26,10 @@ Landing page bán bánh trung thu chính hãng 7 khách sạn 5 sao (Hà Nội),
 2. `/banh-trung-thu-sheraton-ha-noi`
 3. `/banh-trung-thu-intercontinental-landmark72`
 4. `/banh-trung-thu-melia-ha-noi`
-5. `/banh-trung-thu-renaissance-ha-noi`
-6. `/banh-trung-thu-sofitel`
-7. `/banh-trung-thu-hilton-ha-noi`
-8. `/banh-trung-thu-nikko-ha-noi`
+5. `/banh-trung-thu-renaissance-sai-gon`
+6. `/banh-trung-thu-sofitel-sai-gon`
+7. `/banh-trung-thu-hilton-sai-gon`
+8. `/banh-trung-thu-nikko-sai-gon`
 
 Thêm: `/hop-vip` (các hộp kèm rượu mạnh — ads KHÔNG BAO GIỜ trỏ vào trang này).
 

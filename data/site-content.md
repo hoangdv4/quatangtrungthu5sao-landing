@@ -21,10 +21,10 @@ Mỗi card: tên KS + khoảng giá + số mẫu + nút "Xem bảng giá":
 | Sheraton Hà Nội | 889.000đ – 2.599.000đ | 7 | /banh-trung-thu-sheraton-ha-noi |
 | InterContinental Landmark72 | 1.026.000đ – 7.689.000đ | 7 | /banh-trung-thu-intercontinental-landmark72 |
 | Meliá Hà Nội | 1.067.040đ – 5.816.800đ | 10 | /banh-trung-thu-melia-ha-noi |
-| Renaissance Sài Gòn | 1.388.000đ – 1.988.000đ | 2 | /banh-trung-thu-renaissance-ha-noi |
-| Sofitel Sài Gòn Plaza | 1.236.000đ – 2.256.000đ | 3 | /banh-trung-thu-sofitel |
-| Hilton Sài Gòn | 1.688.000đ – 2.180.000đ | 2 | /banh-trung-thu-hilton-ha-noi |
-| Hotel Nikko Sài Gòn | 1.288.000đ – 1.888.000đ | 3 | /banh-trung-thu-nikko-ha-noi |
+| Renaissance Sài Gòn | 1.388.000đ – 1.988.000đ | 2 | /banh-trung-thu-renaissance-sai-gon |
+| Sofitel Sài Gòn Plaza | 1.236.000đ – 2.256.000đ | 3 | /banh-trung-thu-sofitel-sai-gon |
+| Hilton Sài Gòn | 1.688.000đ – 2.180.000đ | 2 | /banh-trung-thu-hilton-sai-gon |
+| Hotel Nikko Sài Gòn | 1.288.000đ – 1.888.000đ | 3 | /banh-trung-thu-nikko-sai-gon |
 
 ### Khối 4 — Chọn theo ngân sách (3 cột)
 - **Dưới 1,1 triệu:** Sheraton Thanh 1 (889k) · Sheraton Thanh 2 (999k) · Inter Classic Box 4 (1.026k) · Meliá Thanh Hoa Nguyệt Ảnh / Chu Tước Phúc Viên (1.067k)

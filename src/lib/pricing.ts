@@ -48,10 +48,10 @@ const SLUG: Record<string, string> = {
   sheraton: '/banh-trung-thu-sheraton-ha-noi',
   'intercontinental-lm72': '/banh-trung-thu-intercontinental-landmark72',
   melia: '/banh-trung-thu-melia-ha-noi',
-  renaissance: '/banh-trung-thu-renaissance-ha-noi',
-  sofitel: '/banh-trung-thu-sofitel',
-  hilton: '/banh-trung-thu-hilton-ha-noi',
-  nikko: '/banh-trung-thu-nikko-ha-noi',
+  renaissance: '/banh-trung-thu-renaissance-sai-gon',
+  sofitel: '/banh-trung-thu-sofitel-sai-gon',
+  hilton: '/banh-trung-thu-hilton-sai-gon',
+  nikko: '/banh-trung-thu-nikko-sai-gon',
 };
 
 export const duongDan = (id: string) => SLUG[id] ?? '/';

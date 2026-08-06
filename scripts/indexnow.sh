@@ -38,10 +38,10 @@ if [ "${1:-}" = "--all" ]; then
     "https://$DOMAIN/banh-trung-thu-sheraton-ha-noi"
     "https://$DOMAIN/banh-trung-thu-intercontinental-landmark72"
     "https://$DOMAIN/banh-trung-thu-melia-ha-noi"
-    "https://$DOMAIN/banh-trung-thu-renaissance-ha-noi"
-    "https://$DOMAIN/banh-trung-thu-sofitel"
-    "https://$DOMAIN/banh-trung-thu-hilton-ha-noi"
-    "https://$DOMAIN/banh-trung-thu-nikko-ha-noi"
+    "https://$DOMAIN/banh-trung-thu-renaissance-sai-gon"
+    "https://$DOMAIN/banh-trung-thu-sofitel-sai-gon"
+    "https://$DOMAIN/banh-trung-thu-hilton-sai-gon"
+    "https://$DOMAIN/banh-trung-thu-nikko-sai-gon"
   )
 else
   if [ "$#" -eq 0 ]; then

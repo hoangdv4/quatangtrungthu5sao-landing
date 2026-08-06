@@ -98,7 +98,7 @@
     {
       "id": "hilton",
       "ten": "Hilton Sài Gòn",
-      "thanh_pho": "TP. Hồ Chí Minh",
+      "thanh_pho": "Sài Gòn",
       "hsd_ngay": 45,
       "gia_tu": 1688000,
       "gia_den": 2180000,
@@ -110,7 +110,7 @@
     {
       "id": "nikko",
       "ten": "Hotel Nikko Sài Gòn",
-      "thanh_pho": "TP. Hồ Chí Minh",
+      "thanh_pho": "Sài Gòn",
       "hsd_ngay": 45,
       "gia_tu": 1288000,
       "gia_den": 1888000,
