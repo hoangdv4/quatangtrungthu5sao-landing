@@ -87,6 +87,24 @@ const schema = [
       availability: 'https://schema.org/InStock',
       url: `${SITE.domain}${canonicalPath}`,
       seller: { '@id': `${SITE.domain}/#business` },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'VND' },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: SITE.addressCountry,
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 1, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 4, unitCode: 'DAY' },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: SITE.addressCountry,
+        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+      },
     })),
   },
   faqSchema(faqTrang),
