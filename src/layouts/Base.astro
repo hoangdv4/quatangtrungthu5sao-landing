@@ -72,9 +72,21 @@ const localBusiness = {
   ...(SITE.email ? { email: SITE.email } : {}),
 };
 
+// WebPage.isPartOf chỉ nhận CreativeWork (WebSite/WebPage) — trỏ thẳng vào
+// LocalBusiness là sai kiểu, Rich Results Test báo lỗi. Node WebSite này là
+// đích đúng cho isPartOf; quan hệ với doanh nghiệp khai qua publisher.
+const webSite = {
+  '@type': 'WebSite',
+  '@id': `${SITE.domain}/#website`,
+  url: SITE.domain,
+  name: SITE.brand,
+  inLanguage: 'vi-VN',
+  publisher: { '@id': `${SITE.domain}/#business` },
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [localBusiness, ...schema],
+  '@graph': [localBusiness, webSite, ...schema],
 };
 ---
 
