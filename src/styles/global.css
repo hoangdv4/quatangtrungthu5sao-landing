@@ -17,8 +17,11 @@
   --color-ink: #2b2723;
   --color-ink-soft: #4a453d;
   --color-text-muted: #6b6459;
-  --color-text-faint: #8a8377;
-  --color-text-faintest: #9a9285;
+  /* Hai màu dưới đã chỉnh tối hơn để đạt WCAG AA 4.5:1 trên nền --color-paper
+     (#8a8377 cũ chỉ 3.63, #9a9285 cũ 2.98 — chữ nhạt rất khó đọc ngoài nắng,
+     mà phần lớn khách vào từ ads là trên điện thoại). Sắc ấm giữ nguyên. */
+  --color-text-faint: #7a7363;
+  --color-text-faintest: #7a7363;
 
   --color-accent: #8c2f22;
   --color-accent-hover: #6e2318;

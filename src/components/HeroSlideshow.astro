@@ -100,15 +100,23 @@ const { slides } = Astro.props;
       }
     </div>
 
-    <div class="flex items-center gap-2">
+    {/* Nút cao 24px trong suốt bọc ngoài gạch mảnh: vùng chạm đạt chuẩn WCAG
+        (gạch 2px trước đây gần như không bấm trúng trên điện thoại) mà nhìn
+        vẫn y hệt — phần thấy được vẫn chỉ là gạch bên trong. */}
+    <div class="flex items-center">
       {
         slides.map((_, i) => (
           <button
             type="button"
             data-dot-index={i}
             aria-label={`Xem ảnh ${i + 1}`}
-            class={`h-0.5 transition-[width] ${i === 0 ? 'w-[26px] bg-accent' : 'w-[13px] bg-[#c4bcae]'}`}
-          />
+            class="flex h-6 items-center px-1"
+          >
+            <span
+              data-dot-bar
+              class={`block h-0.5 transition-[width] ${i === 0 ? 'w-[26px] bg-accent' : 'w-[13px] bg-[#c4bcae]'}`}
+            />
+          </button>
         ))
       }
     </div>
@@ -138,10 +146,12 @@ const { slides } = Astro.props;
       slides.forEach((el, idx) => el.classList.toggle('opacity-0', idx !== current));
       labels.forEach((el, idx) => el.classList.toggle('hidden', idx !== current));
       dots.forEach((dot, idx) => {
-        dot.classList.toggle('w-[26px]', idx === current);
-        dot.classList.toggle('bg-accent', idx === current);
-        dot.classList.toggle('w-[13px]', idx !== current);
-        dot.classList.toggle('bg-[#c4bcae]', idx !== current);
+        // Gạch màu nằm trong <span>, nút bọc ngoài chỉ để mở rộng vùng chạm.
+        const bar = dot.querySelector<HTMLElement>('[data-dot-bar]') ?? dot;
+        bar.classList.toggle('w-[26px]', idx === current);
+        bar.classList.toggle('bg-accent', idx === current);
+        bar.classList.toggle('w-[13px]', idx !== current);
+        bar.classList.toggle('bg-[#c4bcae]', idx !== current);
       });
     }
 

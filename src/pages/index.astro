@@ -241,7 +241,9 @@ const trustPoints = [
               <path d={tp.extra} />
             </svg>
             <div>
-              <h3 class="font-display text-[23px] leading-[1.15] text-ink">{tp.title}</h3>
+              {/* h2 chứ không phải h3: khối này nằm ngay dưới h1 và không có
+                  tiêu đề section bao ngoài, dùng h3 sẽ nhảy cấp heading. */}
+              <h2 class="font-display text-[23px] leading-[1.15] text-ink">{tp.title}</h2>
               <p class="mt-1 text-pretty text-[13px] leading-[1.7] text-text-faint">{tp.desc}</p>
             </div>
           </div>
