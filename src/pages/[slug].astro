@@ -13,6 +13,7 @@ import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
+import { HOTEL_CHEF } from '../lib/hotel-chef';
 
 export function getStaticPaths() {
   return KHACH_SAN.map((ks) => ({
@@ -33,7 +34,13 @@ const min = dinhDangGia(ks.gia_tu);
 const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
+const chef = HOTEL_CHEF[ks.id];
 const logo = layLogo(ks.id);
+const ngayCapNhat = new Date(dateModified).toLocaleDateString('vi-VN', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+});
 
 const title = `Bánh Trung Thu ${ks.ten} 2026 | ${SITE.brand}`;
 const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT. Giao nhanh 24–48h tại ${ks.thanh_pho}. Zalo ${PHONE_DISPLAY}.`;
@@ -239,6 +246,24 @@ const schema = [
       </div>
     </div>
 
+    {/* ── Nên chọn hộp nào? ──────────────────────────────────────── */}
+    <div data-reveal class="mt-14 border-t border-hairline pt-14">
+      <p class="text-[11px] uppercase tracking-[.22em] text-accent">Tư vấn</p>
+      <h2 class="mt-2 font-display text-[32px] leading-[1.1] text-ink">Nên chọn hộp nào?</h2>
+      <p class="mt-4 max-w-[70ch] text-[15px] leading-relaxed text-[#4a453d]">{content.tuVan}</p>
+    </div>
+
+    {/* ── Ai làm ra chiếc bánh này ───────────────────────────────── */}
+    {
+      chef && (
+        <div data-reveal class="mt-14 border-t border-hairline pt-14">
+          <p class="text-[11px] uppercase tracking-[.22em] text-accent">Hậu trường</p>
+          <h2 class="mt-2 font-display text-[32px] leading-[1.1] text-ink">Ai làm ra chiếc bánh này</h2>
+          <p class="mt-4 max-w-[70ch] text-[15px] leading-relaxed text-[#4a453d]">{chef}</p>
+        </div>
+      )
+    }
+
     {/* ── Khách sạn khác ─────────────────────────────────────────── */}
     <div class="mt-14">
       <RelatedHotels hienTai={ks.id} />
@@ -259,7 +284,9 @@ const schema = [
       >
         Chat Zalo — báo giá 30 phút
       </a>
-      <p class="text-xs text-dark-text-muted sm:hidden">Cập nhật ngày 06/08/2026.</p>
     </div>
+    <p class="mt-4 text-center text-xs text-text-faint sm:text-left">
+      Cập nhật ngày {ngayCapNhat} · Liên hệ {SITE.brand} — Hotline/Zalo {PHONE_DISPLAY}
+    </p>
   </article>
 </Base>
