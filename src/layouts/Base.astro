@@ -50,7 +50,9 @@ const {
 // Trang nào không truyền ogImage riêng thì dùng luôn ảnh LCP.
 const socialImage = ogImage ?? preloadImage;
 
-const canonical = new URL(Astro.url.pathname, SITE.domain).href.replace(/\/$/, '') || SITE.domain;
+// Giữ nguyên dấu / cuối (trailingSlash:'always') — đúng URL Cloudflare phục vụ.
+// Strip dấu / như trước sẽ khiến canonical trỏ tới bản bị 308, tín hiệu mâu thuẫn.
+const canonical = new URL(Astro.url.pathname, SITE.domain).href;
 const modified = dateModified ?? new Date().toISOString().slice(0, 10);
 
 const localBusiness = {

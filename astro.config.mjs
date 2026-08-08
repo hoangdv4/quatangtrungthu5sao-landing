@@ -12,7 +12,12 @@ const DOMAIN = 'https://quatangtrungthu5sao.com';
 export default defineConfig({
   site: DOMAIN,
   output: 'static',
-  trailingSlash: 'ignore',
+  // Astro build mỗi trang thành thư mục (<slug>/index.html), nên Cloudflare Pages
+  // luôn chuẩn hoá URL bằng cách thêm dấu / cuối và trả 308 cho bản không có.
+  // Đặt 'always' để canonical + sitemap khai đúng URL mà server thật phục vụ —
+  // nếu để 'ignore', Google nhận URL không / từ sitemap, bị 308 sang bản có /,
+  // rồi trang đó lại khai canonical là bản không / → tín hiệu mâu thuẫn, chậm index.
+  trailingSlash: 'always',
   integrations: [
     sitemap({
       // /hop-vip bị loại hoàn toàn (noindex, ads không trỏ vào — xem robots.txt).
@@ -21,10 +26,10 @@ export default defineConfig({
       // dateModified trên từng trang, cập nhật ở đó khi nội dung đổi.
       filter: (page) => !page.includes('/hop-vip'),
       serialize(item) {
-        // Bỏ trailing slash để khớp canonical (Base.astro cũng strip /\/$/) —
-        // tránh tín hiệu URL không nhất quán giữa sitemap và trang thật.
+        // URL giữ nguyên dấu / cuối do trailingSlash:'always' sinh ra — đúng bản
+        // mà Cloudflare phục vụ, khớp canonical, không tạo thêm nhịp 308.
+        // Key của PAGE_MODIFIED không có dấu / cuối nên phải bỏ đi khi tra cứu.
         const path = item.url.replace(DOMAIN, '').replace(/\/$/, '') || '/';
-        item.url = path === '/' ? DOMAIN : `${DOMAIN}${path}`;
         item.lastmod = PAGE_MODIFIED[path] ?? '2026-07-31';
         if (path === '/so-sanh') item.priority = 0.3;
         else if (path === '/') item.priority = 1.0;

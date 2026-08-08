@@ -1,0 +1,15 @@
+# Header cho Cloudflare Pages (file này được copy nguyên vào dist khi build).
+# Mặc định Pages đặt max-age=14400 (4 tiếng) cho mọi thứ — quá ngắn với asset
+# đã có hash trong tên file.
+
+# Asset do Astro sinh ra đều mang hash nội dung trong tên (vd Base.Ci_uIL4i.css),
+# đổi nội dung là đổi tên file, nên cache vĩnh viễn hoàn toàn an toàn.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML phải luôn kiểm tra lại, nếu không người dùng sẽ thấy bảng giá cũ.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
