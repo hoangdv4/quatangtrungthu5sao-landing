@@ -14,6 +14,7 @@ import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
 import { HOTEL_CHEF } from '../lib/hotel-chef';
+import { HOTEL_FLAVORS } from '../lib/hotel-flavors';
 
 export function getStaticPaths() {
   return KHACH_SAN.map((ks) => ({
@@ -35,6 +36,7 @@ const max = dinhDangGia(ks.gia_den);
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
 const chef = HOTEL_CHEF[ks.id];
+const flavorGroups = HOTEL_FLAVORS[ks.id] ?? [];
 const logo = layLogo(ks.id);
 const ngayCapNhat = new Date(dateModified).toLocaleDateString('vi-VN', {
   day: '2-digit',
@@ -245,6 +247,25 @@ const schema = [
         </p>
       </div>
     </div>
+
+    {/* ── Bộ sưu tập & các vị bánh ───────────────────────────────── */}
+    {
+      flavorGroups.length > 0 && (
+        <div data-reveal class="mt-14 border-t border-hairline pt-14">
+          <p class="text-[11px] uppercase tracking-[.22em] text-accent">Bộ sưu tập {story?.ten_bst ?? ks.ten}</p>
+          <h2 class="mt-2 font-display text-[32px] leading-[1.1] text-ink">Các vị bánh theo từng mẫu hộp</h2>
+          <div class="mt-6 flex flex-col gap-8">
+            {flavorGroups.map((nhom) => (
+              <div class="border-t border-hairline pt-5">
+                <p class="font-display text-lg text-ink">{nhom.ten}</p>
+                {nhom.ghiChu && <p class="mt-1 text-[13px] text-text-faint">{nhom.ghiChu}</p>}
+                <p class="mt-2.5 text-[14px] leading-relaxed text-[#4a453d]">{nhom.viBanh.join(' · ')}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
 
     {/* ── Nên chọn hộp nào? ──────────────────────────────────────── */}
     <div data-reveal class="mt-14 border-t border-hairline pt-14">
