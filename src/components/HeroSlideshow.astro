@@ -24,7 +24,11 @@ const { slides } = Astro.props;
       slides.map((slide, i) => {
         const [anhLon, anhPhu1, anhPhu2] = slide.anh;
         return (
-          <div data-slide class={`absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1 transition-opacity duration-[450ms] ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`}>
+          <div
+            data-slide
+            hidden={i !== 0}
+            class={`absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1 transition-opacity duration-[450ms] ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`}
+          >
             <Image
               src={anhLon}
               alt={`Bánh trung thu ${slide.ks.ten} 2026 — hộp quà chính hãng`}
@@ -127,6 +131,9 @@ const { slides } = Astro.props;
 
     function show(i: number) {
       current = (i + slides.length) % slides.length;
+      // Gỡ [hidden] để browser bắt đầu tải ảnh của slide sắp hiện — ảnh các slide
+      // chưa từng active không được tải trước, tránh cạnh tranh băng thông với LCP.
+      slides[current].hidden = false;
       slides.forEach((el, idx) => el.classList.toggle('opacity-100', idx === current));
       slides.forEach((el, idx) => el.classList.toggle('opacity-0', idx !== current));
       labels.forEach((el, idx) => el.classList.toggle('hidden', idx !== current));

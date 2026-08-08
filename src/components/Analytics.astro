@@ -1,6 +1,15 @@
 ---
-// Meta Pixel + Google tag. ID đọc từ env PUBLIC_*.
+// Meta Pixel + Google tag + Microsoft Clarity. ID đọc từ env PUBLIC_*.
 // Env trống → KHÔNG render script (dev không bắn event rác, build vẫn pass).
+//
+// ⚠️ Ba script này nặng ~283KB (Google Tag 144KB + Pixel 110KB + Clarity 25KB).
+// Nếu để chúng tải ngay khi vào trang, chúng tranh băng thông với ảnh hero và
+// đẩy LCP từ 4.3s lên 6.6s (đo bằng Lighthouse mobile). Vì vậy chúng chỉ được
+// nạp khi trình duyệt rảnh (requestIdleCallback) hoặc ngay khi người dùng có
+// tương tác đầu tiên — tuỳ điều kiện nào đến trước.
+//
+// window.track() luôn tồn tại ngay từ đầu và xếp hàng event, nên click Zalo/Gọi
+// trong lúc script chưa tải xong vẫn được ghi nhận đầy đủ, không mất conversion.
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID?.trim();
 const gtagId = import.meta.env.PUBLIC_GTAG_ID?.trim();
 
@@ -13,10 +22,49 @@ const gadsContactLabel = import.meta.env.PUBLIC_GADS_CONTACT_LABEL?.trim(); // "
 const clarityId = import.meta.env.PUBLIC_CLARITY_ID?.trim();
 ---
 
-{
-  pixelId && (
-    <>
-      <script is:inline define:vars={{ pixelId }}>
+<script
+  is:inline
+  define:vars={{ pixelId, gtagId, clarityId, gadsLeadLabel, gadsContactLabel }}
+>
+  (function () {
+    // ── Hàng đợi event: có ngay lập tức, không phụ thuộc script bên thứ ba ──
+    var queue = [];
+    var ready = false;
+
+    function flush(name, params) {
+      if (typeof window.fbq === 'function') window.fbq('track', name, params || {});
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', name, params || {});
+        // Google Ads conversion — bắn theo send_to (không theo tên event).
+        if (name === 'Lead' && gadsLeadLabel) {
+          window.gtag('event', 'conversion', { send_to: gadsLeadLabel });
+        }
+        if (name === 'Contact' && gadsContactLabel) {
+          window.gtag('event', 'conversion', { send_to: gadsContactLabel });
+        }
+      }
+    }
+
+    window.track = function (name, params) {
+      if (ready) flush(name, params);
+      else queue.push([name, params]);
+      // Người dùng đã tương tác → nạp tracking ngay, đừng chờ idle nữa.
+      load();
+    };
+
+    // Click nút Zalo/Gọi ở bất kỳ đâu → event Contact.
+    document.addEventListener('click', function (e) {
+      var el = e.target instanceof Element ? e.target.closest('[data-contact]') : null;
+      if (el) window.track('Contact', { method: el.getAttribute('data-contact') });
+    });
+
+    // ── Nạp script bên thứ ba (chỉ chạy một lần) ──
+    var loaded = false;
+    function load() {
+      if (loaded) return;
+      loaded = true;
+
+      if (pixelId) {
         !(function (f, b, e, v, n, t, s) {
           if (f.fbq) return;
           n = f.fbq = function () {
@@ -33,81 +81,49 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID?.trim();
           s = b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t, s);
         })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', pixelId);
-        fbq('track', 'PageView');
-      </script>
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style="display:none"
-          alt=""
-          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
-        />
-      </noscript>
-    </>
-  )
-}
+        window.fbq('init', pixelId);
+        window.fbq('track', 'PageView');
+      }
 
-{
-  gtagId && (
-    <>
-      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`} />
-      <script is:inline define:vars={{ gtagId }}>
+      if (gtagId) {
+        var g = document.createElement('script');
+        g.async = true;
+        g.src = 'https://www.googletagmanager.com/gtag/js?id=' + gtagId;
+        document.head.appendChild(g);
         window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', gtagId);
-      </script>
-    </>
-  )
-}
-
-{
-  clarityId && (
-    <script is:inline define:vars={{ clarityId }}>
-      (function (c, l, a, r, i, t, y) {
-        c[a] =
-          c[a] ||
-          function () {
-            (c[a].q = c[a].q || []).push(arguments);
-          };
-        t = l.createElement(r);
-        t.async = 1;
-        t.src = 'https://www.clarity.ms/tag/' + i;
-        y = l.getElementsByTagName(r)[0];
-        y.parentNode.insertBefore(t, y);
-      })(window, document, 'clarity', 'script', clarityId);
-    </script>
-  )
-}
-
-<script is:inline define:vars={{ gadsLeadLabel, gadsContactLabel }}>
-  // Helper dùng chung: bắn event tới Pixel + GA4-style event (Meta/Ads Manager đọc theo tên)
-  // + conversion action thật của Google Ads (đọc theo send_to, không theo tên event).
-  // Luôn định nghĩa (kể cả khi env trống) để nút Zalo/Gọi không lỗi JS.
-  window.track = function (name, params) {
-    if (typeof window.fbq === 'function') window.fbq('track', name, params || {});
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', name, params || {});
-
-      // Google Ads conversion "Submit form" — bắn kèm khi có nhãn cấu hình.
-      if (name === 'Lead' && gadsLeadLabel) {
-        window.gtag('event', 'conversion', { send_to: gadsLeadLabel });
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag('js', new Date());
+        window.gtag('config', gtagId);
       }
-      // Google Ads conversion "Click Zalo/Gọi" — bắn kèm khi có nhãn cấu hình.
-      if (name === 'Contact' && gadsContactLabel) {
-        window.gtag('event', 'conversion', { send_to: gadsContactLabel });
+
+      if (clarityId) {
+        (function (c, l, a, r, i, t, y) {
+          c[a] =
+            c[a] ||
+            function () {
+              (c[a].q = c[a].q || []).push(arguments);
+            };
+          t = l.createElement(r);
+          t.async = 1;
+          t.src = 'https://www.clarity.ms/tag/' + i;
+          y = l.getElementsByTagName(r)[0];
+          y.parentNode.insertBefore(t, y);
+        })(window, document, 'clarity', 'script', clarityId);
       }
+
+      ready = true;
+      for (var i = 0; i < queue.length; i++) flush(queue[i][0], queue[i][1]);
+      queue.length = 0;
     }
-  };
 
-  // Click nút Zalo/Gọi ở bất kỳ đâu → event Contact.
-  document.addEventListener('click', function (e) {
-    var el = e.target instanceof Element ? e.target.closest('[data-contact]') : null;
-    if (el) window.track('Contact', { method: el.getAttribute('data-contact') });
-  });
+    // Nạp khi trình duyệt rảnh; fallback 3s cho trình duyệt không hỗ trợ.
+    // Tương tác của người dùng (xem window.track ở trên) cũng kích hoạt sớm.
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(load, { timeout: 3000 });
+    } else {
+      setTimeout(load, 2000);
+    }
+  })();
 </script>

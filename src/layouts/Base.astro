@@ -27,8 +27,11 @@ interface Props {
   schema?: Record<string, unknown>[];
   /** true → noindex (dùng cho trang không muốn index). */
   noindex?: boolean;
-  /** URL ảnh hero (LCP element) — preload để giảm LCP trên 4G. */
+  /** URL ảnh hero (LCP element) — preload để giảm LCP trên 4G. Phải đúng bản mà
+   * trang thật render, nếu không sẽ preload thừa một file không dùng tới. */
   preloadImage?: string;
+  /** Ảnh og:/twitter: (social share) — thường to hơn ảnh LCP. Mặc định lấy preloadImage. */
+  ogImage?: string;
   /** true → Header rút gọn (dùng cho 7 trang chi tiết khách sạn). */
   headerCompact?: boolean;
 }
@@ -40,8 +43,12 @@ const {
   schema = [],
   noindex = false,
   preloadImage,
+  ogImage,
   headerCompact = false,
 } = Astro.props;
+
+// Trang nào không truyền ogImage riêng thì dùng luôn ảnh LCP.
+const socialImage = ogImage ?? preloadImage;
 
 const canonical = new URL(Astro.url.pathname, SITE.domain).href.replace(/\/$/, '') || SITE.domain;
 const modified = dateModified ?? new Date().toISOString().slice(0, 10);
@@ -87,11 +94,11 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="article:modified_time" content={modified} />
-    {preloadImage && <meta property="og:image" content={new URL(preloadImage, SITE.domain).href} />}
+    {socialImage && <meta property="og:image" content={new URL(socialImage, SITE.domain).href} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    {preloadImage && <meta name="twitter:image" content={new URL(preloadImage, SITE.domain).href} />}
+    {socialImage && <meta name="twitter:image" content={new URL(socialImage, SITE.domain).href} />}
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
@@ -101,8 +108,6 @@ const jsonLd = {
     {preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />}
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
-
-    <Analytics />
   </head>
   <body class="bg-paper text-ink antialiased">
     <Header compact={headerCompact} />
@@ -113,5 +118,6 @@ const jsonLd = {
     <div class="h-[calc(3.75rem+env(safe-area-inset-bottom))] md:hidden" aria-hidden="true"></div>
     <FloatingCTA />
     <script src="../scripts/reveal.ts"></script>
+    <Analytics />
   </body>
 </html>

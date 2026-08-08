@@ -74,7 +74,13 @@ const slides = KHACH_SAN.map((ks) => ({
   tenBst: HOTEL_STORY[ks.id]?.ten_bst ?? null,
 })).filter((s) => s.anh.length > 0);
 
-const anhHeroOptimized = slides[0] ? await getImage({ src: slides[0].anh[0], width: 2400, height: 860 }) : null;
+// Ảnh LCP: PHẢI khớp chính xác width/height mà HeroSlideshow render (1600×860),
+// nếu không Astro sinh ra 2 file khác hash → preload một bản, hiển thị bản kia,
+// vừa vô ích vừa tải thừa ~50KB đúng lúc đo LCP.
+const anhHeroLcp = slides[0] ? await getImage({ src: slides[0].anh[0], width: 1600, height: 860 }) : null;
+
+// og:image cho social share — bản to hơn, không nằm trong critical path của trang.
+const anhHeroOg = slides[0] ? await getImage({ src: slides[0].anh[0], width: 2400, height: 860 }) : null;
 
 // Khối 6 — bảng giá tổng hợp: ảnh đại diện + tier tính từ giá thật.
 const bangGiaRows = KHACH_SAN.map((ks) => ({
@@ -110,7 +116,7 @@ const schema = [
     name: 'Bánh trung thu khách sạn 5 sao 2026',
     description:
       'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội và Sài Gòn, giá niêm yết đã gồm VAT.',
-    ...(anhHeroOptimized ? { image: `${SITE.domain}${anhHeroOptimized.src}` } : {}),
+    ...(anhHeroOg ? { image: `${SITE.domain}${anhHeroOg.src}` } : {}),
     brand: { '@type': 'Brand', name: SITE.brand },
     offers: {
       '@type': 'AggregateOffer',
@@ -173,7 +179,7 @@ const trustPoints = [
 ];
 ---
 
-<Base {title} {description} {dateModified} {schema} preloadImage={anhHeroOptimized?.src}>
+<Base {title} {description} {dateModified} {schema} preloadImage={anhHeroLcp?.src} ogImage={anhHeroOg?.src}>
   {/* ── Khối 1 — Hero (chữ) ────────────────────────────────────── */}
   <section class="mx-auto flex max-w-[1180px] flex-col items-center gap-6 px-6 py-16 text-center sm:px-10 sm:py-20">
     <div class="flex items-center gap-3">
