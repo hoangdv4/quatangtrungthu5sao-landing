@@ -11,14 +11,18 @@ import { KHACH_SAN, duongDan } from '../lib/pricing';
         <p class="font-display text-xl uppercase tracking-[.1em] text-dark-text">{SITE.brand}</p>
         <p class="label-gold-dark mt-2">Đại lý phân phối chính thức</p>
         <p class="mt-4 text-sm">
-          Hotline/Zalo:{' '}
+          Hotline:{' '}
           <a href={`tel:${PHONE_TEL}`} data-contact="hotline" class="font-medium text-dark-text underline decoration-gold underline-offset-4"
             >{PHONE_DISPLAY}</a
           >
         </p>
-        <p class="mt-4 max-w-[38ch] text-sm leading-relaxed text-dark-text-muted">
-          Chúng tôi cam kết đồng hành từ lúc bạn chọn hộp đến khi quà đến tay người nhận, trọn vẹn như kỳ vọng.
+        <p class="mt-2 text-sm">
+          Zalo:{' '}
+          <a href={SITE.zalo} target="_blank" rel="noopener" data-contact="zalo" class="font-medium text-dark-text underline decoration-gold underline-offset-4"
+            >Chat Zalo</a
+          >
         </p>
+        <p class="mt-4 max-w-[38ch] text-sm leading-relaxed text-dark-text-muted">{SITE.area}</p>
       </div>
 
       <nav aria-label="Bảng giá theo khách sạn">
