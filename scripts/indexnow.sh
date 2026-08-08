@@ -33,15 +33,20 @@ if [ ! -f "$KEY_FILE" ]; then
 fi
 
 if [ "${1:-}" = "--all" ]; then
+  # PHẢI có dấu / cuối: Astro build ra thư mục nên Cloudflare trả 308 cho bản
+  # không có dấu /. Submit URL bị redirect là submit sai địa chỉ.
+  # /hop-vip cố tình không có ở đây (noindex, quy tắc C0 — ads không trỏ vào).
   URLS=(
     "https://$DOMAIN/"
-    "https://$DOMAIN/banh-trung-thu-sheraton-ha-noi"
-    "https://$DOMAIN/banh-trung-thu-intercontinental-landmark72"
-    "https://$DOMAIN/banh-trung-thu-melia-ha-noi"
-    "https://$DOMAIN/banh-trung-thu-renaissance-sai-gon"
-    "https://$DOMAIN/banh-trung-thu-sofitel-sai-gon"
-    "https://$DOMAIN/banh-trung-thu-hilton-sai-gon"
-    "https://$DOMAIN/banh-trung-thu-nikko-sai-gon"
+    "https://$DOMAIN/banh-trung-thu-sheraton-ha-noi/"
+    "https://$DOMAIN/banh-trung-thu-intercontinental-landmark72/"
+    "https://$DOMAIN/banh-trung-thu-melia-ha-noi/"
+    "https://$DOMAIN/banh-trung-thu-renaissance-sai-gon/"
+    "https://$DOMAIN/banh-trung-thu-sofitel-sai-gon/"
+    "https://$DOMAIN/banh-trung-thu-hilton-sai-gon/"
+    "https://$DOMAIN/banh-trung-thu-nikko-sai-gon/"
+    "https://$DOMAIN/so-sanh/"
+    "https://$DOMAIN/tim-hop-qua/"
   )
 else
   if [ "$#" -eq 0 ]; then
