@@ -226,8 +226,13 @@ const uocTinh = KHACH_SAN.map((ks) => ({
         (ok ? 'border-hairline text-ink' : 'border-status-low-stock text-status-low-stock');
     }
 
-    form.addEventListener('submit', async function (e) {
+    // Chống gửi trùng: trước đây btn.disabled trong lúc await vô tình đóng vai
+    // này, nay không await nữa nên phải khoá tường minh trong 5s.
+    var dangGui = false;
+
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (dangGui) return;
       if (!form.checkValidity()) {
         show('Vui lòng điền đầy đủ Tên, SĐT và Công ty.', false);
         return;
@@ -238,25 +243,35 @@ const uocTinh = KHACH_SAN.map((ks) => ({
         return;
       }
 
+      dangGui = true;
       btn.disabled = true;
       var data = Object.fromEntries(new FormData(form).entries());
 
-      try {
-        // Apps Script không trả CORS header → no-cors, không đọc response.
-        await fetch(endpoint, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(data),
-        });
-        show('Đã nhận yêu cầu. Chúng tôi sẽ gọi lại trong 30 phút.', true);
-        form.reset();
-        if (window.track) window.track('Lead', { content_category: 'b2b' });
-      } catch (err) {
-        show('Gửi không thành công. Vui lòng liên hệ qua Zalo hoặc hotline.', false);
-      } finally {
+      // KHÔNG await: Apps Script trả 302 rồi mới xử lý, browser đi theo redirect
+      // nên await mất 10–15s — người dùng tưởng treo và bấm gửi nhiều lần.
+      // Với mode:'no-cors' response vốn không đọc được, nên chờ cũng chẳng biết
+      // thành công hay thất bại → chờ là vô nghĩa. keepalive giữ request sống
+      // kể cả khi người dùng rời trang ngay sau khi bấm.
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data),
+      }).catch(function () {
+        /* no-cors không cho đọc lỗi thật; im lặng để không báo sai cho người dùng */
+      });
+
+      show('Đã nhận yêu cầu. Chúng tôi sẽ gọi lại trong 30 phút.', true);
+      form.reset();
+      if (window.track) window.track('Lead', { content_category: 'b2b' });
+
+      // Mở lại sau 5s: đủ để tránh bấm trùng, vẫn cho khách gửi yêu cầu thứ hai
+      // (ví dụ hỏi thêm khách sạn khác) mà không phải tải lại trang.
+      setTimeout(function () {
+        dangGui = false;
         btn.disabled = false;
-      }
+      }, 5000);
     });
   })();
 </script>
