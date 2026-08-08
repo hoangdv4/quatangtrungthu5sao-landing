@@ -15,6 +15,13 @@ ok=0; loi=0
 pass() { echo "  [OK]   $1"; ok=$((ok+1)); }
 fail() { echo "  [LỖI]  $1"; loi=$((loi+1)); }
 
+# Tìm chuỗi con trong biến. KHÔNG dùng `echo "$x" | grep -q`: grep -q thoát ngay
+# khi khớp và đóng pipe trong lúc echo còn đang ghi, sinh SIGPIPE (exit 141) trên
+# Git Bash/Windows — báo "không tìm thấy" dù chuỗi có thật. `case` là thuần bash,
+# không pipe, không bao giờ dính lỗi này.
+chua() { case "$1" in *"$2"*) return 0;; *) return 1;; esac; }
+thuong() { echo "$1" | tr 'A-Z' 'a-z'; }
+
 echo "Kiểm tra: $BASE"
 echo "════════════════════════════════════════════════════════"
 
@@ -75,10 +82,14 @@ echo "③ Nén và cache CDN (những thứ localhost không có)"
 ENC=$(curl -sS -o /dev/null -D - -H "Accept-Encoding: br, gzip" --max-time 20 "$BASE/" 2>/dev/null | grep -i "^content-encoding:" | tr -d '\r' | awk '{print $2}')
 [ -n "$ENC" ] && pass "HTML được nén ($ENC)" || fail "HTML KHÔNG được nén"
 
-ASSET=$(curl -sSL --max-time 20 "$BASE/" 2>/dev/null | grep -o '/_astro/[A-Za-z0-9._-]*\.css' | head -1)
+# Không dùng `| head -1` ở đây: trên Git Bash/Windows, head đóng pipe sớm và
+# SIGPIPE làm hỏng trạng thái grep của các lệnh sau (grep -q sẽ báo không tìm
+# thấy dù chuỗi có thật). Lấy dòng đầu bằng sed -n 1p sau khi grep chạy hết.
+ASSET=$(curl -sSL --max-time 20 "$BASE/" 2>/dev/null | grep -o '/_astro/[A-Za-z0-9._-]*\.css' | sed -n 1p)
 if [ -n "$ASSET" ]; then
   CC=$(curl -sS -o /dev/null -D - --max-time 20 "$BASE$ASSET" 2>/dev/null | grep -i "^cache-control:" | tr -d '\r')
-  echo "$CC" | grep -qi "immutable\|max-age=31536000" \
+  CCL=$(thuong "$CC")
+  { chua "$CCL" "immutable" || chua "$CCL" "max-age=31536000"; } \
     && pass "Asset cache dài hạn ($ASSET)" \
     || fail "Asset thiếu cache dài hạn: $CC"
 else
@@ -98,14 +109,20 @@ for t in "/" "/banh-trung-thu-sheraton-ha-noi"; do
   [ "$CANON" = "$THAT" ] && pass "canonical $t khớp URL thật" \
     || fail "canonical $t = '$CANON' nhưng URL thật là '$THAT'"
 
-  echo "$HTML" | grep -q 'application/ld+json' && pass "JSON-LD có trong $t" || fail "$t thiếu JSON-LD"
+  chua "$HTML" 'application/ld+json' && pass "JSON-LD có trong $t" || fail "$t thiếu JSON-LD"
 done
 
 # /hop-vip phải noindex (quy tắc C0 — ads không trỏ vào)
-curl -sSL --max-time 20 "$BASE/hop-vip" 2>/dev/null | grep -qi 'name="robots"[^>]*noindex' \
+HOPVIP=$(curl -sSL --max-time 20 "$BASE/hop-vip" 2>/dev/null)
+[ "$(echo "$HOPVIP" | grep -ci 'name="robots"[^>]*noindex')" -gt 0 ] \
   && pass "/hop-vip có noindex" || fail "/hop-vip THIẾU noindex (quy tắc C0)"
 
-curl -sSL --max-time 20 "$BASE/sitemap-index.xml" 2>/dev/null | grep -q "hop-vip" \
+# Sitemap index chỉ trỏ tới các sitemap con — phải kiểm tra cả bên trong chúng.
+SM=$(curl -sSL --max-time 20 "$BASE/sitemap-index.xml" 2>/dev/null)
+for con in $(echo "$SM" | grep -o 'https\?://[^<]*sitemap[^<]*\.xml'); do
+  SM="$SM$(curl -sSL --max-time 20 "$con" 2>/dev/null)"
+done
+chua "$SM" "hop-vip" \
   && fail "/hop-vip lọt vào sitemap (không được phép)" || pass "/hop-vip không có trong sitemap"
 
 # ── 5. Tracking ──────────────────────────────────────────────
@@ -114,7 +131,7 @@ echo "⑤ Script tracking (phải có mặt trên production)"
 HOME_HTML=$(curl -sSL --max-time 20 "$BASE/" 2>/dev/null)
 for m in "connect.facebook.net:Meta Pixel" "googletagmanager.com:Google tag" "clarity.ms:Clarity"; do
   key="${m%%:*}"; ten="${m##*:}"
-  echo "$HOME_HTML" | grep -q "$key" && pass "$ten có mặt" || fail "$ten KHÔNG có — kiểm tra biến môi trường trên Cloudflare"
+  chua "$HOME_HTML" "$key" && pass "$ten có mặt" || fail "$ten KHÔNG có — kiểm tra biến môi trường trên Cloudflare"
 done
 
 # ── 6. Quy tắc rượu C0 ───────────────────────────────────────
@@ -124,10 +141,11 @@ HANG="Macallan Glenfiddich Chivas Hennessy Ballantine Johnnie Jack.Daniel Remy M
 for t in "/" "/banh-trung-thu-sheraton-ha-noi" "/banh-trung-thu-melia-ha-noi"; do
   H=$(curl -sSL --max-time 20 "$BASE$t" 2>/dev/null)
   dinh=""
-  for w in $HANG; do echo "$H" | grep -qi "$w" && dinh="$dinh $w"; done
+  HL=$(thuong "$H")
+  for w in $HANG; do chua "$HL" "$(thuong "$w")" && dinh="$dinh $w"; done
   # Trang đích ads: không được có chữ "rượu" trong meta title/description
   META=$(echo "$H" | grep -o '<meta name="description" content="[^"]*"'; echo "$H" | grep -o '<title>[^<]*</title>')
-  echo "$META" | grep -qi "rượu" && dinh="$dinh (chữ-rượu-trong-meta)"
+  chua "$(thuong "$META")" "rượu" && dinh="$dinh (chữ-rượu-trong-meta)"
   [ -z "$dinh" ] && pass "$t sạch" || fail "$t chứa:$dinh"
 done
 
