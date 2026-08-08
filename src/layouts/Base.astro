@@ -8,7 +8,13 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FloatingCTA from '../components/FloatingCTA.astro';
 import Analytics from '../components/Analytics.astro';
+import { getImage } from 'astro:assets';
+import anhBrandGoc from '../assets/sheraton/banh-trung-thu-sheraton-01.webp';
 import '../styles/global.css';
+
+// Ảnh đại diện thương hiệu cho schema LocalBusiness — cố định trên mọi trang.
+// 1200×630 là tỉ lệ Google/social ưa dùng.
+const anhThuongHieu = await getImage({ src: anhBrandGoc, width: 1200, height: 630 });
 
 // Preload woff2 (subset vietnamese) dùng ngay ở above-the-fold: H1 + body dùng
 // chung Be Vietnam Pro 400. URL lấy qua glob để luôn khớp hash build, không hardcode.
@@ -70,6 +76,14 @@ const localBusiness = {
     addressCountry: SITE.addressCountry,
   },
   ...(SITE.email ? { email: SITE.email } : {}),
+  // Google dùng ảnh này cho Local Pack / Knowledge Panel. Không bắt buộc nhưng
+  // ảnh thật là bằng chứng "hàng thật" — có lợi cho GEO.
+  // Dùng ảnh cố định của thương hiệu, KHÔNG dùng ảnh hero từng trang: cùng một
+  // pháp nhân (#business) xuất hiện trên mọi trang nên ảnh phải nhất quán, và
+  // 3 trang (/hop-vip, /so-sanh, /tim-hop-qua) không có ảnh hero để lấy.
+  // KHÔNG khai streetAddress/postalCode: bán theo khu vực, không có mặt bằng
+  // cho khách tới, đưa địa chỉ riêng lên schema công khai là rủi ro vô ích.
+  image: new URL(anhThuongHieu.src, SITE.domain).href,
 };
 
 // WebPage.isPartOf chỉ nhận CreativeWork (WebSite/WebPage) — trỏ thẳng vào
