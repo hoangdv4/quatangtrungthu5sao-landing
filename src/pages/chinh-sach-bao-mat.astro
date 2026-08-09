@@ -1,0 +1,79 @@
+---
+// Trang Chính sách quyền riêng tư — bắt buộc để gắn link vào Instant Form Meta (campaign C2)
+// và các form thu thập thông tin khác trên site. Nội dung tối giản, đúng thực tế vận hành
+// (đại lý phân phối, chia sẻ tên/SĐT với công ty nguồn hàng để xử lý đơn).
+import Base from '../layouts/Base.astro';
+import { SITE, PHONE_DISPLAY } from '../config/site';
+import { PAGE_MODIFIED } from '../lib/pricing';
+
+const dateModified = PAGE_MODIFIED['/chinh-sach-bao-mat'];
+const title = `Chính Sách Quyền Riêng Tư | ${SITE.brand}`;
+const description = `Chính sách quyền riêng tư của ${SITE.brand} — cách thu thập, sử dụng và bảo vệ thông tin khách hàng.`;
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${SITE.domain}/chinh-sach-bao-mat#webpage`,
+    url: `${SITE.domain}/chinh-sach-bao-mat`,
+    name: title,
+    description,
+    inLanguage: 'vi-VN',
+    dateModified,
+    isPartOf: { '@id': `${SITE.domain}/#website` },
+    publisher: { '@id': `${SITE.domain}/#business` },
+  },
+];
+---
+
+<Base {title} {description} {dateModified} {schema}>
+  <article class="mx-auto max-w-3xl px-4 py-12 md:py-20">
+    <p class="label-gold">Pháp lý</p>
+    <h1 class="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-ink">
+      Chính sách quyền riêng tư
+    </h1>
+    <p class="mt-2 text-sm text-ink-soft">Cập nhật lần cuối: {dateModified}</p>
+
+    <div class="prose prose-neutral mt-8 max-w-none text-ink-soft">
+      <h2>1. Thông tin chúng tôi thu thập</h2>
+      <p>
+        Khi bạn điền form trên website, Fanpage, Zalo OA hoặc quảng cáo của {SITE.brand}, chúng
+        tôi thu thập: họ tên, số điện thoại, tên công ty (nếu đặt hàng doanh nghiệp), ngân sách và
+        số lượng dự kiến. Chúng tôi không yêu cầu thông tin thanh toán qua các form này.
+      </p>
+
+      <h2>2. Mục đích sử dụng</h2>
+      <p>
+        Thông tin được dùng để: gửi bảng giá và tư vấn chọn hộp quà; liên hệ xác nhận và xử lý đơn
+        hàng; chăm sóc khách hàng sau bán. Chúng tôi không dùng thông tin cho mục đích nào khác
+        ngoài các mục trên.
+      </p>
+
+      <h2>3. Chia sẻ thông tin</h2>
+      <p>
+        {SITE.brand} là đại lý phân phối chính thức của các khách sạn đối tác. Để xử lý đơn hàng,
+        chúng tôi có thể chia sẻ tên, số điện thoại và địa chỉ giao hàng của bạn với đơn vị cung
+        ứng (khách sạn) chịu trách nhiệm sản xuất và giao bánh. Chúng tôi không bán, cho thuê hoặc
+        chia sẻ thông tin của bạn cho bên thứ ba nào khác ngoài mục đích này.
+      </p>
+
+      <h2>4. Lưu trữ và bảo mật</h2>
+      <p>
+        Thông tin được lưu trữ trong hệ thống quản lý nội bộ (Google Sheet, Meta Leads Center) có
+        giới hạn truy cập. Chúng tôi giữ thông tin trong thời gian cần thiết để hoàn tất đơn hàng
+        và chăm sóc khách hàng, tối đa 24 tháng kể từ lần liên hệ gần nhất.
+      </p>
+
+      <h2>5. Quyền của bạn</h2>
+      <p>
+        Bạn có quyền yêu cầu xem, chỉnh sửa hoặc xoá thông tin cá nhân đã cung cấp. Liên hệ qua
+        Zalo/hotline <strong>{PHONE_DISPLAY}</strong> để được hỗ trợ.
+      </p>
+
+      <h2>6. Liên hệ</h2>
+      <p>
+        Mọi thắc mắc về chính sách này, vui lòng liên hệ {SITE.brand} qua Zalo/hotline{' '}
+        <strong>{PHONE_DISPLAY}</strong> hoặc email {SITE.email}.
+      </p>
+    </div>
+  </article>
+</Base>

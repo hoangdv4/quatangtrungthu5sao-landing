@@ -66,6 +66,7 @@ export const PAGE_MODIFIED: Record<string, string> = {
   '/so-sanh': '2026-07-31',
   '/hop-vip': '2026-07-31',
   '/tim-hop-qua': '2026-07-31',
+  '/chinh-sach-bao-mat': '2026-08-09',
   ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-06'])),
 };
 
