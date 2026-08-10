@@ -14,7 +14,7 @@ export const SITE = {
   // Tên thương hiệu bán lẻ của BẠN (không phải tên khách sạn, không phải tên
   // công ty nguồn hàng).
   // Xuất hiện ở: logo text, footer, schema LocalBusiness, title các trang.
-  brand: "Quà Tặng Trung Thu 5 Sao",
+  brand: "Quà tặng Khách sạn 5 sao",
 
   domain: "https://quatangtrungthu5sao.com",
 
