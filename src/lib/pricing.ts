@@ -64,36 +64,52 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-08-06',
+  '/': '2026-08-20',
   '/so-sanh': '2026-07-31',
   '/hop-vip': '2026-07-31',
   '/tim-hop-qua': '2026-07-31',
   '/chinh-sach-bao-mat': '2026-08-09',
-  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-06'])),
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-20'])),
 };
 
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
 
-/** 889.000đ — định dạng giá VN, dùng thống nhất toàn site. */
+/** SKU còn hàng — hộp hết hàng vẫn giữ trên trang để không mất nội dung index. */
+export const conHang = (sp: SanPham) => sp.het_hang !== true;
+
+/** SKU còn bán được của một khách sạn. Nếu hết sạch thì trả về toàn bộ, để UI không rỗng. */
+export function sanPhamConHang(ks: KhachSan): SanPham[] {
+  const con = ks.san_pham.filter(conHang);
+  return con.length ? con : ks.san_pham;
+}
+
+/**
+ * Giá thấp/cao nhất TÍNH TRÊN HÀNG CÒN BÁN ĐƯỢC — dùng thay ks.gia_tu / ks.gia_den
+ * ở mọi chỗ hiển thị công khai. Khi một mẫu được tick het_hang trong pricing.json,
+ * khoảng giá + bộ lọc + meta tự cập nhật, không phải nhớ sửa tay hai nơi.
+ */
+export const giaTuConHang = (ks: KhachSan) =>
+  Math.min(...sanPhamConHang(ks).map((sp) => sp.gia_da_vat));
+export const giaDenConHang = (ks: KhachSan) =>
+  Math.max(...sanPhamConHang(ks).map((sp) => sp.gia_da_vat));
+
+/** 1.348.000đ — định dạng giá VN, dùng thống nhất toàn site. */
 export function dinhDangGia(gia: number): string {
   return new Intl.NumberFormat('vi-VN').format(gia) + 'đ';
 }
 
 /** Khoảng giá đã VAT của một khách sạn. */
 export function khoangGia(ks: KhachSan): string {
-  return `${dinhDangGia(ks.gia_tu)} – ${dinhDangGia(ks.gia_den)}`;
+  return `${dinhDangGia(giaTuConHang(ks))} – ${dinhDangGia(giaDenConHang(ks))}`;
 }
 
 /** Giá thấp nhất / cao nhất toàn site (dùng cho llms.txt, meta, schema). */
-export const GIA_MIN = Math.min(...KHACH_SAN.map((ks) => ks.gia_tu));
-export const GIA_MAX = Math.max(...KHACH_SAN.map((ks) => ks.gia_den));
+export const GIA_MIN = Math.min(...KHACH_SAN.map(giaTuConHang));
+export const GIA_MAX = Math.max(...KHACH_SAN.map(giaDenConHang));
 export const TONG_SO_MAU = KHACH_SAN.reduce((n, ks) => n + ks.san_pham.length, 0);
 
 /** Hộp có quà tặng kèm (ruou != null) — chỉ hiển thị ở /hop-vip. */
 export const coQuaTang = (sp: SanPham) => sp.ruou !== null;
-
-/** SKU còn hàng — hộp hết hàng vẫn giữ trên trang để không mất nội dung index. */
-export const conHang = (sp: SanPham) => sp.het_hang !== true;
 
 /** URL availability cho schema.org Offer. */
 export const availabilitySchema = (sp: SanPham) =>
@@ -119,7 +135,7 @@ export type Tier = 'low' | 'mid' | 'vip';
 /** Một khách sạn có thể thuộc nhiều tier nếu có SKU trải nhiều mức giá. */
 export function tinhTiers(ks: KhachSan): Tier[] {
   const tiers = new Set<Tier>();
-  for (const sp of ks.san_pham) {
+  for (const sp of sanPhamConHang(ks)) {
     if (sp.gia_da_vat < 1_100_000) tiers.add('low');
     else if (sp.gia_da_vat <= 2_600_000) tiers.add('mid');
     else tiers.add('vip');

@@ -1,0 +1,84 @@
+---
+// Khối "Cùng tầm giá — còn hàng".
+// Chỉ hiện khi khách sạn hiện tại có mẫu tạm hết hàng RẺ HƠN mẫu rẻ nhất còn bán được,
+// tức là có một khoảng giá khách đang nhắm mà trang này không phục vụ được nữa.
+// Khi đó gợi ý hộp CÒN HÀNG của khách sạn khác, giá gần nhất với mẫu đã hết —
+// để khách hụt tầm giá có lựa chọn ngay trên trang thay vì thoát.
+// Tự tắt khi mọi mẫu đều còn hàng; không cần cấu hình riêng cho từng khách sạn.
+import { Image } from 'astro:assets';
+import { KHACH_SAN, conHang, dinhDangGia, duongDan, type KhachSan, type SanPham } from '../lib/pricing';
+import { anhKhachSan } from '../lib/hotel-images';
+
+interface Props {
+  ks: KhachSan;
+}
+
+const { ks } = Astro.props;
+
+const daHet = ks.san_pham.filter((sp) => !conHang(sp));
+const conHangKS = ks.san_pham.filter(conHang);
+
+// Mức giá khách đang nhắm nhưng trang này không còn phục vụ được.
+const giaHut = daHet.length ? Math.min(...daHet.map((sp) => sp.gia_da_vat)) : 0;
+// Mẫu rẻ nhất khách sạn này vẫn bán được.
+const giaReNhatConHang = conHangKS.length ? Math.min(...conHangKS.map((sp) => sp.gia_da_vat)) : 0;
+
+const coKhoangHut = daHet.length > 0 && conHangKS.length > 0 && giaHut < giaReNhatConHang;
+
+const gan = (gia: number) => Math.abs(gia - giaHut);
+
+// Mỗi khách sạn khác chỉ góp 1 hộp — hộp còn hàng gần mức giá đang hụt nhất.
+const ungVien: { k: KhachSan; sp: SanPham }[] = [];
+if (coKhoangHut) {
+  for (const k of KHACH_SAN) {
+    if (k.id === ks.id) continue;
+    const hop = k.san_pham
+      .filter(conHang)
+      .filter((sp) => sp.gia_da_vat <= giaReNhatConHang)
+      .sort((a, b) => gan(a.gia_da_vat) - gan(b.gia_da_vat))[0];
+    if (hop) ungVien.push({ k, sp: hop });
+  }
+  ungVien.sort((a, b) => gan(a.sp.gia_da_vat) - gan(b.sp.gia_da_vat));
+  ungVien.length = Math.min(ungVien.length, 3);
+}
+
+const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 7px,#f6f2e9 7px 14px)';
+---
+
+{
+  ungVien.length > 0 && (
+    <div data-reveal class="mt-14 border-t border-hairline pt-14">
+      <p class="text-[11px] uppercase tracking-[.22em] text-accent">Gợi ý thay thế</p>
+      <h2 class="mt-2 font-display text-[32px] leading-[1.1] text-ink">Cùng tầm giá — còn hàng</h2>
+      <p class="mt-3 max-w-[62ch] text-[15px] leading-[1.7] text-[#4a453d]">
+        {daHet.length} mẫu {ks.ten} tầm {dinhDangGia(giaHut)} hiện tạm hết hàng. Nếu anh/chị muốn giữ
+        đúng tầm giá này, dưới đây là các hộp còn hàng của khách sạn 5 sao khác cùng phân khúc.
+      </p>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-3">
+        {ungVien.map(({ k, sp }) => {
+          const anh = anhKhachSan(k.id)[0];
+          return (
+            <a href={duongDan(k.id)} class="block">
+              {anh ? (
+                <Image
+                  src={anh}
+                  alt={`Bánh trung thu ${k.ten} 2026`}
+                  width={600}
+                  height={400}
+                  loading="lazy"
+                  class="h-[200px] w-full object-cover"
+                />
+              ) : (
+                <div class="h-[200px] w-full" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
+              )}
+              <p class="mt-3 font-display text-[22px] text-ink">{k.ten}</p>
+              <p class="mt-1 text-[13px] leading-[1.5] text-ink-soft">{sp.ten_hien_thi}</p>
+              <p class="price mt-1 text-[15px] text-ink">{dinhDangGia(sp.gia_da_vat)}</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )
+}

@@ -7,8 +7,9 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
+import GoiYThayThe from '../components/GoiYThayThe.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, giaTuConHang, giaDenConHang, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -31,8 +32,9 @@ const { ks } = Astro.props;
 const content = HOTEL_CONTENT[ks.id];
 const dateModified = PAGE_MODIFIED[duongDan(ks.id)];
 
-const min = dinhDangGia(ks.gia_tu);
-const max = dinhDangGia(ks.gia_den);
+// Khoảng giá hiển thị tính trên hàng CÒN BÁN ĐƯỢC — không chào mức giá đã hết hàng.
+const min = dinhDangGia(giaTuConHang(ks));
+const max = dinhDangGia(giaDenConHang(ks));
 const soMau = ks.san_pham.length;
 const story = HOTEL_STORY[ks.id];
 const chef = HOTEL_CHEF[ks.id];
@@ -248,6 +250,8 @@ const schema = [
         </p>
       </div>
     </div>
+
+    <GoiYThayThe ks={ks} />
 
     {/* ── Bộ sưu tập & các vị bánh ───────────────────────────────── */}
     {

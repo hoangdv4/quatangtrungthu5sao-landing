@@ -11,7 +11,7 @@ export interface HotelContent {
 export const HOTEL_CONTENT: Record<string, HotelContent> = {
   sheraton: {
     tuVan:
-      'Thanh 1 (889k) là hộp entry bán chạy nhất — hợp biếu số lượng cho nhân viên/đối tác phổ thông. An 2 kèm trà (1.548k) hợp biếu sếp tầm trung. Lưu ý HSD 25 ngày, đặt sát ngày biếu.',
+      'An 1 (1.348k) — 6 bánh 100gr — là hộp gọn nhất còn hàng, hợp biếu đối tác. Ba mẫu hộp VIP (2.199k–2.599k) hợp biếu sếp và khách VIP. Ba mẫu entry (Thanh 1, Thanh 2, An 2) hiện tạm hết hàng — cùng tầm giá đó xem InterContinental Classic Box 4 (1.026k). Lưu ý HSD 25 ngày, đặt sát ngày biếu.',
     faqRieng: [
       {
         q: 'HSD bánh Sheraton bao lâu?',
