@@ -51,6 +51,20 @@
       ]
     },
     {
+      "id": "intercontinental-westlake",
+      "ten": "InterContinental Hà Nội Westlake",
+      "thanh_pho": "Hà Nội",
+      "hsd_ngay": 45,
+      "gia_tu": 1134000,
+      "gia_den": 2365000,
+      "san_pham": [
+        { "stt": 1, "ten_day_du": "Diệp Hoa - Hộp 4 bánh (Crimson Blossom)", "ten_hien_thi": "Diệp Hoa — Hộp 4 bánh", "quy_cach": "4 bánh — Hộp Diệp Hoa", "gia_chua_vat": 1050000, "vat": 0.08, "gia_da_vat": 1134000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "nhân viên/nội bộ"] },
+        { "stt": 2, "ten_day_du": "Diệp Hoa - Hộp 6 bánh (Crimson Blossom)", "ten_hien_thi": "Diệp Hoa — Hộp 6 bánh", "quy_cach": "6 bánh — Hộp Diệp Hoa", "gia_chua_vat": 1250000, "vat": 0.08, "gia_da_vat": 1350000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "gia đình"] },
+        { "stt": 3, "ten_day_du": "Dạ Liên - Hộp 8 bánh (Emerald Lotus)", "ten_hien_thi": "Dạ Liên — Hộp 8 bánh", "quy_cach": "8 bánh — Hộp Dạ Liên có quai xách", "gia_chua_vat": 1680000, "vat": 0.08, "gia_da_vat": 1815000, "ruou": null, "mau_sac": "xanh rêu", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "khách VIP/lãnh đạo"] },
+        { "stt": 4, "ten_day_du": "Kim Trúc - Hộp 8 bánh + 1 chai Vang Torre Oria 05 Cabernet Sauvignon 750ml (Imperial Bamboo)", "ten_hien_thi": "Kim Trúc — Hộp 8 bánh kèm quà tặng cao cấp", "quy_cach": "8 bánh + 1 chai 750ml — Hộp Kim Trúc 2 tầng", "gia_chua_vat": 2150000, "vat": 0.10, "gia_da_vat": 2365000, "ruou": "vang", "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] }
+      ]
+    },
+    {
       "id": "melia",
       "ten": "Meliá Hà Nội",
       "thanh_pho": "Hà Nội",

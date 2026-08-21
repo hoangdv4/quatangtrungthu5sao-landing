@@ -40,7 +40,7 @@ export const ANH_SMA: ImageMetadata[] = Object.entries(smaModules)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, mod]) => mod.default);
 
-// Logo thật 7 khách sạn (thư mục /logo ở root repo, ngoài src/ — khách hàng có quyền dùng logo chính thức).
+// Logo thật 8 khách sạn (thư mục /logo ở root repo, ngoài src/ — khách hàng có quyền dùng logo chính thức).
 const logoModules = import.meta.glob<string>('../../logo/*.{svg,png,jpg,jpeg}', {
   eager: true,
   query: '?url',
@@ -50,6 +50,7 @@ const logoModules = import.meta.glob<string>('../../logo/*.{svg,png,jpg,jpeg}', 
 const LOGO_FILE_TO_ID: Record<string, string> = {
   sheraton: 'sheraton',
   intercontinental: 'intercontinental-lm72',
+  'intercontinental-hanoi-westlake': 'intercontinental-westlake',
   melia: 'melia',
   renaissance: 'renaissance',
   sofitel: 'sofitel',

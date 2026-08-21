@@ -29,6 +29,20 @@ export const HOTEL_CONTENT: Record<string, HotelContent> = {
       },
     ],
   },
+  'intercontinental-westlake': {
+    tuVan:
+      'Diệp Hoa 4 bánh (1.134k) là mẫu entry hợp biếu nhân viên và đối tác phổ thông; bản 6 bánh (1.350k) nhỉnh hơn chút cho gia đình. Dạ Liên 8 bánh (1.815k) có quai xách, đủ 8 vị gồm cả nấm linh chi & nhân sâm đỏ — đáng tiền nhất nếu biếu sếp hoặc khách quan trọng. Kim Trúc (2.365k) kèm quà tặng cao cấp, dành cho khách VIP.',
+    faqRieng: [
+      {
+        q: 'Bánh InterContinental Hà Nội Westlake có gì khác Landmark72?',
+        a: 'Hai khách sạn cùng thương hiệu InterContinental nhưng bếp bánh và bộ sưu tập riêng biệt. Westlake năm nay ra bộ "Kim Nguyệt Viễn Du" với 4 mẫu hộp, có vị nấm linh chi & nhân sâm đỏ mà Landmark72 không có.',
+      },
+      {
+        q: 'Hộp Dạ Liên 8 bánh gồm những vị nào?',
+        a: 'Đủ 8 vị khác nhau: trà Ôlong, hạt chia, dừa lá dứa, hạt sen trứng muối, khoai môn trứng muối, matcha trứng muối, đậu xanh trứng muối và nấm linh chi & nhân sâm đỏ.',
+      },
+    ],
+  },
   melia: {
     tuVan:
       'Thiết kế đậm chất Á Đông, tên hộp ý nghĩa — hợp biếu đối tác lớn tuổi. Hai hộp entry 1.067k giá tốt nhất nhóm 4 bánh 120gr.',

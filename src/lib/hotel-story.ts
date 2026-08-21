@@ -24,6 +24,12 @@ export const HOTEL_STORY: Record<string, HotelStory> = {
       'Mùa thu chạm ngõ cũng là lúc ký ức về những mùa trăng sum vầy khẽ được đánh thức. Lấy cảm hứng từ vẻ đẹp an yên của thiên nhiên Việt Nam, bộ sưu tập bánh Trung Thu năm nay của InterContinental Hanoi Landmark72 mở ra câu chuyện về những cuộc hội ngộ thân quen dưới ánh trăng viên mãn, nơi từng đường nét thiết kế trở thành lời tự tình của mùa đoàn viên.',
     catalogue: 'catalogue-banh-trung-thu-intercontinental-lm72.pdf',
   },
+  'intercontinental-westlake': {
+    ten_bst: 'Kim Nguyệt Viễn Du',
+    loiTua:
+      'Mỗi mùa trăng đoàn viên, khi tiết trời dần chuyển sang thu và ánh nguyệt bắt đầu dịu dàng phủ lên vạn vật, cũng là lúc chuyến tàu mang theo hơi thở của mùa sum họp lặng lẽ khởi hành. Lấy cảm hứng từ hành trình trở về ấy, Bộ Sưu Tập Bánh Trung Thu 2026 - Kim Nguyệt Viễn Du được kiến tạo như một chuyến du hành thi vị giữa cảnh sắc thu sang. Bên trong khoang tàu le lói ánh trăng huyền ảo, những tia sáng dịu dàng len qua khung cửa, phác họa nên bức tranh thơ mộng đậm chất Á Đông. Mỗi chiếc bánh được chế tác thủ công bởi đội ngũ ẩm thực tài hoa với nguyên liệu tuyển chọn, kết hợp tinh hoa kỹ nghệ truyền thống với cảm hứng sáng tạo đương đại. Với thiết kế thanh lịch và tinh tế, Kim Nguyệt Viễn Du là lời gửi trao lòng tri ân và những lời chúc viên mãn đến gia đình, đối tác và những người thân yêu trong mùa đoàn viên.',
+    catalogue: 'catalogue-banh-trung-thu-intercontinental-westlake.pdf',
+  },
   melia: {
     ten_bst: 'Nguyệt Phúc Viên',
     loiTua:

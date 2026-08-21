@@ -49,6 +49,7 @@ export const KHACH_SAN = raw.khach_san as KhachSan[];
 const SLUG: Record<string, string> = {
   sheraton: '/banh-trung-thu-sheraton-ha-noi',
   'intercontinental-lm72': '/banh-trung-thu-intercontinental-landmark72',
+  'intercontinental-westlake': '/banh-trung-thu-intercontinental-ha-noi-westlake',
   melia: '/banh-trung-thu-melia-ha-noi',
   renaissance: '/banh-trung-thu-renaissance-sai-gon',
   sofitel: '/banh-trung-thu-sofitel-sai-gon',
@@ -64,12 +65,12 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-08-20',
-  '/so-sanh': '2026-07-31',
-  '/hop-vip': '2026-07-31',
-  '/tim-hop-qua': '2026-07-31',
+  '/': '2026-08-21',
+  '/so-sanh': '2026-08-21',
+  '/hop-vip': '2026-08-21',
+  '/tim-hop-qua': '2026-08-21',
   '/chinh-sach-bao-mat': '2026-08-09',
-  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-20'])),
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-21'])),
 };
 
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
