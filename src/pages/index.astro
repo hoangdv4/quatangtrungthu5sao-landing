@@ -25,7 +25,7 @@ import { anhKhachSan, ANH_SMA } from '../lib/hotel-images';
 import { HOTEL_STORY } from '../lib/hotel-story';
 
 const title = `Bánh Trung Thu Khách Sạn 5 Sao 2026 | ${SITE.brand}`;
-const description = `Bảng giá bánh trung thu 7 khách sạn 5 sao 2026: Sheraton, InterContinental, Meliá... Chính hãng, đã VAT, giao nhanh HN & SG. Zalo ${PHONE_DISPLAY}.`;
+const description = `Bảng giá bánh trung thu 8 khách sạn 5 sao 2026: Sheraton, InterContinental, Meliá... Chính hãng, đã VAT, giao nhanh HN & SG. Zalo ${PHONE_DISPLAY}.`;
 const dateModified = PAGE_MODIFIED['/'];
 
 // Khối 7 — chọn theo ngân sách. Danh sách theo site-content.md, giá lấy từ pricing.json.
@@ -104,7 +104,7 @@ const schema = [
   },
   {
     '@type': 'ItemList',
-    name: 'Bánh trung thu 7 khách sạn 5 sao 2026',
+    name: 'Bánh trung thu 8 khách sạn 5 sao 2026',
     numberOfItems: KHACH_SAN.length,
     itemListElement: KHACH_SAN.map((ks, i) => ({
       '@type': 'ListItem',
@@ -117,7 +117,7 @@ const schema = [
     '@type': 'Product',
     name: 'Bánh trung thu khách sạn 5 sao 2026',
     description:
-      'Hộp bánh trung thu chính hãng từ 7 khách sạn 5 sao tại Hà Nội và Sài Gòn, giá niêm yết đã gồm VAT.',
+      'Hộp bánh trung thu chính hãng từ 8 khách sạn 5 sao tại Hà Nội và Sài Gòn, giá niêm yết đã gồm VAT.',
     ...(anhHeroOg ? { image: `${SITE.domain}${anhHeroOg.src}` } : {}),
     brand: { '@type': 'Brand', name: SITE.brand },
     offers: {
@@ -194,7 +194,7 @@ const trustPoints = [
     </h1>
   </section>
 
-  {/* ── Khối 2 — Dải logo 7 khách sạn ──────────────────────────── */}
+  {/* ── Khối 2 — Dải logo 8 khách sạn ──────────────────────────── */}
   <LogoStrip />
 
   <section class="mx-auto -mt-2 max-w-[1180px] px-6 pb-16 sm:px-10 sm:pb-20">
@@ -254,13 +254,13 @@ const trustPoints = [
     </div>
   </section>
 
-  {/* ── Khối 5 — Bảng giá 7 khách sạn + chip lọc ──────────────── */}
+  {/* ── Khối 5 — Bảng giá 8 khách sạn + chip lọc ──────────────── */}
   <section id="catalogue" class="scroll-mt-16 mx-auto max-w-[1180px] px-6 py-16 sm:px-10 md:py-24">
     <div class="flex flex-wrap items-end justify-between gap-8">
       <div>
         <p class="label-gold">Bộ sưu tập 2026</p>
         <h2 class="mt-2 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] leading-[1.08] text-ink">
-          Bảng giá bánh trung thu 7 khách sạn 5 sao
+          Bảng giá bánh trung thu 8 khách sạn 5 sao
         </h2>
         <p class="mt-2 text-sm text-text-faint">
           {TONG_SO_MAU} mẫu hộp, giá từ {dinhDangGia(GIA_MIN)} đến {dinhDangGia(GIA_MAX)}.

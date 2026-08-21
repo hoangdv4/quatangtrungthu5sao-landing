@@ -3,6 +3,7 @@
 export const BRAND_TINT_BORDER: Record<string, string> = {
   sheraton: 'border-brand-sheraton',
   'intercontinental-lm72': 'border-brand-intercontinental',
+  'intercontinental-westlake': 'border-brand-intercontinental',
   melia: 'border-brand-melia',
   sofitel: 'border-brand-sofitel',
   hilton: 'border-brand-hilton',

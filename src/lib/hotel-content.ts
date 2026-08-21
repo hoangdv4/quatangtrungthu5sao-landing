@@ -11,7 +11,7 @@ export interface HotelContent {
 export const HOTEL_CONTENT: Record<string, HotelContent> = {
   sheraton: {
     tuVan:
-      'Thanh 1 (889k) là hộp entry bán chạy nhất — hợp biếu số lượng cho nhân viên/đối tác phổ thông. An 2 kèm trà (1.548k) hợp biếu sếp tầm trung. Lưu ý HSD 25 ngày, đặt sát ngày biếu.',
+      'An 1 (1.348k) — 6 bánh 100gr — là hộp gọn nhất còn hàng, hợp biếu đối tác. Ba mẫu hộp VIP (2.199k–2.599k) hợp biếu sếp và khách VIP. Ba mẫu entry (Thanh 1, Thanh 2, An 2) hiện tạm hết hàng — cùng tầm giá đó xem InterContinental Classic Box 4 (1.026k). Lưu ý HSD 25 ngày, đặt sát ngày biếu.',
     faqRieng: [
       {
         q: 'HSD bánh Sheraton bao lâu?',
@@ -26,6 +26,20 @@ export const HOTEL_CONTENT: Record<string, HotelContent> = {
       {
         q: 'Luxury Box 8 và Classic Box khác gì nhau?',
         a: 'Luxury Box 8 gồm 8 bánh 100gr trong hộp lớn hơn, phù hợp biếu gia đình hoặc đối tác cần số lượng bánh nhiều; Classic Box 4/6 gọn hơn, hợp biếu cá nhân.',
+      },
+    ],
+  },
+  'intercontinental-westlake': {
+    tuVan:
+      'Diệp Hoa 4 bánh (1.134k) là mẫu entry hợp biếu nhân viên và đối tác phổ thông; bản 6 bánh (1.350k) nhỉnh hơn chút cho gia đình. Dạ Liên 8 bánh (1.815k) có quai xách, đủ 8 vị gồm cả nấm linh chi & nhân sâm đỏ — đáng tiền nhất nếu biếu sếp hoặc khách quan trọng. Kim Trúc (2.365k) kèm quà tặng cao cấp, dành cho khách VIP.',
+    faqRieng: [
+      {
+        q: 'Bánh InterContinental Hà Nội Westlake có gì khác Landmark72?',
+        a: 'Hai khách sạn cùng thương hiệu InterContinental nhưng bếp bánh và bộ sưu tập riêng biệt. Westlake năm nay ra bộ "Kim Nguyệt Viễn Du" với 4 mẫu hộp, có vị nấm linh chi & nhân sâm đỏ mà Landmark72 không có.',
+      },
+      {
+        q: 'Hộp Dạ Liên 8 bánh gồm những vị nào?',
+        a: 'Đủ 8 vị khác nhau: trà Ôlong, hạt chia, dừa lá dứa, hạt sen trứng muối, khoai môn trứng muối, matcha trứng muối, đậu xanh trứng muối và nấm linh chi & nhân sâm đỏ.',
       },
     ],
   },

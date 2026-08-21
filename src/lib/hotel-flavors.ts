@@ -58,6 +58,55 @@ export const HOTEL_FLAVORS: Record<string, FlavorGroup[]> = {
       ],
     },
   ],
+  'intercontinental-westlake': [
+    {
+      ten: 'Diệp Hoa — Hộp 4 bánh',
+      viBanh: [
+        'Khoai môn trứng muối',
+        'Matcha trứng muối',
+        'Trà Ôlong',
+        'Hạt sen trứng muối',
+      ],
+    },
+    {
+      ten: 'Diệp Hoa — Hộp 6 bánh',
+      viBanh: [
+        'Trà Ôlong',
+        'Hạt chia',
+        'Hạt sen trứng muối',
+        'Khoai môn trứng muối',
+        'Matcha trứng muối',
+        'Đậu xanh trứng muối',
+      ],
+    },
+    {
+      ten: 'Dạ Liên — Hộp 8 bánh',
+      viBanh: [
+        'Trà Ôlong',
+        'Hạt chia',
+        'Dừa lá dứa',
+        'Hạt sen trứng muối',
+        'Khoai môn trứng muối',
+        'Matcha trứng muối',
+        'Đậu xanh trứng muối',
+        'Nấm linh chi & nhân sâm đỏ',
+      ],
+    },
+    {
+      ten: 'Kim Trúc — Hộp 8 bánh kèm quà tặng cao cấp',
+      ghiChu: 'Cùng bộ 8 vị của hộp Dạ Liên, kèm quà tặng cao cấp 750ml.',
+      viBanh: [
+        'Trà Ôlong',
+        'Hạt chia',
+        'Dừa lá dứa',
+        'Hạt sen trứng muối',
+        'Khoai môn trứng muối',
+        'Matcha trứng muối',
+        'Đậu xanh trứng muối',
+        'Nấm linh chi & nhân sâm đỏ',
+      ],
+    },
+  ],
   melia: [
     {
       ten: 'Thanh Hoa Nguyệt Ảnh / Chu Tước Phúc Viên (4 bánh 120gr)',
