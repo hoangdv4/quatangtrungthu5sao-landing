@@ -20,6 +20,8 @@ export interface SanPham {
   /** Tên đã sanitize theo C0 — dùng trên mọi trang public. */
   ten_hien_thi: string;
   quy_cach: string;
+  /** true = tạm hết hàng: vẫn hiển thị (SEO/GEO) nhưng gắn nhãn và schema OutOfStock. Vắng mặt = còn hàng. */
+  het_hang?: boolean;
   gia_chua_vat: number;
   vat: number;
   gia_da_vat: number;
@@ -89,6 +91,13 @@ export const TONG_SO_MAU = KHACH_SAN.reduce((n, ks) => n + ks.san_pham.length, 0
 
 /** Hộp có quà tặng kèm (ruou != null) — chỉ hiển thị ở /hop-vip. */
 export const coQuaTang = (sp: SanPham) => sp.ruou !== null;
+
+/** SKU còn hàng — hộp hết hàng vẫn giữ trên trang để không mất nội dung index. */
+export const conHang = (sp: SanPham) => sp.het_hang !== true;
+
+/** URL availability cho schema.org Offer. */
+export const availabilitySchema = (sp: SanPham) =>
+  conHang(sp) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
 
 /** Toàn bộ SKU của mọi khách sạn, kèm tham chiếu ngược tới khách sạn — dùng cho filter/concierge/so sánh. */
 export const TAT_CA_SAN_PHAM: { ks: KhachSan; sp: SanPham }[] = KHACH_SAN.flatMap((ks) =>

@@ -3,7 +3,7 @@
 // ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du; ảnh SKU đã rà soát
 // thủ công loại bỏ mọi ảnh lộ chai/ly rượu (xem lib/hotel-images.ts layAnhSku).
 import { Image } from 'astro:assets';
-import { dinhDangGia, type SanPham } from '../lib/pricing';
+import { dinhDangGia, conHang, type SanPham } from '../lib/pricing';
 import { layAnhSku } from '../lib/hotel-images';
 
 interface Props {
@@ -35,19 +35,36 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5
       {
         sanPham.map((sp) => {
           const anh = layAnhSku(hotelId, sp.stt);
+          const con = conHang(sp);
           return (
-            <tr class="border-b border-hairline hover:bg-paper-warm">
+            <tr class={`border-b border-hairline hover:bg-paper-warm${con ? '' : ' opacity-70'}`}>
               <td class="px-2 py-3">
                 {anh ? (
-                  <Image src={anh} alt={sp.ten_hien_thi} width={48} height={48} loading="lazy" class="h-12 w-12 object-cover" />
+                  <Image
+                    src={anh}
+                    alt={sp.ten_hien_thi}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    class={`h-12 w-12 object-cover${con ? '' : ' grayscale'}`}
+                  />
                 ) : (
                   <div class="h-12 w-12" style={{ background: PLACEHOLDER_BG }} aria-hidden="true" />
                 )}
               </td>
-              <td class="px-2 py-3 font-medium text-ink">{sp.ten_hien_thi}</td>
+              <td class="px-2 py-3 font-medium text-ink">
+                {sp.ten_hien_thi}
+                {!con && (
+                  <span class="ml-2 whitespace-nowrap border border-hairline-strong px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-text-faint">
+                    Tạm hết hàng
+                  </span>
+                )}
+              </td>
               {/* Ẩn bằng CSS dưới 480px, vẫn giữ trong DOM — AI/crawler đọc được. */}
               <td class="hidden px-2 py-3 text-text-muted min-[480px]:table-cell">{sp.quy_cach}</td>
-              <td class="price px-2 py-3 text-right">{dinhDangGia(sp.gia_da_vat)}</td>
+              <td class={`price px-2 py-3 text-right${con ? '' : ' line-through decoration-1'}`}>
+                {dinhDangGia(sp.gia_da_vat)}
+              </td>
             </tr>
           );
         })

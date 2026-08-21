@@ -8,7 +8,7 @@ import Base from '../layouts/Base.astro';
 import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -94,7 +94,7 @@ const schema = [
       name: sp.ten_hien_thi,
       priceCurrency: 'VND',
       price: sp.gia_da_vat,
-      availability: 'https://schema.org/InStock',
+      availability: availabilitySchema(sp),
       url: `${SITE.domain}${canonicalPath}`,
       seller: { '@id': `${SITE.domain}/#business` },
       shippingDetails: {

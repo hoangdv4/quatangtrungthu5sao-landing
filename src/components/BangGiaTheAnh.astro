@@ -3,7 +3,7 @@
 // Số cột lưới co theo số mẫu hộp (không dùng auto-fit — để lại ô lẻ ở hàng cuối).
 // ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du.
 import { Image } from 'astro:assets';
-import { dinhDangGia, type SanPham } from '../lib/pricing';
+import { dinhDangGia, conHang, type SanPham } from '../lib/pricing';
 import { layAnhSku } from '../lib/hotel-images';
 import { SITE } from '../config/site';
 
@@ -29,18 +29,26 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
   {
     sanPham.map((sp) => {
       const anh = layAnhSku(hotelId, sp.stt);
+      const con = conHang(sp);
       return (
-        <div class="flex flex-col gap-3.5">
+        <div class={`flex flex-col gap-3.5${con ? '' : ' opacity-70'}`}>
           {anh ? (
-            <Image
-              src={anh}
-              alt={sp.ten_hien_thi}
-              width={600}
-              height={600}
-              loading="lazy"
-              style={{ height: imgH }}
-              class="w-full object-cover"
-            />
+            <div class="relative">
+              <Image
+                src={anh}
+                alt={sp.ten_hien_thi}
+                width={600}
+                height={600}
+                loading="lazy"
+                style={{ height: imgH }}
+                class={`w-full object-cover${con ? '' : ' grayscale'}`}
+              />
+              {!con && (
+                <span class="absolute left-0 top-0 bg-ink/85 px-3 py-1.5 text-[10px] uppercase tracking-[.13em] text-paper">
+                  Tạm hết hàng
+                </span>
+              )}
+            </div>
           ) : (
             <div
               class="flex w-full items-end justify-end p-3.5"
@@ -50,10 +58,19 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
               <span class="text-[11px] uppercase tracking-[.13em] text-text-faint">Ảnh hộp</span>
             </div>
           )}
-          <p class="font-display text-[21px] leading-tight text-ink">{sp.ten_hien_thi}</p>
+          <p class="font-display text-[21px] leading-tight text-ink">
+            {sp.ten_hien_thi}
+            {!con && (
+              <span class="ml-2 align-middle border border-hairline-strong px-2 py-0.5 text-[10px] uppercase tracking-[.13em] text-text-faint">
+                Tạm hết hàng
+              </span>
+            )}
+          </p>
           <p class="text-xs leading-relaxed text-text-faint">{sp.quy_cach}</p>
           <div class="flex items-baseline justify-between gap-3 border-t border-hairline pt-[9px]">
-            <span class="price whitespace-nowrap text-[17px]">{dinhDangGia(sp.gia_da_vat)}</span>
+            <span class={`price whitespace-nowrap text-[17px]${con ? '' : ' line-through decoration-1'}`}>
+              {dinhDangGia(sp.gia_da_vat)}
+            </span>
             <a
               href={SITE.zalo}
               target="_blank"
@@ -61,7 +78,7 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
               data-contact={`zalo-sku-${sp.stt}`}
               class="whitespace-nowrap border-b border-gold pb-0.5 text-[11px] tracking-[.05em] text-accent hover:text-accent-hover"
             >
-              Đặt hộp này
+              {con ? 'Đặt hộp này' : 'Hỏi mẫu tương tự'}
             </a>
           </div>
         </div>

@@ -4,7 +4,7 @@
 // Dark luxury duy nhất của site: nền --ink toàn trang, chữ --paper, giá --gold.
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, dinhDangGia, coQuaTang, duongDan, PAGE_MODIFIED } from '../lib/pricing';
+import { KHACH_SAN, dinhDangGia, coQuaTang, conHang, duongDan, PAGE_MODIFIED } from '../lib/pricing';
 
 const dateModified = PAGE_MODIFIED['/hop-vip'];
 const title = `Hộp VIP — Quà Tặng Thượng Hạng Cho Lãnh Đạo & Đối Tác | ${SITE.brand}`;
@@ -69,12 +69,19 @@ const schema = [
               </h2>
               <ul class="mt-4 divide-y divide-paper/15 border border-paper/15">
                 {sanPham.map((sp) => (
-                  <li class="flex flex-wrap items-center justify-between gap-2 px-4 py-3.5">
+                  <li class={`flex flex-wrap items-center justify-between gap-2 px-4 py-3.5${conHang(sp) ? '' : ' opacity-60'}`}>
                     <div>
-                      <p class="font-medium text-paper">{sp.ten_hien_thi}</p>
+                      <p class="font-medium text-paper">
+                        {sp.ten_hien_thi}
+                        {!conHang(sp) && (
+                          <span class="ml-2 whitespace-nowrap border border-paper/30 px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-paper/60">
+                            Tạm hết hàng
+                          </span>
+                        )}
+                      </p>
                       <p class="text-sm text-paper/60">{sp.quy_cach}</p>
                     </div>
-                    <p class="price text-gold">{dinhDangGia(sp.gia_da_vat)}</p>
+                    <p class={`price text-gold${conHang(sp) ? '' : ' line-through decoration-1'}`}>{dinhDangGia(sp.gia_da_vat)}</p>
                   </li>
                 ))}
               </ul>
