@@ -65,12 +65,12 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-08-21',
-  '/so-sanh': '2026-08-21',
+  '/': '2026-08-23',
+  '/so-sanh': '2026-08-23',
   '/hop-vip': '2026-08-21',
-  '/tim-hop-qua': '2026-08-21',
+  '/tim-hop-qua': '2026-08-23',
   '/chinh-sach-bao-mat': '2026-08-09',
-  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-21'])),
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-23'])),
 };
 
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
@@ -83,6 +83,14 @@ export function sanPhamConHang(ks: KhachSan): SanPham[] {
   const con = ks.san_pham.filter(conHang);
   return con.length ? con : ks.san_pham;
 }
+
+/**
+ * Khách sạn tạm hết hàng toàn bộ. Khác với "có vài mẫu hết": khoảng giá hiển thị
+ * là giá của hàng KHÔNG bán được nữa (do sanPhamConHang fallback về cả danh sách),
+ * nên mọi chỗ hiển thị khoảng giá phải kèm nhãn trạng thái, và gợi ý thay thế
+ * cần bung theo toàn dải giá thay vì chỉ khoảng hụt.
+ */
+export const hetHangToanBo = (ks: KhachSan) => ks.san_pham.every((sp) => !conHang(sp));
 
 /**
  * Giá thấp/cao nhất TÍNH TRÊN HÀNG CÒN BÁN ĐƯỢC — dùng thay ks.gia_tu / ks.gia_den

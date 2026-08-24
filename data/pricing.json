@@ -129,9 +129,9 @@
       "gia_tu": 1288000,
       "gia_den": 1888000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Nikko Tinh Tuyển (6 bánh 150gr + 1 Rượu)", "ten_hien_thi": "Nikko Tinh Tuyển — 6 bánh 150gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 150gr + quà tặng — Hộp Premium 36.6x22.5x14.6cm", "gia_chua_vat": 1716364, "vat": 0.10, "gia_da_vat": 1888000, "ruou": "vang", "mau_sac": "vàng", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 2, "ten_day_du": "Nikko Tinh Gọn (4 bánh 150gr)", "ten_hien_thi": "Nikko Tinh Gọn (4 bánh 150gr)", "quy_cach": "4 bánh 150gr — Hộp Standard 19x13x33cm", "gia_chua_vat": 1192593, "vat": 0.08, "gia_da_vat": 1288000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
-        { "stt": 3, "ten_day_du": "Nikko Gấu Hồng (4 bánh 120gr)", "ten_hien_thi": "Nikko Gấu Hồng bản giới hạn (4 bánh 120gr)", "quy_cach": "4 bánh 120gr — Hộp Limited 27x20.2x19cm", "gia_chua_vat": 1470370, "vat": 0.08, "gia_da_vat": 1588000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "vải", "doi_tuong": ["gia đình"] }
+        { "stt": 1, "het_hang": true, "ten_day_du": "Nikko Tinh Tuyển (6 bánh 150gr + 1 Rượu)", "ten_hien_thi": "Nikko Tinh Tuyển — 6 bánh 150gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 150gr + quà tặng — Hộp Premium 36.6x22.5x14.6cm", "gia_chua_vat": 1716364, "vat": 0.10, "gia_da_vat": 1888000, "ruou": "vang", "mau_sac": "vàng", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 2, "het_hang": true, "ten_day_du": "Nikko Tinh Gọn (4 bánh 150gr)", "ten_hien_thi": "Nikko Tinh Gọn (4 bánh 150gr)", "quy_cach": "4 bánh 150gr — Hộp Standard 19x13x33cm", "gia_chua_vat": 1192593, "vat": 0.08, "gia_da_vat": 1288000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
+        { "stt": 3, "het_hang": true, "ten_day_du": "Nikko Gấu Hồng (4 bánh 120gr)", "ten_hien_thi": "Nikko Gấu Hồng bản giới hạn (4 bánh 120gr)", "quy_cach": "4 bánh 120gr — Hộp Limited 27x20.2x19cm", "gia_chua_vat": 1470370, "vat": 0.08, "gia_da_vat": 1588000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "vải", "doi_tuong": ["gia đình"] }
       ]
     }
   ]

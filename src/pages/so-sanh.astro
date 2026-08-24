@@ -5,7 +5,7 @@
 // ⚠️ C0: KHÔNG liệt kê schema Product/Offer riêng (tránh trùng lặp 7 trang con).
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY } from '../config/site';
-import { KHACH_SAN, duongDan, khoangGia, PAGE_MODIFIED } from '../lib/pricing';
+import { KHACH_SAN, duongDan, khoangGia, hetHangToanBo, PAGE_MODIFIED } from '../lib/pricing';
 import { HOTEL_STORY } from '../lib/hotel-story';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 
@@ -69,8 +69,12 @@ const schema = [
                   </a>
                 </td>
                 <td class="px-4 py-3 text-ink-soft">{tenBst ?? '—'}</td>
-                <td class="price px-4 py-3">{khoangGia(ks)}</td>
-                <td class="px-4 py-3 text-ink-soft">{ks.san_pham.length} mẫu</td>
+                <td class={`price px-4 py-3${hetHangToanBo(ks) ? ' line-through decoration-1' : ''}`}>
+                  {khoangGia(ks)}
+                </td>
+                <td class="px-4 py-3 text-ink-soft">
+                  {hetHangToanBo(ks) ? 'Tạm hết hàng' : `${ks.san_pham.length} mẫu`}
+                </td>
                 <td class="px-4 py-3 text-ink-soft">{ks.hsd_ngay} ngày</td>
                 <td class="px-4 py-3 text-ink-soft">{ks.thanh_pho}</td>
               </tr>

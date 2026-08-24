@@ -9,7 +9,7 @@ import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import GoiYThayThe from '../components/GoiYThayThe.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, giaTuConHang, giaDenConHang, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, giaTuConHang, giaDenConHang, hetHangToanBo, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -36,6 +36,7 @@ const dateModified = PAGE_MODIFIED[duongDan(ks.id)];
 const min = dinhDangGia(giaTuConHang(ks));
 const max = dinhDangGia(giaDenConHang(ks));
 const soMau = ks.san_pham.length;
+const hetSach = hetHangToanBo(ks);
 const story = HOTEL_STORY[ks.id];
 const chef = HOTEL_CHEF[ks.id];
 const flavorGroups = HOTEL_FLAVORS[ks.id] ?? [];
@@ -158,11 +159,13 @@ const schema = [
         <div class="flex flex-wrap gap-x-8 gap-y-3.5 border-t border-hairline pt-0.5">
           <div class="flex flex-col gap-1 pt-3.5">
             <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Khoảng giá *</span>
-            <span class="price [font-variant-numeric:tabular-nums] text-[17px]">{min} – {max}</span>
+            <span class={`price [font-variant-numeric:tabular-nums] text-[17px]${hetSach ? ' line-through decoration-1' : ''}`}>
+              {min} – {max}
+            </span>
           </div>
           <div class="flex flex-col gap-1 pt-3.5">
             <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Số mẫu hộp</span>
-            <span class="text-[17px] text-ink">{soMau} mẫu</span>
+            <span class="text-[17px] text-ink">{hetSach ? 'Tạm hết hàng' : `${soMau} mẫu`}</span>
           </div>
           <div class="flex flex-col gap-1 pt-3.5">
             <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Hạn sử dụng</span>

@@ -1,12 +1,14 @@
 ---
 // Khối "Cùng tầm giá — còn hàng".
-// Chỉ hiện khi khách sạn hiện tại có mẫu tạm hết hàng RẺ HƠN mẫu rẻ nhất còn bán được,
-// tức là có một khoảng giá khách đang nhắm mà trang này không phục vụ được nữa.
-// Khi đó gợi ý hộp CÒN HÀNG của khách sạn khác, giá gần nhất với mẫu đã hết —
-// để khách hụt tầm giá có lựa chọn ngay trên trang thay vì thoát.
+// Hiện trong hai tình huống:
+//   1. Khách sạn còn bán nhưng mẫu đã hết RẺ HƠN mẫu rẻ nhất còn hàng — có một
+//      khoảng giá khách đang nhắm mà trang này không phục vụ được nữa.
+//   2. Khách sạn tạm hết hàng TOÀN BỘ — không còn gì để bán, nên gợi ý phủ cả
+//      dải giá của khách sạn thay vì chỉ một mức. Đây là lúc khách cần lối đi
+//      tiếp nhất, tuyệt đối không được tắt khối này.
 // Tự tắt khi mọi mẫu đều còn hàng; không cần cấu hình riêng cho từng khách sạn.
 import { Image } from 'astro:assets';
-import { KHACH_SAN, conHang, dinhDangGia, duongDan, type KhachSan, type SanPham } from '../lib/pricing';
+import { KHACH_SAN, conHang, hetHangToanBo, dinhDangGia, duongDan, type KhachSan, type SanPham } from '../lib/pricing';
 import { anhKhachSan } from '../lib/hotel-images';
 
 interface Props {
@@ -17,13 +19,17 @@ const { ks } = Astro.props;
 
 const daHet = ks.san_pham.filter((sp) => !conHang(sp));
 const conHangKS = ks.san_pham.filter(conHang);
+const hetSach = hetHangToanBo(ks);
 
 // Mức giá khách đang nhắm nhưng trang này không còn phục vụ được.
 const giaHut = daHet.length ? Math.min(...daHet.map((sp) => sp.gia_da_vat)) : 0;
 // Mẫu rẻ nhất khách sạn này vẫn bán được.
 const giaReNhatConHang = conHangKS.length ? Math.min(...conHangKS.map((sp) => sp.gia_da_vat)) : 0;
 
-const coKhoangHut = daHet.length > 0 && conHangKS.length > 0 && giaHut < giaReNhatConHang;
+// Hết sạch: mọi mức giá đều hụt, không có trần "rẻ hơn mẫu còn bán" để lọc.
+// Còn hàng một phần: chỉ gợi ý hộp không đắt hơn mẫu rẻ nhất trang này vẫn bán.
+const tranGia = hetSach ? Infinity : giaReNhatConHang;
+const coKhoangHut = hetSach || (daHet.length > 0 && conHangKS.length > 0 && giaHut < giaReNhatConHang);
 
 const gan = (gia: number) => Math.abs(gia - giaHut);
 
@@ -34,11 +40,16 @@ if (coKhoangHut) {
     if (k.id === ks.id) continue;
     const hop = k.san_pham
       .filter(conHang)
-      .filter((sp) => sp.gia_da_vat <= giaReNhatConHang)
+      .filter((sp) => sp.gia_da_vat <= tranGia)
       .sort((a, b) => gan(a.gia_da_vat) - gan(b.gia_da_vat))[0];
     if (hop) ungVien.push({ k, sp: hop });
   }
-  ungVien.sort((a, b) => gan(a.sp.gia_da_vat) - gan(b.sp.gia_da_vat));
+  // Cùng thành phố lên trước: khách Sài Gòn nhận hàng trong 24–48h, còn hộp Hà Nội
+  // phải ship 2–4 ngày — gợi ý khác vùng chỉ dùng để lấp chỗ khi thiếu.
+  ungVien.sort((a, b) => {
+    const cungTp = (x: KhachSan) => (x.thanh_pho === ks.thanh_pho ? 0 : 1);
+    return cungTp(a.k) - cungTp(b.k) || gan(a.sp.gia_da_vat) - gan(b.sp.gia_da_vat);
+  });
   ungVien.length = Math.min(ungVien.length, 3);
 }
 
@@ -51,8 +62,17 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 7px,#f6f2e9 7
       <p class="text-[11px] uppercase tracking-[.22em] text-accent">Gợi ý thay thế</p>
       <h2 class="mt-2 font-display text-[32px] leading-[1.1] text-ink">Cùng tầm giá — còn hàng</h2>
       <p class="mt-3 max-w-[62ch] text-[15px] leading-[1.7] text-[#4a453d]">
-        {daHet.length} mẫu {ks.ten} tầm {dinhDangGia(giaHut)} hiện tạm hết hàng. Nếu anh/chị muốn giữ
-        đúng tầm giá này, dưới đây là các hộp còn hàng của khách sạn 5 sao khác cùng phân khúc.
+        {hetSach ? (
+          <>
+            Toàn bộ {daHet.length} mẫu {ks.ten} hiện tạm hết hàng. Dưới đây là các hộp còn hàng của
+            khách sạn 5 sao khác cùng tầm giá — hoặc nhắn Zalo để được báo khi {ks.ten} có hàng lại.
+          </>
+        ) : (
+          <>
+            {daHet.length} mẫu {ks.ten} tầm {dinhDangGia(giaHut)} hiện tạm hết hàng. Nếu anh/chị muốn
+            giữ đúng tầm giá này, dưới đây là các hộp còn hàng của khách sạn 5 sao khác cùng phân khúc.
+          </>
+        )}
       </p>
 
       <div class="mt-6 grid gap-6 sm:grid-cols-3">
