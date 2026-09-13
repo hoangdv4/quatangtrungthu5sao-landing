@@ -9,6 +9,16 @@ export interface HotelContent {
 }
 
 export const HOTEL_CONTENT: Record<string, HotelContent> = {
+  marriott: {
+    tuVan:
+      'Hộp Cao Cấp (2.030k) gồm 4 bánh kèm một hộp trà ô long thượng hạng — tông đỏ chủ đạo, hợp biếu đối tác và khách hàng. Hộp Thượng Hạng (2.138k) nhiều bánh nhất với 6 vị trọn bộ sưu tập, hợp chia sẻ cùng gia đình hoặc phòng ban. Hộp Vinh Hoa (2.728k) là bản cao cấp nhất, kèm quà tặng cao cấp — dành cho khách VIP và lãnh đạo.',
+    faqRieng: [
+      {
+        q: 'Hộp Cao Cấp và Hộp Thượng Hạng của JW Marriott khác gì nhau?',
+        a: 'Hộp Cao Cấp gồm 4 bánh Trung Thu kèm một hộp trà ô long thượng hạng, tông đỏ chủ đạo. Hộp Thượng Hạng gồm 6 bánh, không kèm trà, tông xám phối đỏ — nhiều bánh hơn nên hợp chia sẻ cho nhóm đông người.',
+      },
+    ],
+  },
   sheraton: {
     tuVan:
       'An 1 (1.348k) — 6 bánh 100gr — là hộp gọn nhất còn hàng, hợp biếu đối tác. Ba mẫu hộp VIP (2.199k–2.599k) hợp biếu sếp và khách VIP. Ba mẫu entry (Thanh 1, Thanh 2, An 2) hiện tạm hết hàng — cùng tầm giá đó xem InterContinental Classic Box 4 (1.026k). Lưu ý HSD 25 ngày, đặt sát ngày biếu.',

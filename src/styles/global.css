@@ -38,6 +38,7 @@
   --color-status-low-stock: #8a4b2d;
 
   /* ── Brand tint riêng từng khách sạn (viền hero, tag BST, hover) — giữ nguyên, không thuộc bảng màu chủ đạo ── */
+  --color-brand-marriott: #a8231f;
   --color-brand-sheraton: #1f3a6e;
   --color-brand-intercontinental: #b4552d;
   --color-brand-melia: #b98a50;

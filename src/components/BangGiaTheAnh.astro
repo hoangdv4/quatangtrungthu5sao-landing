@@ -3,7 +3,7 @@
 // Số cột lưới co theo số mẫu hộp (không dùng auto-fit — để lại ô lẻ ở hàng cuối).
 // ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du.
 import { Image } from 'astro:assets';
-import { dinhDangGia, conHang, type SanPham } from '../lib/pricing';
+import { dinhDangGia, conHang, nhanSapHet, type SanPham } from '../lib/pricing';
 import { layAnhSku } from '../lib/hotel-images';
 import { SITE } from '../config/site';
 
@@ -30,6 +30,7 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
     sanPham.map((sp) => {
       const anh = layAnhSku(hotelId, sp.stt);
       const con = conHang(sp);
+      const sapHet = nhanSapHet(sp);
       return (
         <div class={`flex flex-col gap-3.5${con ? '' : ' opacity-70'}`}>
           {anh ? (
@@ -48,6 +49,11 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
                   Tạm hết hàng
                 </span>
               )}
+              {sapHet && (
+                <span class="absolute left-0 top-0 bg-accent px-3 py-1.5 text-[10px] uppercase tracking-[.13em] text-paper">
+                  {sapHet}
+                </span>
+              )}
             </div>
           ) : (
             <div
@@ -63,6 +69,11 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 8px,#f6f2e9 8
             {!con && (
               <span class="ml-2 align-middle border border-hairline-strong px-2 py-0.5 text-[10px] uppercase tracking-[.13em] text-text-faint">
                 Tạm hết hàng
+              </span>
+            )}
+            {sapHet && (
+              <span class="ml-2 align-middle border border-gold px-2 py-0.5 text-[10px] uppercase tracking-[.13em] text-accent">
+                {sapHet}
               </span>
             )}
           </p>

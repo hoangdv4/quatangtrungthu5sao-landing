@@ -1,17 +1,17 @@
 ---
-// Trang mới: so sánh trực quan 8 khách sạn (không phải từng SKU) — giúp khách chọn
+// Trang mới: so sánh trực quan các khách sạn (không phải từng SKU) — giúp khách chọn
 // KHÁCH SẠN phù hợp trước khi vào trang con xem chi tiết bảng giá.
 // Ads không trỏ vào trang này; sitemap priority 0.3 (xem astro.config.mjs).
 // ⚠️ C0: KHÔNG liệt kê schema Product/Offer riêng (tránh trùng lặp 7 trang con).
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY } from '../config/site';
-import { KHACH_SAN, duongDan, khoangGia, hetHangToanBo, PAGE_MODIFIED } from '../lib/pricing';
+import { KHACH_SAN, duongDan, khoangGia, hetHangToanBo, PAGE_MODIFIED, SO_KHACH_SAN } from '../lib/pricing';
 import { HOTEL_STORY } from '../lib/hotel-story';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 
 const dateModified = PAGE_MODIFIED['/so-sanh'];
-const title = `So Sánh 7 Khách Sạn Bánh Trung Thu 2026 | ${SITE.brand}`;
-const description = `So sánh nhanh bộ sưu tập, khoảng giá, số mẫu hộp và khu vực giao của 8 khách sạn 5 sao: Sheraton, InterContinental Landmark72, InterContinental Westlake, Meliá, Renaissance, Sofitel, Hilton, Nikko. Zalo ${PHONE_DISPLAY}.`;
+const title = `So Sánh ${SO_KHACH_SAN} Khách Sạn Bánh Trung Thu 2026 | ${SITE.brand}`;
+const description = `So sánh nhanh bộ sưu tập, khoảng giá, số mẫu hộp và khu vực giao của ${SO_KHACH_SAN} khách sạn 5 sao: JW Marriott, Sheraton, InterContinental Landmark72, InterContinental Westlake, Meliá, Renaissance, Sofitel, Hilton, Nikko. Zalo ${PHONE_DISPLAY}.`;
 
 const hangSoSanh = KHACH_SAN.map((ks) => ({
   ks,
@@ -39,7 +39,7 @@ const schema = [
     <div data-reveal>
       <p class="label-gold">So sánh nhanh</p>
       <h1 class="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight text-ink">
-        So sánh 8 khách sạn bánh trung thu 2026
+        So sánh {SO_KHACH_SAN} khách sạn bánh trung thu 2026
       </h1>
       <p class="mt-4 max-w-[65ch] text-base leading-relaxed text-ink-soft sm:text-lg">
         Mỗi khách sạn có một bộ sưu tập riêng — bảng dưới đây giúp bạn chọn khách sạn phù hợp

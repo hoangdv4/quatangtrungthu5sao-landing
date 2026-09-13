@@ -33,3 +33,9 @@ handoff-prompt-phase6-luxury-redesign.md
 Landing page bánh trung thu cao cấp.zip
 LIVE TRUNG THU 2026.xlsx
 Questions.xlsx
+
+# Ảnh gốc chưa xử lý (chạy scripts/xu-ly-anh-*.mjs để sinh bản .webp đã tối ưu)
+src/assets/*/goc/
+src/assets/*/*.jpg
+src/assets/*/*.jpeg
+src/assets/*/*.png

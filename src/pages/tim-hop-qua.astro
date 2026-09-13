@@ -13,6 +13,7 @@ import {
   dinhDangGia,
   duongDan,
   conHang,
+  nhanSapHet,
   GIA_MIN,
   GIA_MAX,
   PAGE_MODIFIED,
@@ -192,6 +193,11 @@ const schema = [
                 {!conHang(sp) && (
                   <span class="border border-hairline-strong px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] text-text-faint">
                     Tạm hết hàng
+                  </span>
+                )}
+                {nhanSapHet(sp) && (
+                  <span class="border border-gold px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] text-accent">
+                    {nhanSapHet(sp)}
                   </span>
                 )}
               </p>

@@ -10,6 +10,13 @@ export interface HotelStory {
 }
 
 export const HOTEL_STORY: Record<string, HotelStory> = {
+  marriott: {
+    // Brochure chỉ có mô tả riêng từng hộp, không có đoạn lời tựa chung cho cả BST
+    // — để null thay vì tự biên soạn (xem quy tắc ở đầu file).
+    ten_bst: 'Thanh Nhã',
+    loiTua: null,
+    catalogue: null,
+  },
   sheraton: {
     // Lời tựa trích từ ấn phẩm giới thiệu BST (bản chụp/thiết kế đồ họa do
     // brochure PDF gốc không có text layer để pdftotext trích tự động).

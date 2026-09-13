@@ -3,7 +3,7 @@
 // ⚠️ C0: chỉ hiển thị ten_hien_thi (đã sanitize), KHÔNG ten_day_du; ảnh SKU đã rà soát
 // thủ công loại bỏ mọi ảnh lộ chai/ly rượu (xem lib/hotel-images.ts layAnhSku).
 import { Image } from 'astro:assets';
-import { dinhDangGia, conHang, type SanPham } from '../lib/pricing';
+import { dinhDangGia, conHang, nhanSapHet, type SanPham } from '../lib/pricing';
 import { layAnhSku } from '../lib/hotel-images';
 
 interface Props {
@@ -36,6 +36,7 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5
         sanPham.map((sp) => {
           const anh = layAnhSku(hotelId, sp.stt);
           const con = conHang(sp);
+          const sapHet = nhanSapHet(sp);
           return (
             <tr class={`border-b border-hairline hover:bg-paper-warm${con ? '' : ' opacity-70'}`}>
               <td class="px-2 py-3">
@@ -57,6 +58,11 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 5px,#f6f2e9 5
                 {!con && (
                   <span class="ml-2 whitespace-nowrap border border-hairline-strong px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-text-faint">
                     Tạm hết hàng
+                  </span>
+                )}
+                {sapHet && (
+                  <span class="ml-2 whitespace-nowrap border border-gold px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-accent">
+                    {sapHet}
                   </span>
                 )}
               </td>

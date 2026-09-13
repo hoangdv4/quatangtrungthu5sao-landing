@@ -1,5 +1,6 @@
 ---
 import { SITE, PHONE_TEL, PHONE_DISPLAY } from '../config/site';
+import { SO_KHACH_SAN } from '../lib/pricing';
 
 interface Props {
   /** true → menu rút gọn (dùng ở 7 trang chi tiết khách sạn): chỉ Trang chủ + hotline + Zalo. */
@@ -33,7 +34,7 @@ const { compact = false } = Astro.props;
             >
               <a href="/tim-hop-qua" class="block px-4 py-2 hover:bg-paper-warm hover:text-accent">Tìm hộp quà phù hợp</a>
               <a href="/#ngan-sach" class="block px-4 py-2 hover:bg-paper-warm hover:text-accent">Chọn theo ngân sách</a>
-              <a href="/so-sanh" class="block px-4 py-2 hover:bg-paper-warm hover:text-accent">So sánh 8 khách sạn</a>
+              <a href="/so-sanh" class="block px-4 py-2 hover:bg-paper-warm hover:text-accent">So sánh {SO_KHACH_SAN} khách sạn</a>
               <a href="/#bao-gia-b2b" class="block px-4 py-2 hover:bg-paper-warm hover:text-accent">Yêu cầu báo giá doanh nghiệp</a>
             </div>
           </div>
@@ -77,7 +78,7 @@ const { compact = false } = Astro.props;
           <p class="pt-1 text-[11px] uppercase tracking-[.14em] text-text-faint">Công cụ</p>
           <a href="/tim-hop-qua" class="pl-3">Tìm hộp quà phù hợp</a>
           <a href="/#ngan-sach" class="pl-3">Chọn theo ngân sách</a>
-          <a href="/so-sanh" class="pl-3">So sánh 8 khách sạn</a>
+          <a href="/so-sanh" class="pl-3">So sánh {SO_KHACH_SAN} khách sạn</a>
           <a href="/#bao-gia-b2b" class="pl-3">Yêu cầu báo giá doanh nghiệp</a>
           <a href="/#doanh-nghiep">Doanh nghiệp</a>
         </>

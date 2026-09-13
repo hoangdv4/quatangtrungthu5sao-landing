@@ -22,6 +22,11 @@ export interface SanPham {
   quy_cach: string;
   /** true = tạm hết hàng: vẫn hiển thị (SEO/GEO) nhưng gắn nhãn và schema OutOfStock. Vắng mặt = còn hàng. */
   het_hang?: boolean;
+  /**
+   * Nhãn khan hàng (vd "Chỉ còn 50 hộp cuối cùng") — vẫn CÒN bán được:
+   * schema giữ InStock, giá không gạch, chỉ thêm badge cảnh báo. Bỏ qua nếu het_hang = true.
+   */
+  sap_het?: string;
   gia_chua_vat: number;
   vat: number;
   gia_da_vat: number;
@@ -47,6 +52,7 @@ export const KHACH_SAN = raw.khach_san as KhachSan[];
 
 /** Slug trang con của từng khách sạn (khớp cấu trúc 8 trang trong CLAUDE.md). */
 const SLUG: Record<string, string> = {
+  marriott: '/banh-trung-thu-jw-marriott-ha-noi',
   sheraton: '/banh-trung-thu-sheraton-ha-noi',
   'intercontinental-lm72': '/banh-trung-thu-intercontinental-landmark72',
   'intercontinental-westlake': '/banh-trung-thu-intercontinental-ha-noi-westlake',
@@ -65,18 +71,21 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-08-23',
-  '/so-sanh': '2026-08-23',
-  '/hop-vip': '2026-08-21',
-  '/tim-hop-qua': '2026-08-23',
+  '/': '2026-09-13',
+  '/so-sanh': '2026-09-13',
+  '/hop-vip': '2026-09-13',
+  '/tim-hop-qua': '2026-09-13',
   '/chinh-sach-bao-mat': '2026-08-09',
-  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-08-23'])),
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-09-13'])),
 };
 
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
 
 /** SKU còn hàng — hộp hết hàng vẫn giữ trên trang để không mất nội dung index. */
 export const conHang = (sp: SanPham) => sp.het_hang !== true;
+
+/** Nhãn khan hàng để render badge, chỉ khi SKU vẫn còn bán được. */
+export const nhanSapHet = (sp: SanPham) => (conHang(sp) ? sp.sap_het : undefined);
 
 /** SKU còn bán được của một khách sạn. Nếu hết sạch thì trả về toàn bộ, để UI không rỗng. */
 export function sanPhamConHang(ks: KhachSan): SanPham[] {
@@ -107,15 +116,26 @@ export function dinhDangGia(gia: number): string {
   return new Intl.NumberFormat('vi-VN').format(gia) + 'đ';
 }
 
-/** Khoảng giá đã VAT của một khách sạn. */
+/**
+ * Khoảng giá đã VAT của một khách sạn. Cuối mùa nhiều khách sạn chỉ còn 1 mẫu bán được —
+ * khi đó min = max, in "X – X" trông như lỗi nên rút về một giá.
+ */
 export function khoangGia(ks: KhachSan): string {
-  return `${dinhDangGia(giaTuConHang(ks))} – ${dinhDangGia(giaDenConHang(ks))}`;
+  const tu = giaTuConHang(ks);
+  const den = giaDenConHang(ks);
+  return tu === den ? dinhDangGia(tu) : `${dinhDangGia(tu)} – ${dinhDangGia(den)}`;
 }
 
 /** Giá thấp nhất / cao nhất toàn site (dùng cho llms.txt, meta, schema). */
 export const GIA_MIN = Math.min(...KHACH_SAN.map(giaTuConHang));
 export const GIA_MAX = Math.max(...KHACH_SAN.map(giaDenConHang));
 export const TONG_SO_MAU = KHACH_SAN.reduce((n, ks) => n + ks.san_pham.length, 0);
+
+/**
+ * Số khách sạn đang bán — dùng thay số đếm viết tay trong mọi câu chữ ("8 khách sạn 5 sao").
+ * Thêm/bớt khách sạn trong pricing.json là mọi tiêu đề, meta và footer tự khớp theo.
+ */
+export const SO_KHACH_SAN = KHACH_SAN.length;
 
 /** Hộp có quà tặng kèm (ruou != null) — chỉ hiển thị ở /hop-vip. */
 export const coQuaTang = (sp: SanPham) => sp.ruou !== null;

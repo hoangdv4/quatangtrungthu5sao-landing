@@ -21,15 +21,26 @@ const daHet = ks.san_pham.filter((sp) => !conHang(sp));
 const conHangKS = ks.san_pham.filter(conHang);
 const hetSach = hetHangToanBo(ks);
 
-// Mức giá khách đang nhắm nhưng trang này không còn phục vụ được.
-const giaHut = daHet.length ? Math.min(...daHet.map((sp) => sp.gia_da_vat)) : 0;
-// Mẫu rẻ nhất khách sạn này vẫn bán được.
+// Mẫu rẻ nhất / đắt nhất khách sạn này vẫn bán được — dải giá trang còn phục vụ.
 const giaReNhatConHang = conHangKS.length ? Math.min(...conHangKS.map((sp) => sp.gia_da_vat)) : 0;
+const giaDatNhatConHang = conHangKS.length ? Math.max(...conHangKS.map((sp) => sp.gia_da_vat)) : 0;
 
-// Hết sạch: mọi mức giá đều hụt, không có trần "rẻ hơn mẫu còn bán" để lọc.
-// Còn hàng một phần: chỉ gợi ý hộp không đắt hơn mẫu rẻ nhất trang này vẫn bán.
-const tranGia = hetSach ? Infinity : giaReNhatConHang;
-const coKhoangHut = hetSach || (daHet.length > 0 && conHangKS.length > 0 && giaHut < giaReNhatConHang);
+// Mẫu đã hết nằm NGOÀI dải còn bán — khách nhắm mức đó thì trang này không còn gì đưa ra.
+// Xét cả hai đầu: cuối mùa hay gặp cảnh chỉ còn đúng hộp phổ thông, mất sạch dải VIP phía trên
+// (Meliá), chứ không chỉ mất đầu rẻ.
+const hetNgoaiDai = hetSach
+  ? daHet
+  : daHet.filter((sp) => sp.gia_da_vat < giaReNhatConHang || sp.gia_da_vat > giaDatNhatConHang);
+
+// Mức giá khách đang nhắm nhưng trang này không còn phục vụ được — mốc để xếp gợi ý.
+const giaHut = hetNgoaiDai.length ? Math.min(...hetNgoaiDai.map((sp) => sp.gia_da_vat)) : 0;
+
+// Hết sạch: mọi mức giá đều hụt, không có trần để lọc. Mất đầu rẻ: gợi ý không đắt hơn
+// mẫu rẻ nhất còn bán. Chỉ mất dải trên: bỏ trần, nếu không sẽ không còn ứng viên nào.
+const chiHutDauTren =
+  !hetSach && hetNgoaiDai.length > 0 && hetNgoaiDai.every((sp) => sp.gia_da_vat > giaDatNhatConHang);
+const tranGia = hetSach || chiHutDauTren ? Infinity : giaReNhatConHang;
+const coKhoangHut = hetSach || (hetNgoaiDai.length > 0 && conHangKS.length > 0);
 
 const gan = (gia: number) => Math.abs(gia - giaHut);
 
@@ -69,8 +80,8 @@ const PLACEHOLDER_BG = 'repeating-linear-gradient(135deg,#ede8dd 0 7px,#f6f2e9 7
           </>
         ) : (
           <>
-            {daHet.length} mẫu {ks.ten} tầm {dinhDangGia(giaHut)} hiện tạm hết hàng. Nếu anh/chị muốn
-            giữ đúng tầm giá này, dưới đây là các hộp còn hàng của khách sạn 5 sao khác cùng phân khúc.
+            {hetNgoaiDai.length} mẫu {ks.ten} tầm {dinhDangGia(giaHut)} hiện tạm hết hàng. Nếu anh/chị
+            muốn giữ đúng tầm giá này, dưới đây là các hộp còn hàng của khách sạn 5 sao khác cùng phân khúc.
           </>
         )}
       </p>

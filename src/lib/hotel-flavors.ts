@@ -10,6 +10,9 @@ export interface FlavorGroup {
 }
 
 export const HOTEL_FLAVORS: Record<string, FlavorGroup[]> = {
+  // JW Marriott: brochure chưa công bố danh sách vị bánh từng hộp — bỏ trống thay vì
+  // suy đoán. Bổ sung khi có bảng vị chính thức.
+  marriott: [],
   sheraton: [
     {
       ten: 'Thanh 1 (4 bánh 100gr)',

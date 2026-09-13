@@ -4,11 +4,11 @@
 // Dark luxury duy nhất của site: nền --ink toàn trang, chữ --paper, giá --gold.
 import Base from '../layouts/Base.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, dinhDangGia, coQuaTang, conHang, duongDan, PAGE_MODIFIED } from '../lib/pricing';
+import { KHACH_SAN, dinhDangGia, coQuaTang, conHang, nhanSapHet, duongDan, PAGE_MODIFIED, SO_KHACH_SAN } from '../lib/pricing';
 
 const dateModified = PAGE_MODIFIED['/hop-vip'];
 const title = `Hộp VIP — Quà Tặng Thượng Hạng Cho Lãnh Đạo & Đối Tác | ${SITE.brand}`;
-const description = `Hộp bánh trung thu VIP kèm quà tặng cao cấp từ 8 khách sạn 5 sao, giá đã VAT. Tư vấn cấu hình riêng theo ngân sách qua Zalo ${PHONE_DISPLAY}.`;
+const description = `Hộp bánh trung thu VIP kèm quà tặng cao cấp từ ${SO_KHACH_SAN} khách sạn 5 sao, giá đã VAT. Tư vấn cấu hình riêng theo ngân sách qua Zalo ${PHONE_DISPLAY}.`;
 
 // Nhóm hộp có quà tặng kèm theo khách sạn — chỉ hiển thị ten_hien_thi (đã sanitize), không tên hãng.
 const nhomVip = KHACH_SAN.map((ks) => ({
@@ -76,6 +76,11 @@ const schema = [
                         {!conHang(sp) && (
                           <span class="ml-2 whitespace-nowrap border border-paper/30 px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-paper/60">
                             Tạm hết hàng
+                          </span>
+                        )}
+                        {nhanSapHet(sp) && (
+                          <span class="ml-2 whitespace-nowrap border border-gold px-1.5 py-0.5 text-[10px] uppercase tracking-[.13em] font-normal text-gold">
+                            {nhanSapHet(sp)}
                           </span>
                         )}
                       </p>

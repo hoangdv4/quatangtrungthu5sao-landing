@@ -9,7 +9,7 @@ import BangGiaTheAnh from '../components/BangGiaTheAnh.astro';
 import RelatedHotels from '../components/RelatedHotels.astro';
 import GoiYThayThe from '../components/GoiYThayThe.astro';
 import { SITE, PHONE_DISPLAY, PHONE_TEL } from '../config/site';
-import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, giaTuConHang, giaDenConHang, hetHangToanBo, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
+import { KHACH_SAN, duongDan, dinhDangGia, availabilitySchema, giaTuConHang, giaDenConHang, khoangGia, hetHangToanBo, PAGE_MODIFIED, type KhachSan } from '../lib/pricing';
 import { FAQ_CHUAN, faqGiaoHang, faqSchema, type FaqItem } from '../lib/faq';
 import { HOTEL_CONTENT } from '../lib/hotel-content';
 import { anhKhachSan, layLogo } from '../lib/hotel-images';
@@ -35,6 +35,9 @@ const dateModified = PAGE_MODIFIED[duongDan(ks.id)];
 // Khoảng giá hiển thị tính trên hàng CÒN BÁN ĐƯỢC — không chào mức giá đã hết hàng.
 const min = dinhDangGia(giaTuConHang(ks));
 const max = dinhDangGia(giaDenConHang(ks));
+// Cuối mùa có khách sạn chỉ còn 1 mẫu bán được — khi đó nói "giá X", không "từ X đến X".
+const motMucGia = giaTuConHang(ks) === giaDenConHang(ks);
+const cauGia = motMucGia ? `giá ${min}` : `giá từ ${min} đến ${max}`;
 const soMau = ks.san_pham.length;
 const hetSach = hetHangToanBo(ks);
 const story = HOTEL_STORY[ks.id];
@@ -50,7 +53,7 @@ const ngayCapNhat = new Date(dateModified).toLocaleDateString('vi-VN', {
 const title = `Bánh Trung Thu ${ks.ten} 2026 | ${SITE.brand}`;
 const description = `Bảng giá ${soMau} hộp bánh trung thu ${ks.ten} 2026 đã VAT. Giao nhanh 24–48h tại ${ks.thanh_pho}. Zalo ${PHONE_DISPLAY}.`;
 
-const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, giá từ ${min} đến ${max} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại ${ks.thanh_pho}, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
+const doanMo = `Bánh trung thu ${ks.ten} 2026 có ${soMau} loại hộp, ${cauGia} (đã gồm VAT). Đặt qua đại lý phân phối ${SITE.brand}, giao nhanh 24–48h tại ${ks.thanh_pho}, ship toàn quốc. Liên hệ Zalo ${PHONE_DISPLAY}.`;
 
 // FAQ trang = 2 câu chung + câu giao hàng theo đúng thành phố + 3 câu chung còn lại + câu riêng KS.
 const faqTrang: FaqItem[] = [
@@ -160,7 +163,7 @@ const schema = [
           <div class="flex flex-col gap-1 pt-3.5">
             <span class="text-[10px] uppercase tracking-[.13em] text-text-faint">Khoảng giá *</span>
             <span class={`price [font-variant-numeric:tabular-nums] text-[17px]${hetSach ? ' line-through decoration-1' : ''}`}>
-              {min} – {max}
+              {khoangGia(ks)}
             </span>
           </div>
           <div class="flex flex-col gap-1 pt-3.5">

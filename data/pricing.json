@@ -17,6 +17,19 @@
   },
   "khach_san": [
     {
+      "id": "marriott",
+      "ten": "JW Marriott Hà Nội",
+      "thanh_pho": "Hà Nội",
+      "hsd_ngay": 21,
+      "gia_tu": 2030400,
+      "gia_den": 2728000,
+      "san_pham": [
+        { "stt": 1, "ten_day_du": "Thanh Nhã - Hộp Cao Cấp (4 bánh + 1 hộp trà ô long thượng hạng)", "ten_hien_thi": "Thanh Nhã — Hộp Cao Cấp (4 bánh + trà ô long)", "quy_cach": "4 bánh + 1 hộp trà ô long — Hộp Cao Cấp tông đỏ", "gia_chua_vat": 1880000, "vat": 0.08, "gia_da_vat": 2030400, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "khách VIP/lãnh đạo"] },
+        { "stt": 2, "ten_day_du": "Thanh Nhã - Hộp Thượng Hạng (6 bánh)", "ten_hien_thi": "Thanh Nhã — Hộp Thượng Hạng (6 bánh)", "quy_cach": "6 bánh — Hộp Thượng Hạng tông xám/đỏ", "gia_chua_vat": 1980000, "vat": 0.08, "gia_da_vat": 2138400, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "đối tác"] },
+        { "stt": 3, "ten_day_du": "Thanh Nhã - Hộp Vinh Hoa (4 bánh + 1 chai Marcelito Cabernet Sauvignon)", "ten_hien_thi": "Thanh Nhã — Hộp Vinh Hoa (4 bánh kèm quà tặng cao cấp)", "quy_cach": "4 bánh + 1 chai 750ml — Hộp Vinh Hoa 2 tầng", "gia_chua_vat": 2480000, "vat": 0.10, "gia_da_vat": 2728000, "ruou": "vang", "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] }
+      ]
+    },
+    {
       "id": "sheraton",
       "ten": "Sheraton Hà Nội",
       "thanh_pho": "Hà Nội",
@@ -24,7 +37,7 @@
       "gia_tu": 1348000,
       "gia_den": 2599000,
       "san_pham": [
-        { "stt": 1, "het_hang": true, "ten_day_du": "Hộp 4 bánh Sheraton 100gr (Thanh 1)", "ten_hien_thi": "Hộp 4 bánh Sheraton 100gr (Thanh 1)", "quy_cach": "4 bánh 100gr — Hộp Thanh 28x28x8.5cm", "gia_chua_vat": 823148, "vat": 0.08, "gia_da_vat": 889000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
+        { "stt": 1, "sap_het": "Chỉ còn 50 hộp cuối cùng", "ten_day_du": "Hộp 4 bánh Sheraton 100gr (Thanh 1)", "ten_hien_thi": "Hộp 4 bánh Sheraton 100gr (Thanh 1)", "quy_cach": "4 bánh 100gr — Hộp Thanh 28x28x8.5cm", "gia_chua_vat": 823148, "vat": 0.08, "gia_da_vat": 889000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
         { "stt": 2, "het_hang": true, "ten_day_du": "Hộp 4 bánh Sheraton 150gr (Thanh 2)", "ten_hien_thi": "Hộp 4 bánh Sheraton 150gr (Thanh 2)", "quy_cach": "4 bánh 150gr — Hộp Thanh 28x28x8.5cm", "gia_chua_vat": 925000, "vat": 0.08, "gia_da_vat": 999000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
         { "stt": 3, "ten_day_du": "Hộp 6 bánh Sheraton 100gr (An 1)", "ten_hien_thi": "Hộp 6 bánh Sheraton 100gr (An 1)", "quy_cach": "6 bánh 100gr — Hộp An 39x28x8.5cm", "gia_chua_vat": 1248148, "vat": 0.08, "gia_da_vat": 1348000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "đối tác"] },
         { "stt": 4, "het_hang": true, "ten_day_du": "Hộp 4 bánh Sheraton 100gr + 1 Trà (An 2)", "ten_hien_thi": "Hộp 4 bánh Sheraton 100gr + 1 Trà (An 2)", "quy_cach": "4 bánh 100gr + 1 trà — Hộp An 39x28x8.5cm", "gia_chua_vat": 1433333, "vat": 0.08, "gia_da_vat": 1548000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] },
@@ -41,13 +54,13 @@
       "gia_tu": 1026000,
       "gia_den": 7689000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Classic Box 4 (4 bánh 100gr)", "ten_hien_thi": "Classic Box 4 (4 bánh 100gr)", "quy_cach": "4 bánh 100gr — Classic Box 14.3x14.3x38.3cm", "gia_chua_vat": 950000, "vat": 0.08, "gia_da_vat": 1026000, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
+        { "stt": 1, "het_hang": true, "ten_day_du": "Classic Box 4 (4 bánh 100gr)", "ten_hien_thi": "Classic Box 4 (4 bánh 100gr)", "quy_cach": "4 bánh 100gr — Classic Box 14.3x14.3x38.3cm", "gia_chua_vat": 950000, "vat": 0.08, "gia_da_vat": 1026000, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
         { "stt": 2, "ten_day_du": "Classic Box 6 (6 bánh 100gr)", "ten_hien_thi": "Classic Box 6 (6 bánh 100gr)", "quy_cach": "6 bánh 100gr — Classic Box 14.3x14.3x38.3cm", "gia_chua_vat": 1250000, "vat": 0.08, "gia_da_vat": 1350000, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "đối tác"] },
-        { "stt": 3, "ten_day_du": "Luxury Box 8 (8 bánh 100gr)", "ten_hien_thi": "Luxury Box 8 (8 bánh 100gr)", "quy_cach": "8 bánh 100gr — Luxury Box 25x25x16.5cm", "gia_chua_vat": 1590000, "vat": 0.08, "gia_da_vat": 1717200, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "đối tác"] },
-        { "stt": 4, "ten_day_du": "Luxury Box 6 with entry wine (6 bánh 100gr + Vang Baratet)", "ten_hien_thi": "Luxury Box 6 — 6 bánh 100gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 1990000, "vat": 0.10, "gia_da_vat": 2189000, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] },
-        { "stt": 5, "ten_day_du": "Luxury Box 6 with premium wine (6 bánh 100gr + Vang Maison)", "ten_hien_thi": "Luxury Box 6 Premium — 6 bánh 100gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 2290000, "vat": 0.10, "gia_da_vat": 2519000, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 6, "ten_day_du": "Luxury Box 6 with Gin (6 bánh 100gr + Rượu Lady Triệu)", "ten_hien_thi": "Luxury Box 6 VIP — 6 bánh 100gr kèm quà tặng thượng hạng", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 3680000, "vat": 0.10, "gia_da_vat": 4048000, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 7, "ten_day_du": "Luxury Box 6 with whisky (6 bánh 100gr + Rượu Macallan 12)", "ten_hien_thi": "Luxury Box 6 VIP — 6 bánh 100gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 6990000, "vat": 0.10, "gia_da_vat": 7689000, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] }
+        { "stt": 3, "het_hang": true, "ten_day_du": "Luxury Box 8 (8 bánh 100gr)", "ten_hien_thi": "Luxury Box 8 (8 bánh 100gr)", "quy_cach": "8 bánh 100gr — Luxury Box 25x25x16.5cm", "gia_chua_vat": 1590000, "vat": 0.08, "gia_da_vat": 1717200, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "đối tác"] },
+        { "stt": 4, "het_hang": true, "ten_day_du": "Luxury Box 6 with entry wine (6 bánh 100gr + Vang Baratet)", "ten_hien_thi": "Luxury Box 6 — 6 bánh 100gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 1990000, "vat": 0.10, "gia_da_vat": 2189000, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] },
+        { "stt": 5, "het_hang": true, "ten_day_du": "Luxury Box 6 with premium wine (6 bánh 100gr + Vang Maison)", "ten_hien_thi": "Luxury Box 6 Premium — 6 bánh 100gr kèm quà tặng cao cấp", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 2290000, "vat": 0.10, "gia_da_vat": 2519000, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 6, "het_hang": true, "ten_day_du": "Luxury Box 6 with Gin (6 bánh 100gr + Rượu Lady Triệu)", "ten_hien_thi": "Luxury Box 6 VIP — 6 bánh 100gr kèm quà tặng thượng hạng", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 3680000, "vat": 0.10, "gia_da_vat": 4048000, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 7, "het_hang": true, "ten_day_du": "Luxury Box 6 with whisky (6 bánh 100gr + Rượu Macallan 12)", "ten_hien_thi": "Luxury Box 6 VIP — 6 bánh 100gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "6 bánh 100gr + quà tặng — Luxury Box 35.5x26.4x22cm", "gia_chua_vat": 6990000, "vat": 0.10, "gia_da_vat": 7689000, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo"] }
       ]
     },
     {
@@ -58,10 +71,10 @@
       "gia_tu": 1134000,
       "gia_den": 2365000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Diệp Hoa - Hộp 4 bánh (Crimson Blossom)", "ten_hien_thi": "Diệp Hoa — Hộp 4 bánh", "quy_cach": "4 bánh — Hộp Diệp Hoa", "gia_chua_vat": 1050000, "vat": 0.08, "gia_da_vat": 1134000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "nhân viên/nội bộ"] },
+        { "stt": 1, "het_hang": true, "ten_day_du": "Diệp Hoa - Hộp 4 bánh (Crimson Blossom)", "ten_hien_thi": "Diệp Hoa — Hộp 4 bánh", "quy_cach": "4 bánh — Hộp Diệp Hoa", "gia_chua_vat": 1050000, "vat": 0.08, "gia_da_vat": 1134000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "nhân viên/nội bộ"] },
         { "stt": 2, "ten_day_du": "Diệp Hoa - Hộp 6 bánh (Crimson Blossom)", "ten_hien_thi": "Diệp Hoa — Hộp 6 bánh", "quy_cach": "6 bánh — Hộp Diệp Hoa", "gia_chua_vat": 1250000, "vat": 0.08, "gia_da_vat": 1350000, "ruou": null, "mau_sac": "hồng/đỏ", "chat_lieu": "giấy/carton", "doi_tuong": ["đối tác", "gia đình"] },
-        { "stt": 3, "ten_day_du": "Dạ Liên - Hộp 8 bánh (Emerald Lotus)", "ten_hien_thi": "Dạ Liên — Hộp 8 bánh", "quy_cach": "8 bánh — Hộp Dạ Liên có quai xách", "gia_chua_vat": 1680000, "vat": 0.08, "gia_da_vat": 1815000, "ruou": null, "mau_sac": "xanh rêu", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "khách VIP/lãnh đạo"] },
-        { "stt": 4, "ten_day_du": "Kim Trúc - Hộp 8 bánh + 1 chai Vang Torre Oria 05 Cabernet Sauvignon 750ml (Imperial Bamboo)", "ten_hien_thi": "Kim Trúc — Hộp 8 bánh kèm quà tặng cao cấp", "quy_cach": "8 bánh + 1 chai 750ml — Hộp Kim Trúc 2 tầng", "gia_chua_vat": 2150000, "vat": 0.10, "gia_da_vat": 2365000, "ruou": "vang", "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] }
+        { "stt": 3, "sap_het": "Chỉ còn những hộp cuối cùng", "ten_day_du": "Dạ Liên - Hộp 8 bánh (Emerald Lotus)", "ten_hien_thi": "Dạ Liên — Hộp 8 bánh", "quy_cach": "8 bánh — Hộp Dạ Liên có quai xách", "gia_chua_vat": 1680000, "vat": 0.08, "gia_da_vat": 1815000, "ruou": null, "mau_sac": "xanh rêu", "chat_lieu": "giấy/carton", "doi_tuong": ["gia đình", "khách VIP/lãnh đạo"] },
+        { "stt": 4, "het_hang": true, "ten_day_du": "Kim Trúc - Hộp 8 bánh + 1 chai Vang Torre Oria 05 Cabernet Sauvignon 750ml (Imperial Bamboo)", "ten_hien_thi": "Kim Trúc — Hộp 8 bánh kèm quà tặng cao cấp", "quy_cach": "8 bánh + 1 chai 750ml — Hộp Kim Trúc 2 tầng", "gia_chua_vat": 2150000, "vat": 0.10, "gia_da_vat": 2365000, "ruou": "vang", "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["khách VIP/lãnh đạo", "đối tác"] }
       ]
     },
     {
@@ -72,16 +85,16 @@
       "gia_tu": 1067040,
       "gia_den": 5816800,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Thanh Hoa Nguyệt Ảnh (4 bánh 120gr)", "ten_hien_thi": "Thanh Hoa Nguyệt Ảnh (4 bánh 120gr)", "quy_cach": "4 bánh 120gr — Hộp 32.5x24.5x8.5cm", "gia_chua_vat": 988000, "vat": 0.08, "gia_da_vat": 1067040, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
+        { "stt": 1, "het_hang": true, "ten_day_du": "Thanh Hoa Nguyệt Ảnh (4 bánh 120gr)", "ten_hien_thi": "Thanh Hoa Nguyệt Ảnh (4 bánh 120gr)", "quy_cach": "4 bánh 120gr — Hộp 32.5x24.5x8.5cm", "gia_chua_vat": 988000, "vat": 0.08, "gia_da_vat": 1067040, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
         { "stt": 2, "ten_day_du": "Chu Tước Phúc Viên (4 bánh 120gr)", "ten_hien_thi": "Chu Tước Phúc Viên (4 bánh 120gr)", "quy_cach": "4 bánh 120gr — Hộp 32.5x24.5x8.5cm", "gia_chua_vat": 988000, "vat": 0.08, "gia_da_vat": 1067040, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "giấy/carton", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
-        { "stt": 3, "ten_day_du": "Nguyệt Viên Hà Thành (6 bánh 100gr)", "ten_hien_thi": "Nguyệt Viên Hà Thành (6 bánh 100gr)", "quy_cach": "6 bánh 100gr — Hộp 37.5x15.5x21cm", "gia_chua_vat": 1580000, "vat": 0.08, "gia_da_vat": 1706400, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["gia đình", "đối tác"] },
-        { "stt": 4, "ten_day_du": "Nguyệt Viên Hà Thành (5 bánh 100gr + trà Tam Đường)", "ten_hien_thi": "Nguyệt Viên Hà Thành (5 bánh 100gr + trà Tam Đường)", "quy_cach": "5 bánh 100gr + trà — Hộp 37.5x15.5x21cm", "gia_chua_vat": 1580000, "vat": 0.08, "gia_da_vat": 1706400, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["gia đình", "khách VIP/lãnh đạo"] },
-        { "stt": 5, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Hecula Organic)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng cao cấp", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 2188000, "vat": 0.10, "gia_da_vat": 2406800, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 6, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Glenfiddich)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng thượng hạng", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 3838000, "vat": 0.10, "gia_da_vat": 4221800, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 7, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Macallan 12)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 5288000, "vat": 0.10, "gia_da_vat": 5816800, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 8, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Hecula Organic)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng cao cấp", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 2188000, "vat": 0.10, "gia_da_vat": 2406800, "ruou": "vang", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 9, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Glenfiddich)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng thượng hạng", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 3838000, "vat": 0.10, "gia_da_vat": 4221800, "ruou": "manh", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
-        { "stt": 10, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Macallan 12)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 5288000, "vat": 0.10, "gia_da_vat": 5816800, "ruou": "manh", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] }
+        { "stt": 3, "het_hang": true, "ten_day_du": "Nguyệt Viên Hà Thành (6 bánh 100gr)", "ten_hien_thi": "Nguyệt Viên Hà Thành (6 bánh 100gr)", "quy_cach": "6 bánh 100gr — Hộp 37.5x15.5x21cm", "gia_chua_vat": 1580000, "vat": 0.08, "gia_da_vat": 1706400, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["gia đình", "đối tác"] },
+        { "stt": 4, "het_hang": true, "ten_day_du": "Nguyệt Viên Hà Thành (5 bánh 100gr + trà Tam Đường)", "ten_hien_thi": "Nguyệt Viên Hà Thành (5 bánh 100gr + trà Tam Đường)", "quy_cach": "5 bánh 100gr + trà — Hộp 37.5x15.5x21cm", "gia_chua_vat": 1580000, "vat": 0.08, "gia_da_vat": 1706400, "ruou": null, "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["gia đình", "khách VIP/lãnh đạo"] },
+        { "stt": 5, "het_hang": true, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Hecula Organic)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng cao cấp", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 2188000, "vat": 0.10, "gia_da_vat": 2406800, "ruou": "vang", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 6, "het_hang": true, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Glenfiddich)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng thượng hạng", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 3838000, "vat": 0.10, "gia_da_vat": 4221800, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 7, "het_hang": true, "ten_day_du": "Nguyệt Viên Hà Thành (3 bánh 120gr + Rượu Macallan 12)", "ten_hien_thi": "Nguyệt Viên Hà Thành VIP — 3 bánh 120gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 5288000, "vat": 0.10, "gia_da_vat": 5816800, "ruou": "manh", "mau_sac": "nâu/cam đất", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 8, "het_hang": true, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Hecula Organic)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng cao cấp", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 2188000, "vat": 0.10, "gia_da_vat": 2406800, "ruou": "vang", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 9, "het_hang": true, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Glenfiddich)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng thượng hạng", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 3838000, "vat": 0.10, "gia_da_vat": 4221800, "ruou": "manh", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] },
+        { "stt": 10, "het_hang": true, "ten_day_du": "Nguyệt Hoa Lạc Thủy (3 bánh 120gr + Rượu Macallan 12)", "ten_hien_thi": "Nguyệt Hoa Lạc Thủy VIP — 3 bánh 120gr kèm quà tặng thượng hạng bản giới hạn", "quy_cach": "3 bánh 120gr + quà tặng — Hộp 37.5x15.5x21cm", "gia_chua_vat": 5288000, "vat": 0.10, "gia_da_vat": 5816800, "ruou": "manh", "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] }
       ]
     },
     {
@@ -92,7 +105,7 @@
       "gia_tu": 1388000,
       "gia_den": 1988000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "An Nhã (4 bánh 220gr + Trà Kim Tuyên)", "ten_hien_thi": "An Nhã (4 bánh 220gr + Trà Kim Tuyên)", "quy_cach": "4 bánh 220gr + trà — Hộp trắng 38x30x9cm", "gia_chua_vat": 1285185, "vat": 0.08, "gia_da_vat": 1388000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "vải", "doi_tuong": ["gia đình", "đối tác"] },
+        { "stt": 1, "het_hang": true, "ten_day_du": "An Nhã (4 bánh 220gr + Trà Kim Tuyên)", "ten_hien_thi": "An Nhã (4 bánh 220gr + Trà Kim Tuyên)", "quy_cach": "4 bánh 220gr + trà — Hộp trắng 38x30x9cm", "gia_chua_vat": 1285185, "vat": 0.08, "gia_da_vat": 1388000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "vải", "doi_tuong": ["gia đình", "đối tác"] },
         { "stt": 2, "ten_day_du": "Bích Ngọc (4 bánh 220gr + Rượu Torre Oria Cabernet Sauvignon)", "ten_hien_thi": "Bích Ngọc — 4 bánh 220gr kèm quà tặng cao cấp", "quy_cach": "4 bánh 220gr + quà tặng — Hộp xanh lá 32x40x20cm", "gia_chua_vat": 1807273, "vat": 0.10, "gia_da_vat": 1988000, "ruou": "vang", "mau_sac": "xanh rêu", "chat_lieu": "vải", "doi_tuong": ["khách VIP/lãnh đạo"] }
       ]
     },
@@ -104,9 +117,9 @@
       "gia_tu": 1236000,
       "gia_den": 2256000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Sofitel Standard (4 bánh 150gr)", "ten_hien_thi": "Sofitel Standard (4 bánh 150gr)", "quy_cach": "4 bánh 150gr — Hộp 28x28x9.6cm", "gia_chua_vat": 1144444, "vat": 0.08, "gia_da_vat": 1236000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
-        { "stt": 2, "ten_day_du": "Sofitel Deluxe (4 bánh + Trà)", "ten_hien_thi": "Sofitel Deluxe (4 bánh + Trà)", "quy_cach": "4 bánh + trà — Hộp 30.1x16.9x16.9cm", "gia_chua_vat": 1523148, "vat": 0.08, "gia_da_vat": 1645000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "da/simili", "doi_tuong": ["đối tác", "gia đình"] },
-        { "stt": 3, "ten_day_du": "Sofitel Premium (6 bánh 150gr)", "ten_hien_thi": "Sofitel Premium (6 bánh 150gr)", "quy_cach": "6 bánh 150gr — Hộp 29.5x19.7x27.6cm", "gia_chua_vat": 2088889, "vat": 0.08, "gia_da_vat": 2256000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] }
+        { "stt": 1, "sap_het": "Chỉ còn những hộp cuối cùng", "ten_day_du": "Sofitel Standard (4 bánh 150gr)", "ten_hien_thi": "Sofitel Standard (4 bánh 150gr)", "quy_cach": "4 bánh 150gr — Hộp 28x28x9.6cm", "gia_chua_vat": 1144444, "vat": 0.08, "gia_da_vat": 1236000, "ruou": null, "mau_sac": "be/kem", "chat_lieu": "da/simili", "doi_tuong": ["nhân viên/nội bộ", "đối tác"] },
+        { "stt": 2, "sap_het": "Chỉ còn những hộp cuối cùng", "ten_day_du": "Sofitel Deluxe (4 bánh + Trà)", "ten_hien_thi": "Sofitel Deluxe (4 bánh + Trà)", "quy_cach": "4 bánh + trà — Hộp 30.1x16.9x16.9cm", "gia_chua_vat": 1523148, "vat": 0.08, "gia_da_vat": 1645000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "da/simili", "doi_tuong": ["đối tác", "gia đình"] },
+        { "stt": 3, "het_hang": true, "ten_day_du": "Sofitel Premium (6 bánh 150gr)", "ten_hien_thi": "Sofitel Premium (6 bánh 150gr)", "quy_cach": "6 bánh 150gr — Hộp 29.5x19.7x27.6cm", "gia_chua_vat": 2088889, "vat": 0.08, "gia_da_vat": 2256000, "ruou": null, "mau_sac": "xanh dương", "chat_lieu": "da/simili", "doi_tuong": ["khách VIP/lãnh đạo"] }
       ]
     },
     {
@@ -117,8 +130,8 @@
       "gia_tu": 1688000,
       "gia_den": 2180000,
       "san_pham": [
-        { "stt": 1, "ten_day_du": "Hilton Trà (4 bánh 150gr + Trà 20g)", "ten_hien_thi": "Hilton Tea Version (4 bánh 150gr + Trà 20g)", "quy_cach": "4 bánh 150gr + trà 20g — Hộp 36x34.7x14.2cm", "gia_chua_vat": 1562963, "vat": 0.08, "gia_da_vat": 1688000, "ruou": null, "mau_sac": "vàng", "chat_lieu": "kim loại", "doi_tuong": ["đối tác", "gia đình"] },
-        { "stt": 2, "ten_day_du": "Hilton Rượu (4 bánh 150gr + Rượu)", "ten_hien_thi": "Hilton Wine Version — 4 bánh 150gr kèm quà tặng cao cấp", "quy_cach": "4 bánh 150gr + quà tặng — Hộp 36x34.7x14.2cm", "gia_chua_vat": 1981818, "vat": 0.10, "gia_da_vat": 2180000, "ruou": "vang", "mau_sac": "vàng", "chat_lieu": "kim loại", "doi_tuong": ["khách VIP/lãnh đạo"] }
+        { "stt": 1, "het_hang": true, "ten_day_du": "Hilton Trà (4 bánh 150gr + Trà 20g)", "ten_hien_thi": "Hilton Tea Version (4 bánh 150gr + Trà 20g)", "quy_cach": "4 bánh 150gr + trà 20g — Hộp 36x34.7x14.2cm", "gia_chua_vat": 1562963, "vat": 0.08, "gia_da_vat": 1688000, "ruou": null, "mau_sac": "vàng", "chat_lieu": "kim loại", "doi_tuong": ["đối tác", "gia đình"] },
+        { "stt": 2, "het_hang": true, "ten_day_du": "Hilton Rượu (4 bánh 150gr + Rượu)", "ten_hien_thi": "Hilton Wine Version — 4 bánh 150gr kèm quà tặng cao cấp", "quy_cach": "4 bánh 150gr + quà tặng — Hộp 36x34.7x14.2cm", "gia_chua_vat": 1981818, "vat": 0.10, "gia_da_vat": 2180000, "ruou": "vang", "mau_sac": "vàng", "chat_lieu": "kim loại", "doi_tuong": ["khách VIP/lãnh đạo"] }
       ]
     },
     {
