@@ -71,12 +71,12 @@ export const duongDan = (id: string) => SLUG[id] ?? '/';
  * để hai giá trị luôn khớp nhau. Cập nhật path tương ứng khi sửa nội dung trang đó.
  */
 export const PAGE_MODIFIED: Record<string, string> = {
-  '/': '2026-09-13',
-  '/so-sanh': '2026-09-13',
-  '/hop-vip': '2026-09-13',
-  '/tim-hop-qua': '2026-09-13',
+  '/': '2026-09-17',
+  '/so-sanh': '2026-09-17',
+  '/hop-vip': '2026-09-17',
+  '/tim-hop-qua': '2026-09-17',
   '/chinh-sach-bao-mat': '2026-08-09',
-  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-09-13'])),
+  ...Object.fromEntries(Object.values(SLUG).map((path) => [path, '2026-09-17'])),
 };
 
 export const layKhachSan = (id: string) => KHACH_SAN.find((ks) => ks.id === id);
